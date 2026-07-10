@@ -1,0 +1,14 @@
+Historical accidents data cleaning report
+Input: C:\Users\Beknur\Desktop\test_arcgis_geometry.py\astana_accidents.parquet
+Rows before cleaning: 13663
+Rows after cleaning: 13663
+Full duplicates removed: 0
+Duplicate objectid rows removed: 0
+Rows removed without objectid: 0
+Rows removed without coordinates: 0
+Rows removed without accident_datetime: 0
+Suspicious coordinates retained: 0
+Created columns: accident_date, accident_datetime, hour, weekday, day, month, year, quarter, season, is_weekend, latitude, longitude, geometry
+Clean Parquet: C:\Users\Beknur\Desktop\test_arcgis_geometry.py\data\processed\astana_accidents_clean.parquet
+Clean CSV: C:\Users\Beknur\Desktop\test_arcgis_geometry.py\data\processed\astana_accidents_clean.csv
+Suspicious coordinate report: C:\Users\Beknur\Desktop\test_arcgis_geometry.py\reports\data_cleaning\20260710T190725Z\suspicious_coordinates.csv

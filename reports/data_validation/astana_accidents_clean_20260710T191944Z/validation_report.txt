@@ -1,0 +1,219 @@
+Historical accidents data validation report
+Input: C:\Users\Beknur\Desktop\test_arcgis_geometry.py\data\processed\astana_accidents_clean.parquet
+Generated (UTC): 2026-07-10T19:19:44.395625+00:00
+Rows: 13663
+Columns: 55
+Final status: READY WITH WARNINGS
+
+Checks:
+[PASS] dataset_structure: Dataset loaded successfully.
+{
+  "rows": 13663,
+  "columns": 55,
+  "file_size_bytes": 2151157,
+  "dtypes": {
+    "objectid": "int64",
+    "fd1r08p1": "str",
+    "rta_date": "int64",
+    "fd1id": "str",
+    "yr": "int64",
+    "period": "int64",
+    "area_code": "str",
+    "fd1r05p1": "str",
+    "fd1r01p1": "int64",
+    "fd1r07p2": "str",
+    "fd1r07p3": "str",
+    "fd1r07p4": "str",
+    "fd1r071p1_id": "str",
+    "fd1r071p1": "str",
+    "fd1r09p1": "str",
+    "fd1r14p1": "str",
+    "fd1r141p1_id": "str",
+    "fd1r141p1": "str",
+    "fd1r13p1": "float64",
+    "fd1r13p2": "float64",
+    "fd1r06p1": "str",
+    "fd1r06p2": "str",
+    "fd1r06p3": "str",
+    "vehicle_category": "str",
+    "is_public_transport": "int64",
+    "fd1r041p1": "float64",
+    "fd1r072p1": "str",
+    "fd1r073p1": "float64",
+    "fd1r074p1": "float64",
+    "fd1r10p1": "float64",
+    "fd1r142p6": "float64",
+    "fd1r17": "str",
+    "type_dtp": "float64",
+    "fd1r17_descrip": "str",
+    "load_date": "int64",
+    "fd1r07p1": "str",
+    "fd1r061p0": "str",
+    "fd1r061p1": "str",
+    "fd1r061p2": "float64",
+    "globalid": "str",
+    "x": "float64",
+    "y": "float64",
+    "geometry": "object",
+    "accident_date": "datetime64[ms]",
+    "accident_datetime": "datetime64[us]",
+    "hour": "Int64",
+    "weekday": "Int64",
+    "day": "Int64",
+    "month": "Int64",
+    "year": "Int64",
+    "quarter": "Int64",
+    "season": "string",
+    "is_weekend": "boolean",
+    "longitude": "float64",
+    "latitude": "float64"
+  }
+}
+[PASS] full_duplicates: No full duplicate rows found.
+{
+  "rows": 0
+}
+[PASS] duplicates_objectid: No duplicate non-empty objectid values.
+{
+  "rows": 0
+}
+[PASS] duplicates_fd1id: No duplicate non-empty fd1id values.
+{
+  "rows": 0
+}
+[PASS] duplicates_globalid: No duplicate non-empty globalid values.
+{
+  "rows": 0
+}
+[PASS] rta_date_timestamp: Parsed rta_date as Unix milliseconds.
+{
+  "non_null": 13663,
+  "invalid": 0,
+  "min": "2011-12-27 00:00:00+06:00",
+  "max": "2026-06-29 23:00:00+05:00"
+}
+[PASS] load_date_timestamp: Parsed load_date as Unix milliseconds.
+{
+  "non_null": 13663,
+  "invalid": 0,
+  "min": "2022-05-30 00:00:00+06:00",
+  "max": "2026-07-06 23:00:00+05:00"
+}
+[PASS] year_matches_accident_datetime: Compared year with year extracted from accident_datetime.
+{
+  "compared": 13663,
+  "mismatches": 0
+}
+[PASS] month_matches_accident_datetime: Compared month with month extracted from accident_datetime.
+{
+  "compared": 13663,
+  "mismatches": 0
+}
+[INFO] source_yr_matches_rta_date: Compared yr with year extracted from rta_date.
+{
+  "compared": 13663,
+  "mismatches": 3
+}
+[INFO] source_period_matches_rta_date: Compared period with month extracted from rta_date.
+{
+  "compared": 13663,
+  "mismatches": 148
+}
+[PASS] time_format: Validated fd1r05p1 as 24-hour time.
+{
+  "non_empty": 13663,
+  "invalid": 0
+}
+[PASS] coordinates: Validated EPSG:3857 coordinates and checked temporary EPSG:4326 positions near Astana.
+{
+  "valid": 13663,
+  "suspicious": 0,
+  "total": 13663
+}
+[PASS] numeric_values: Checked numeric values for infinities and negative casualty counts.
+{
+  "numeric_columns": 26,
+  "infinite_values": 0,
+  "negative_counts": {}
+}
+[PASS] categorical_values: Computed ten most frequent values for important categories.
+{
+  "frequent_values": {
+    "type_dtp": {
+      "NaN": 7848,
+      "1.0": 4751,
+      "2.0": 1064
+    },
+    "vehicle_category": {
+      "B": 6449,
+      "NaN": 5589,
+      "B,C": 318,
+      "D": 317,
+      "B,D": 200,
+      "B,W": 184,
+      "C": 142,
+      "A,B": 123,
+      "A1,B": 95,
+      "A": 42
+    },
+    "area_code": {
+      "1971": 12568,
+      "1911": 1090,
+      "1955": 2,
+      "1963": 1,
+      "1935": 1,
+      "1962": 1
+    },
+    "fd1r07p1": {
+      "сухая": 9992,
+      "заснеженная": 943,
+      "обледеневшая": 923,
+      "мокрая": 835,
+      "обработанная противогололедным материалом": 378,
+      "NaN": 354,
+      "со снежным накатом": 148,
+      "загрязненная": 18,
+      "обледеневшая,заснеженная": 16,
+      "заснеженная,обледеневшая": 15
+    },
+    "fd1r17": {
+      "NaN": 7848,
+      "ст.610 ч.1": 2067,
+      "ст.610 ч.2": 721,
+      "ст.600 ч.1": 635,
+      "ст.345 ч.1": 455,
+      "ст.620 ч.1": 421,
+      "ст.345 ч.3": 326,
+      "ст.345 ч.2": 213,
+      "ст.615 ч.2": 172,
+      "ст.615 ч.1": 133
+    },
+    "fd1r06p1": {
+      "в населенном пункте": 13165,
+      "международного, республиканского значения": 364,
+      "республиканского значения": 65,
+      "областного, районного значения": 37,
+      "на дороге": 13,
+      "областного значения": 13,
+      "районного значения": 6
+    },
+    "fd1r08p1": {
+      "05": 6039,
+      "01": 4565,
+      "10": 524,
+      "06": 504,
+      "11": 425,
+      "04": 415,
+      "12": 295,
+      "03": 287,
+      "02": 220,
+      "15": 163
+    }
+  }
+}
+[WARNING] ml_leakage: Potential target leakage fields detected; exclude them unless they are available before prediction time.
+{
+  "columns": [
+    "type_dtp"
+  ]
+}
