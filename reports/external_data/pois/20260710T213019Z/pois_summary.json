@@ -1,0 +1,23 @@
+{
+  "source": "OpenStreetMap via Overpass API",
+  "source_url": "https://overpass-api.de/api/interpreter",
+  "bbox_south_west_north_east": [
+    50.8576076,
+    71.2179735,
+    51.3511101,
+    71.7851913
+  ],
+  "rows": 5883,
+  "category_counts": {
+    "crossing": 3334,
+    "transit_stop": 1192,
+    "traffic_signal": 846,
+    "education": 358,
+    "healthcare": 104,
+    "emergency": 35,
+    "other": 14
+  },
+  "output_parquet": "C:\\Users\\yedil\\OneDrive\\Рабочий стол\\RoadRisk AI\\ML_CJ\\data\\external\\pois_astana_osm.parquet",
+  "output_csv": "C:\\Users\\yedil\\OneDrive\\Рабочий стол\\RoadRisk AI\\ML_CJ\\data\\external\\pois_astana_osm.csv",
+  "generated_at_utc": "2026-07-10T21:30:19.734747+00:00"
+}

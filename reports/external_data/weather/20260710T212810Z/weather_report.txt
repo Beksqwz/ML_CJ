@@ -1,0 +1,5 @@
+Open-Meteo weather fetch report
+Rows: 127176
+Range: 2011-12-27 to 2026-06-29
+Missing values: {'temperature_2m': 0, 'relative_humidity_2m': 0, 'precipitation': 0, 'rain': 0, 'snowfall': 0, 'weather_code': 0, 'cloud_cover': 0, 'wind_speed_10m': 0, 'wind_gusts_10m': 0}
+Output Parquet: C:\Users\yedil\OneDrive\Рабочий стол\RoadRisk AI\ML_CJ\data\external\weather_astana_hourly.parquet

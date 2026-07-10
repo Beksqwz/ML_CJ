@@ -1,0 +1,10 @@
+Road feature normalization report
+Input: C:\Users\yedil\OneDrive\Рабочий стол\RoadRisk AI\ML_CJ\data\processed\accidents_with_roads_ml_filtered.parquet
+Rows: 12449
+Columns before/after: 36 / 43
+Missing lanes before: 5875
+Missing maxspeed before: 6871
+Missing name before: 909
+Missing lanes after: 0
+Missing maxspeed after: 0
+Output Parquet: C:\Users\yedil\OneDrive\Рабочий стол\RoadRisk AI\ML_CJ\data\processed\accidents_with_roads_ml_ready.parquet

@@ -1,0 +1,20 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local virtual environments and dependency caches
+.venv/
+venv/
+env/
+.pydeps/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+cache/
+
+# Keep Parquet as the canonical data format; CSV exports are reproducible.
+data/processed/*.csv
+data/external/*.csv

@@ -1,0 +1,12 @@
+Road matching report
+Accidents input: C:\Users\yedil\OneDrive\Рабочий стол\RoadRisk AI\ML_CJ\data\processed\astana_accidents_clean.csv
+Roads input: C:\Users\yedil\OneDrive\Рабочий стол\RoadRisk AI\astana_edges.csv
+Rows: 13663
+Road segments: 21361
+Matched rows: 13663
+Unmatched rows: 0
+Distance p50/p90/p95/max m: 4.125 / 125.542 / 4071.456 / 29103.159
+Rows over 50/100/200m: 1784 / 1443 / 1265
+Output CSV: C:\Users\yedil\OneDrive\Рабочий стол\RoadRisk AI\ML_CJ\data\processed\accidents_with_roads.csv
+Output Parquet: ML_CJ\data\processed\accidents_with_roads.parquet
+Far matches report: C:\Users\yedil\OneDrive\Рабочий стол\RoadRisk AI\ML_CJ\reports\road_matching\20260710T195529Z\far_matches_over_100m.csv

@@ -1,0 +1,6 @@
+Stage 5 external data validation
+Calendar rows: 127176
+Weather rows: 127176
+POI rows: 5883
+Calendar/weather common hours: 127176
+Manifest: C:\Users\yedil\OneDrive\Рабочий стол\RoadRisk AI\ML_CJ\data\external\stage5_external_data_manifest.json

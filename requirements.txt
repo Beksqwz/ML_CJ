@@ -1,0 +1,7 @@
+pandas>=3.0.0
+pyarrow>=25.0.0
+requests>=2.32.0
+holidays>=0.100
+geopandas>=1.0.0
+shapely>=2.0.0
+pyproj>=3.0.0

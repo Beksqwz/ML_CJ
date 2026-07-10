@@ -1,0 +1,12 @@
+﻿column,dtype,rows,non_null_count,missing_count,missing_percent,unique_count,sample_values
+road_junction,str,12449,7,12442,99.944,1,roundabout
+road_access,str,12449,23,12426,99.815,2,yes | permissive
+road_tunnel,str,12449,24,12425,99.807,2,yes | building_passage
+road_width,float64,12449,24,12425,99.807,7,6.0 | 9.5 | 3.5 | 4.0 | 8.0
+road_bridge,str,12449,430,12019,96.546,1,yes
+road_ref,str,12449,1547,10902,87.573,9,M-36 | KАZ03 | KАZ05 | KZ03-01 | KАZ01
+road_maxspeed,str,12449,5578,6871,55.193,14,"60 | 80 | 70 | ['60', '70'] | ['20', '60']"
+road_maxspeed_raw,str,12449,5578,6871,55.193,14,"60 | 80 | 70 | ['60', '70'] | ['20', '60']"
+road_lanes,str,12449,6574,5875,47.193,21,6 | 4 | 3 | 2 | 7
+road_lanes_raw,str,12449,6574,5875,47.193,21,6 | 4 | 3 | 2 | 7
+road_name,str,12449,11540,909,7.302,634,Ахмет Жұбанов көшесі | Жеңіс даңғылы | Шоқан Уәлиханов көшесі | Республика даңғылы | Абылай Хан даңғылы

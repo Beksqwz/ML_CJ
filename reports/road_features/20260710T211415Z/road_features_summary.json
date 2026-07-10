@@ -1,0 +1,36 @@
+{
+  "input_path": "C:\\Users\\yedil\\OneDrive\\Рабочий стол\\RoadRisk AI\\ML_CJ\\data\\processed\\accidents_with_roads_ml_filtered.parquet",
+  "output_parquet": "C:\\Users\\yedil\\OneDrive\\Рабочий стол\\RoadRisk AI\\ML_CJ\\data\\processed\\accidents_with_roads_ml_ready.parquet",
+  "output_csv": "C:\\Users\\yedil\\OneDrive\\Рабочий стол\\RoadRisk AI\\ML_CJ\\data\\processed\\accidents_with_roads_ml_ready.csv",
+  "rows": 12449,
+  "columns_before": 36,
+  "columns_after": 43,
+  "road_lanes_missing_before": 5875,
+  "road_maxspeed_missing_before": 6871,
+  "road_name_missing_before": 909,
+  "road_lanes_num_missing_after": 0,
+  "road_maxspeed_kmh_missing_after": 0,
+  "road_lanes_num_distribution": {
+    "1.0": 2246,
+    "2.0": 4858,
+    "3.0": 2491,
+    "4.0": 1531,
+    "5.0": 302,
+    "6.0": 619,
+    "7.0": 402
+  },
+  "road_maxspeed_kmh_distribution": {
+    "20.0": 16,
+    "30.0": 1,
+    "40.0": 2136,
+    "50.0": 1889,
+    "60.0": 7860,
+    "70.0": 127,
+    "80.0": 321,
+    "90.0": 61,
+    "110.0": 1,
+    "120.0": 4,
+    "140.0": 33
+  },
+  "generated_at_utc": "2026-07-10T21:14:16.358029+00:00"
+}

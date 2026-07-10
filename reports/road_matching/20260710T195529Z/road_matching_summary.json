@@ -1,0 +1,20 @@
+{
+  "accidents_input": "C:\\Users\\yedil\\OneDrive\\Рабочий стол\\RoadRisk AI\\ML_CJ\\data\\processed\\astana_accidents_clean.csv",
+  "roads_input": "C:\\Users\\yedil\\OneDrive\\Рабочий стол\\RoadRisk AI\\astana_edges.csv",
+  "rows": 13663,
+  "road_segments": 21361,
+  "matched_rows": 13663,
+  "unmatched_rows": 0,
+  "distance_min_m": 0.0,
+  "distance_p50_m": 4.125,
+  "distance_p90_m": 125.542,
+  "distance_p95_m": 4071.456,
+  "distance_max_m": 29103.159,
+  "rows_over_50m": 1784,
+  "rows_over_100m": 1443,
+  "rows_over_200m": 1265,
+  "output_csv": "C:\\Users\\yedil\\OneDrive\\Рабочий стол\\RoadRisk AI\\ML_CJ\\data\\processed\\accidents_with_roads.csv",
+  "output_parquet": "ML_CJ\\data\\processed\\accidents_with_roads.parquet",
+  "far_matches_report": "C:\\Users\\yedil\\OneDrive\\Рабочий стол\\RoadRisk AI\\ML_CJ\\reports\\road_matching\\20260710T195529Z\\far_matches_over_100m.csv",
+  "generated_at_utc": "2026-07-10T19:59:54.607223+00:00"
+}

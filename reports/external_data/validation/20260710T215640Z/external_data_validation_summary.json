@@ -1,0 +1,103 @@
+{
+  "generated_at_utc": "2026-07-10T21:56:40.938862+00:00",
+  "calendar": {
+    "path": "C:\\Users\\yedil\\OneDrive\\Рабочий стол\\RoadRisk AI\\data\\external\\calendar_features_hourly.parquet",
+    "rows": 127176,
+    "columns": [
+      "datetime_hour",
+      "date",
+      "year",
+      "month",
+      "day",
+      "hour",
+      "weekday",
+      "is_weekend",
+      "is_holiday",
+      "holiday_name",
+      "is_day_before_holiday",
+      "is_day_after_holiday",
+      "is_rush_hour",
+      "season",
+      "is_school_year",
+      "is_school_summer_break",
+      "is_school_winter_break",
+      "is_school_spring_break",
+      "is_school_autumn_break",
+      "is_school_break"
+    ],
+    "start": "2011-12-27 00:00:00",
+    "end": "2026-06-29 23:00:00",
+    "duplicate_hours": 0,
+    "holiday_hours": 7512,
+    "school_break_hours": 40872
+  },
+  "weather": {
+    "path": "C:\\Users\\yedil\\OneDrive\\Рабочий стол\\RoadRisk AI\\data\\external\\weather_astana_hourly.parquet",
+    "rows": 127176,
+    "columns": [
+      "temperature_2m",
+      "relative_humidity_2m",
+      "precipitation",
+      "rain",
+      "snowfall",
+      "weather_code",
+      "cloud_cover",
+      "wind_speed_10m",
+      "wind_gusts_10m",
+      "datetime_hour",
+      "latitude_source",
+      "longitude_source",
+      "timezone_source"
+    ],
+    "start": "2011-12-27 00:00:00",
+    "end": "2026-06-29 23:00:00",
+    "duplicate_hours": 0,
+    "missing_values": {
+      "temperature_2m": 0,
+      "relative_humidity_2m": 0,
+      "precipitation": 0,
+      "rain": 0,
+      "snowfall": 0,
+      "weather_code": 0,
+      "cloud_cover": 0,
+      "wind_speed_10m": 0,
+      "wind_gusts_10m": 0
+    }
+  },
+  "pois": {
+    "path": "C:\\Users\\yedil\\OneDrive\\Рабочий стол\\RoadRisk AI\\data\\external\\pois_astana_osm.parquet",
+    "rows": 5883,
+    "columns": [
+      "osm_type",
+      "osm_id",
+      "poi_category",
+      "amenity",
+      "highway",
+      "public_transport",
+      "name",
+      "latitude",
+      "longitude"
+    ],
+    "missing_coordinates": 0,
+    "category_counts": {
+      "crossing": 3334,
+      "transit_stop": 1192,
+      "traffic_signal": 846,
+      "education": 358,
+      "healthcare": 104,
+      "emergency": 35,
+      "other": 14
+    }
+  },
+  "hour_alignment": {
+    "calendar_weather_common_hours": 127176,
+    "calendar_only_hours": 0,
+    "weather_only_hours": 0
+  },
+  "known_limitations": [
+    "Weather is city-level hourly ERA5 data for central Astana, not road-segment microclimate.",
+    "Visibility is not included in the selected Open-Meteo Archive variable set; weather_code/cloud_cover are available instead.",
+    "School calendar columns are heuristic and should be replaced if official year-specific school break data is obtained.",
+    "POIs come from OpenStreetMap and may be incomplete or unevenly tagged."
+  ]
+}

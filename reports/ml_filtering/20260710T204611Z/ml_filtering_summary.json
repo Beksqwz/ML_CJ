@@ -1,0 +1,23 @@
+{
+  "input_path": "C:\\Users\\yedil\\OneDrive\\Рабочий стол\\RoadRisk AI\\ML_CJ\\data\\processed\\accidents_with_roads_ml_base.parquet",
+  "max_distance_m": 300.0,
+  "rows_before": 13663,
+  "rows_after": 12449,
+  "rows_suspicious": 1214,
+  "columns_after": 36,
+  "confidence_counts_before_filter": {
+    "high": 12220,
+    "suspicious": 1093,
+    "medium": 229,
+    "low": 121
+  },
+  "confidence_counts_after_filter": {
+    "high": 12220,
+    "medium": 229
+  },
+  "output_parquet": "C:\\Users\\yedil\\OneDrive\\Рабочий стол\\RoadRisk AI\\ML_CJ\\data\\processed\\accidents_with_roads_ml_filtered.parquet",
+  "output_csv": "C:\\Users\\yedil\\OneDrive\\Рабочий стол\\RoadRisk AI\\ML_CJ\\data\\processed\\accidents_with_roads_ml_filtered.csv",
+  "suspicious_parquet": "C:\\Users\\yedil\\OneDrive\\Рабочий стол\\RoadRisk AI\\ML_CJ\\data\\processed\\accidents_with_roads_ml_suspicious.parquet",
+  "suspicious_csv": "C:\\Users\\yedil\\OneDrive\\Рабочий стол\\RoadRisk AI\\ML_CJ\\data\\processed\\accidents_with_roads_ml_suspicious.csv",
+  "generated_at_utc": "2026-07-10T20:46:11.485207+00:00"
+}

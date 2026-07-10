@@ -1,0 +1,4 @@
+OSM POI fetch report
+Rows: 5883
+Category counts: {'crossing': 3334, 'transit_stop': 1192, 'traffic_signal': 846, 'education': 358, 'healthcare': 104, 'emergency': 35, 'other': 14}
+Output Parquet: C:\Users\yedil\OneDrive\Рабочий стол\RoadRisk AI\ML_CJ\data\external\pois_astana_osm.parquet

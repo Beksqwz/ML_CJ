@@ -1,0 +1,114 @@
+Historical accidents data validation report
+Input: C:\Users\yedil\OneDrive\Рабочий стол\RoadRisk AI\ML_CJ\data\processed\accidents_with_roads_ml_ready.parquet
+Generated (UTC): 2026-07-10T21:15:06.737195+00:00
+Rows: 12449
+Columns: 43
+Final status: READY
+
+Checks:
+[PASS] dataset_structure: Dataset loaded successfully.
+{
+  "rows": 12449,
+  "columns": 43,
+  "file_size_bytes": 1430849,
+  "dtypes": {
+    "objectid": "int64",
+    "globalid": "str",
+    "area_code": "str",
+    "rta_date": "int64",
+    "accident_date": "datetime64[ms]",
+    "accident_datetime": "datetime64[us]",
+    "hour": "Int64",
+    "weekday": "Int64",
+    "day": "Int64",
+    "month": "Int64",
+    "year": "Int64",
+    "quarter": "Int64",
+    "season": "string",
+    "is_weekend": "boolean",
+    "longitude": "float64",
+    "latitude": "float64",
+    "road_segment_id": "str",
+    "distance_to_road_m": "float64",
+    "road_u": "str",
+    "road_v": "str",
+    "road_key": "str",
+    "road_osmid": "str",
+    "road_highway": "str",
+    "road_lanes": "str",
+    "road_name": "str",
+    "road_oneway": "str",
+    "road_reversed": "str",
+    "road_length": "float64",
+    "road_maxspeed": "str",
+    "road_ref": "str",
+    "road_bridge": "str",
+    "road_tunnel": "str",
+    "road_width": "float64",
+    "road_junction": "str",
+    "road_access": "str",
+    "match_confidence": "string",
+    "road_lanes_raw": "str",
+    "road_maxspeed_raw": "str",
+    "road_lanes_missing": "boolean",
+    "road_maxspeed_missing": "boolean",
+    "road_name_missing": "boolean",
+    "road_lanes_num": "float64",
+    "road_maxspeed_kmh": "float64"
+  }
+}
+[PASS] full_duplicates: No full duplicate rows found.
+{
+  "rows": 0
+}
+[PASS] duplicates_objectid: No duplicate non-empty objectid values.
+{
+  "rows": 0
+}
+[SKIPPED] duplicates_fd1id: Column fd1id is absent.
+[PASS] duplicates_globalid: No duplicate non-empty globalid values.
+{
+  "rows": 0
+}
+[PASS] rta_date_timestamp: Parsed rta_date as Unix milliseconds.
+{
+  "non_null": 12449,
+  "invalid": 0,
+  "min": "2011-12-27 00:00:00+06:00",
+  "max": "2026-06-28 23:00:00+05:00"
+}
+[SKIPPED] load_date_timestamp: Column load_date is absent.
+[PASS] year_matches_accident_datetime: Compared year with year extracted from accident_datetime.
+{
+  "compared": 12449,
+  "mismatches": 0
+}
+[PASS] month_matches_accident_datetime: Compared month with month extracted from accident_datetime.
+{
+  "compared": 12449,
+  "mismatches": 0
+}
+[SKIPPED] time_format: Column fd1r05p1 is absent.
+[PASS] coordinates: Validated EPSG:4326 coordinates and checked temporary EPSG:4326 positions near Astana.
+{
+  "valid": 12449,
+  "suspicious": 0,
+  "total": 12449
+}
+[PASS] numeric_values: Checked numeric values for infinities and negative casualty counts.
+{
+  "numeric_columns": 15,
+  "infinite_values": 0,
+  "negative_counts": {}
+}
+[PASS] categorical_values: Computed ten most frequent values for important categories.
+{
+  "frequent_values": {
+    "area_code": {
+      "1971": 12422,
+      "1911": 26,
+      "1963": 1
+    }
+  }
+}
+[SKIPPED] ml_leakage: No semantically identifiable post-accident fields were found by name.

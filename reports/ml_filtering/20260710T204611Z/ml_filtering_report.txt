@@ -1,0 +1,8 @@
+ML accident-road filtering report
+Input: C:\Users\yedil\OneDrive\Рабочий стол\RoadRisk AI\ML_CJ\data\processed\accidents_with_roads_ml_base.parquet
+Max distance: 300.0 m
+Rows before/after/suspicious: 13663 / 12449 / 1214
+Confidence before: {'high': 12220, 'suspicious': 1093, 'medium': 229, 'low': 121}
+Confidence after: {'high': 12220, 'medium': 229}
+Output Parquet: C:\Users\yedil\OneDrive\Рабочий стол\RoadRisk AI\ML_CJ\data\processed\accidents_with_roads_ml_filtered.parquet
+Suspicious Parquet: C:\Users\yedil\OneDrive\Рабочий стол\RoadRisk AI\ML_CJ\data\processed\accidents_with_roads_ml_suspicious.parquet

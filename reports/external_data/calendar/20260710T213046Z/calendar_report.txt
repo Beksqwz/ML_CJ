@@ -1,0 +1,5 @@
+Calendar features report
+Rows: 127176
+Range: 2011-12-27 to 2026-06-29
+Holiday hours: 7512
+Output Parquet: C:\Users\yedil\OneDrive\Рабочий стол\RoadRisk AI\ML_CJ\data\external\calendar_features_hourly.parquet
