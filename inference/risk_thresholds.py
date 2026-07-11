@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PATH = ROOT / "config" / "risk_thresholds.json"
 
-def load() -> dict:
+def load_risk_thresholds() -> dict[str, object]:
     payload = json.loads(PATH.read_text(encoding="utf-8"))
     levels = payload["levels"]
     if levels[0]["min_inclusive"] != 0.0 or levels[-1]["max_exclusive"] <= 1.0:
@@ -16,9 +16,20 @@ def load() -> dict:
             raise ValueError("Risk threshold ranges must be adjacent and non-overlapping.")
     return payload
 
-def level(probability: float, payload: dict | None = None) -> str:
-    payload = payload or load()
+def configured_risk_level(probability: float, payload: dict[str, object] | None = None) -> str:
+    """Return the display level for a probability under the versioned config."""
+    payload = payload or load_risk_thresholds()
     for item in payload["levels"]:
         if item["min_inclusive"] <= probability < item["max_exclusive"]:
             return str(item["level"])
     raise ValueError(f"Probability outside [0, 1]: {probability}")
+
+
+def load() -> dict[str, object]:
+    """Backward-compatible alias for :func:`load_risk_thresholds`."""
+    return load_risk_thresholds()
+
+
+def level(probability: float, payload: dict[str, object] | None = None) -> str:
+    """Backward-compatible alias for :func:`configured_risk_level`."""
+    return configured_risk_level(probability, payload)

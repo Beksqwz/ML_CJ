@@ -1,6 +1,7 @@
 """Batch prediction, local TreeSHAP factors, Stage 8B recommendations and validation."""
 from __future__ import annotations
-import json, time
+import json
+import time
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -8,7 +9,7 @@ from catboost import CatBoostClassifier, Pool
 from recommendations.engine import recommend
 from .feature_builder import ROOT, _config, build_features
 from .export_geojson import export
-from .risk_thresholds import load as load_risk_thresholds, level as configured_risk_level
+from .risk_thresholds import configured_risk_level, load_risk_thresholds
 
 def run(datetime_hour: str, output_dir: Path) -> dict:
     threshold_config = load_risk_thresholds()

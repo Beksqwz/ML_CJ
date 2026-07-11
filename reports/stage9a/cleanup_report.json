@@ -1,0 +1,28 @@
+{
+  "generated_at_utc": "2026-07-11T15:47:30.782679+00:00",
+  "scope": "Readability cleanup plus backward-compatible API wrappers; models, datasets, outputs, feature definitions, algorithms, SHAP, and recommendations were not changed.",
+  "comments_removed": 0,
+  "todo_fixme_hack_removed": 0,
+  "unused_imports_removed": 1,
+  "unused_functions_removed": 0,
+  "functions_with_type_hints_added_or_refined": 2,
+  "docstrings_added_or_refined": 2,
+  "tracked_production_files": [
+    "recommendations/engine.py",
+    "recommendations/templates.py",
+    "inference/export_geojson.py",
+    "inference/predict.py",
+    "inference/risk_thresholds.py",
+    "scripts/update_stage8c_threshold_provenance.py"
+  ],
+  "tracked_production_additions": 22,
+  "tracked_production_deletions": 11,
+  "new_audit_and_report_files": [
+    "scripts/run_stage9a_audit.py",
+    "scripts/create_stage9a_output_checksums.py",
+    "reports/stage9a/*.json"
+  ],
+  "compatibility_change": "Backward-compatible load and level wrappers preserve the prior risk_thresholds API.",
+  "logic_changed": false,
+  "repository_moves": "Not performed: legacy scripts contain direct sibling imports and moving them would risk runtime imports."
+}

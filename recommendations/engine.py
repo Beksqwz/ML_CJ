@@ -12,7 +12,6 @@ from typing import Any
 from .templates import rationale
 
 
-ROOT = Path(__file__).resolve().parents[1]
 RULES_PATH = Path(__file__).with_name("rules.yaml")
 
 

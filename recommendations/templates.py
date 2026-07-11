@@ -1,4 +1,4 @@
-"""Russian text templates for the Stage 8B human-in-the-loop recommendations."""
+"""Russian text templates for human-reviewed Stage 8B recommendations."""
 
 from __future__ import annotations
 

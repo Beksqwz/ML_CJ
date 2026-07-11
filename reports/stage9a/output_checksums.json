@@ -1,0 +1,24 @@
+{
+  "generated_at_utc": "2026-07-11T15:47:29.569945+00:00",
+  "snapshot_kind": "post_refactor_baseline",
+  "limitation": "No pre-refactor checksum snapshot exists; this file does not claim a before/after comparison.",
+  "future_use": "Use this snapshot as the baseline for subsequent output-integrity checks.",
+  "files": {
+    "predictions_current_1h.json": {
+      "sha256": "b0de696830e5f551e868adbfed836c305ff7264e303cbe17d27dee62371ef51f",
+      "bytes": 11379564
+    },
+    "predictions_current_24h.json": {
+      "sha256": "4f32055b903f7eb71853590483f67c0107e452d77d49f8f0366776153b9ef68c",
+      "bytes": 9585973
+    },
+    "risk_map_1h.geojson": {
+      "sha256": "ba0745e22e40632dcbcd96d779ecba991344bd69d66b8cbffbf8a052f2d86be1",
+      "bytes": 10567811
+    },
+    "risk_map_24h.geojson": {
+      "sha256": "6348dd9830b19ec8ed8d39b6500d14f8065e60948de35ac547c2361766cff6bb",
+      "bytes": 8771441
+    }
+  }
+}

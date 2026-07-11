@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 import pandas as pd
-from .risk_thresholds import load as load_risk_thresholds, level as configured_risk_level
+from .risk_thresholds import configured_risk_level, load_risk_thresholds
 
 def _geometry_map(edges_path: Path) -> dict[str, dict]:
     edges = pd.read_csv(edges_path)
