@@ -1,0 +1,50 @@
+{
+  "generated_at_utc": "2026-07-11T14:39:03.624387+00:00",
+  "risk_threshold_config_path": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\config\\risk_thresholds.json",
+  "risk_threshold_config_version": "stage8c-risk-levels-v1",
+  "risk_thresholds": [
+    {
+      "level": "LOW",
+      "min_inclusive": 0.0,
+      "max_exclusive": 0.1
+    },
+    {
+      "level": "MEDIUM",
+      "min_inclusive": 0.1,
+      "max_exclusive": 0.2
+    },
+    {
+      "level": "HIGH",
+      "min_inclusive": 0.2,
+      "max_exclusive": 0.35
+    },
+    {
+      "level": "CRITICAL",
+      "min_inclusive": 0.35,
+      "max_exclusive": 1.0000000001
+    }
+  ],
+  "risk_threshold_purpose": "Operational display thresholds for the Stage 8C MVP. They are not a binary classification threshold of either CatBoost model and do not change model probabilities.",
+  "validation": {
+    "1h": {
+      "segments": 3968,
+      "independent_level_recalculation_passed": true,
+      "counts": {
+        "LOW": 2553,
+        "MEDIUM": 1243,
+        "HIGH": 166,
+        "CRITICAL": 6
+      }
+    },
+    "24h": {
+      "segments": 3968,
+      "independent_level_recalculation_passed": true,
+      "counts": {
+        "LOW": 220,
+        "MEDIUM": 2762,
+        "HIGH": 825,
+        "CRITICAL": 161
+      }
+    }
+  }
+}
