@@ -1,4 +1,4 @@
-"""Russian text templates for human-reviewed Stage 8B recommendations."""
+"""Keep Stage 8B rationale wording consistent, cautious, and review-oriented."""
 
 from __future__ import annotations
 

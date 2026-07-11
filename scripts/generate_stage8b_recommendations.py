@@ -1,4 +1,7 @@
-"""Generate Stage 8B demo recommendations from existing Stage 8A SHAP artifacts."""
+"""Derive Stage 8B demonstration payloads from stored Stage 8A local evidence.
+
+The script consumes frozen explanations and does not retrain or recompute SHAP.
+"""
 from __future__ import annotations
 
 import json

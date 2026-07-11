@@ -1,4 +1,8 @@
-"""Batch prediction, local TreeSHAP factors, Stage 8B recommendations and validation."""
+"""Coordinate feature assembly, frozen-model scoring, local explanations, and exports.
+
+This is the Stage 8C runtime boundary. It never trains models and keeps full
+SHAP arrays in memory only while selecting per-segment explanation factors.
+"""
 from __future__ import annotations
 import json
 import time

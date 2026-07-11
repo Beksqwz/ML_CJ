@@ -1,7 +1,7 @@
-"""Stage 8B rule-based, human-reviewed recommendations using local SHAP evidence.
+"""Apply human-review rules to local model evidence after scoring.
 
-This module does not modify or invoke CatBoost training.  SHAP evidence is used
-only to explain model association, never as a claim of causality.
+The engine is separate from CatBoost. It requires positive relevant SHAP
+evidence, describes model association rather than causality, and never trains.
 """
 from __future__ import annotations
 

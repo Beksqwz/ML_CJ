@@ -1,4 +1,8 @@
-"""Leakage-safe feature builder for all known road segments at one fixed hour."""
+"""Assemble one leakage-safe feature row per known segment for a requested hour.
+
+The builder sits between source-derived tables and frozen models. Historical
+events are strictly prior and weather windows are shifted; it is not a trainer.
+"""
 from __future__ import annotations
 
 import json
@@ -65,7 +69,7 @@ def _history(frame: pd.DataFrame, when: pd.Timestamp, horizon: str) -> pd.DataFr
 
 
 def build_features(datetime_hour: str | pd.Timestamp, horizon: str) -> tuple[pd.DataFrame, dict]:
-    """Build model-ordered features and segment metadata using only information at/before hour."""
+    """Return ordered model features and segment metadata available at the requested hour."""
     when = pd.Timestamp(datetime_hour).floor("h")
     cfg = _config(horizon); features = list(cfg["numerical_features"]) + list(cfg["categorical_features"])
     ready = pd.read_parquet(ROOT / "data" / "processed" / "accidents_with_roads_ml_ready.parquet")

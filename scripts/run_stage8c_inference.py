@@ -1,4 +1,7 @@
-"""Run the fixed-time Stage 8C production inference demo and write validation reports."""
+"""Exercise the Stage 8C path at a fixed historical hour for reproducible demos.
+
+It writes demo reports and exports; it is not a live scheduling entry point.
+"""
 from __future__ import annotations
 import json, sys
 from datetime import UTC, datetime

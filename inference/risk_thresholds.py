@@ -1,4 +1,8 @@
-"""Single source of truth for Stage 8C operational display risk levels."""
+"""Expose versioned operational display levels shared by inference and export.
+
+These ranges label probabilities for the interface; they are not model training
+or binary-classification thresholds.
+"""
 from __future__ import annotations
 import json
 from pathlib import Path

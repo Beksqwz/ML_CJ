@@ -1,4 +1,8 @@
-"""GeoJSON and backend JSON exporters for Stage 8C predictions."""
+"""Turn scored segment records into backend JSON and map-ready GeoJSON files.
+
+The exporter preserves prediction payloads and validates display levels; it does
+not score models or alter recommendations.
+"""
 from __future__ import annotations
 import json
 from pathlib import Path
