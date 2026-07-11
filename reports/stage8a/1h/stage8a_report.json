@@ -1,0 +1,131 @@
+{
+  "generated_at_utc": "2026-07-11T12:33:08.934872+00:00",
+  "horizon": "1h",
+  "final_model_stage": "Stage 7D",
+  "model_path": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\models\\stage7d\\catboost_1h_weather_experiment.cbm",
+  "feature_config": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\reports\\stage7d\\1h\\stage7d_feature_config.json",
+  "test_split": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\processed\\stage7d\\training_dataset_1h_test.parquet",
+  "test_rows": 22110,
+  "sample_rows": 5000,
+  "sample_positive_rate": 0.091,
+  "sampling": "Детерминированная стратифицированная случайная выборка test с seed=20260711.",
+  "feature_order_matches_model": true,
+  "leakage_fields_in_features": [],
+  "threshold": 0.16592236435654778,
+  "threshold_rule": "Maximum F1 recalculated only on Stage 7D validation predictions; model was not retrained.",
+  "shap_scale": "log-odds (RawFormulaVal)",
+  "shap_additivity": {
+    "max_abs_residual": 1.7763568394002505e-15,
+    "mean_abs_residual": 8.687717212296775e-16,
+    "passed_tolerance_1e-8": true
+  },
+  "top_10_features": [
+    {
+      "rank": 1,
+      "feature": "segment_accidents_total_prior",
+      "mean_abs_shap_log_odds": 0.3136621385739439,
+      "mean_shap_log_odds": 0.1936074635457964,
+      "feature_group": "historical"
+    },
+    {
+      "rank": 2,
+      "feature": "road_length",
+      "mean_abs_shap_log_odds": 0.1375028060650037,
+      "mean_shap_log_odds": -0.01704870384616326,
+      "feature_group": "road"
+    },
+    {
+      "rank": 3,
+      "feature": "city_accidents_total_prior",
+      "mean_abs_shap_log_odds": 0.07664211972108192,
+      "mean_shap_log_odds": -0.06529070952259605,
+      "feature_group": "historical"
+    },
+    {
+      "rank": 4,
+      "feature": "segment_hours_since_prev_accident",
+      "mean_abs_shap_log_odds": 0.07122618381277247,
+      "mean_shap_log_odds": 0.011045903550113558,
+      "feature_group": "historical"
+    },
+    {
+      "rank": 5,
+      "feature": "segment_latitude",
+      "mean_abs_shap_log_odds": 0.056132687312866685,
+      "mean_shap_log_odds": -0.0021506447833520626,
+      "feature_group": "road"
+    },
+    {
+      "rank": 6,
+      "feature": "road_oneway",
+      "mean_abs_shap_log_odds": 0.038012589438000864,
+      "mean_shap_log_odds": 0.0017764481631515664,
+      "feature_group": "road"
+    },
+    {
+      "rank": 7,
+      "feature": "segment_longitude",
+      "mean_abs_shap_log_odds": 0.031492720341215856,
+      "mean_shap_log_odds": -0.001415591092022372,
+      "feature_group": "road"
+    },
+    {
+      "rank": 8,
+      "feature": "segment_has_history",
+      "mean_abs_shap_log_odds": 0.024434510599353688,
+      "mean_shap_log_odds": 0.012367521681164628,
+      "feature_group": "historical"
+    },
+    {
+      "rank": 9,
+      "feature": "road_highway",
+      "mean_abs_shap_log_odds": 0.018602191003781132,
+      "mean_shap_log_odds": -0.0003683387548576981,
+      "feature_group": "road"
+    },
+    {
+      "rank": 10,
+      "feature": "poi_total_100m",
+      "mean_abs_shap_log_odds": 0.01733681707694532,
+      "mean_shap_log_odds": 0.0005550857047823521,
+      "feature_group": "POI"
+    }
+  ],
+  "feature_group_contributions": [
+    {
+      "feature_group": "historical",
+      "sum_mean_abs_shap_log_odds": 0.5094662576986158,
+      "share_percent": 51.11804033606313
+    },
+    {
+      "feature_group": "road",
+      "sum_mean_abs_shap_log_odds": 0.29742635790135075,
+      "share_percent": 29.84270759930036
+    },
+    {
+      "feature_group": "POI",
+      "sum_mean_abs_shap_log_odds": 0.1065546105828687,
+      "share_percent": 10.691312328265663
+    },
+    {
+      "feature_group": "calendar",
+      "sum_mean_abs_shap_log_odds": 0.04938623575447942,
+      "share_percent": 4.955240024624424
+    },
+    {
+      "feature_group": "weather",
+      "sum_mean_abs_shap_log_odds": 0.03381322942497866,
+      "share_percent": 3.39269971174641
+    }
+  ],
+  "anomaly_check": [
+    "Подозрительного доминирования одного признака (>=50%) или группы (>=70%) не обнаружено на выборке."
+  ],
+  "local_example_counts": {
+    "high_risk": 20,
+    "true_positive": 20,
+    "false_positive": 20,
+    "false_negative": 20
+  },
+  "caution_ru": "SHAP отражает вклад признаков в выход конкретной модели на выбранных данных; это не причинная интерпретация."
+}

@@ -1,0 +1,128 @@
+{
+  "generated_at_utc": "2026-07-11T11:42:19.304794+00:00",
+  "horizon": "24h",
+  "model_path": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\models\\stage7b\\catboost_24h.cbm",
+  "feature_config": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\reports\\stage7a\\24h\\20260711T090515Z\\training_dataset_24h_feature_config.json",
+  "test_rows": 561510,
+  "sample_rows": 10000,
+  "sample_positive_rate": 0.1667,
+  "sampling": "Детерминированная стратифицированная случайная выборка test с seed=20260711.",
+  "feature_order_matches_model": true,
+  "leakage_fields_in_features": [],
+  "threshold": 0.18556131282293417,
+  "shap_scale": "log-odds (RawFormulaVal)",
+  "shap_additivity": {
+    "max_abs_residual": 8.881784197001252e-16,
+    "mean_abs_residual": 2.202571458553848e-16,
+    "passed_tolerance_1e-8": true
+  },
+  "top_10_features": [
+    {
+      "rank": 1,
+      "feature": "segment_accidents_total_prior",
+      "mean_abs_shap_log_odds": 0.338720623427457,
+      "mean_shap_log_odds": 0.21963688324940486,
+      "feature_group": "historical"
+    },
+    {
+      "rank": 2,
+      "feature": "road_length",
+      "mean_abs_shap_log_odds": 0.2014077804597404,
+      "mean_shap_log_odds": -0.020601602733691226,
+      "feature_group": "road"
+    },
+    {
+      "rank": 3,
+      "feature": "segment_latitude",
+      "mean_abs_shap_log_odds": 0.12390770277320094,
+      "mean_shap_log_odds": -0.00941343489258243,
+      "feature_group": "road"
+    },
+    {
+      "rank": 4,
+      "feature": "city_accidents_total_prior",
+      "mean_abs_shap_log_odds": 0.07529344883690166,
+      "mean_shap_log_odds": -0.055704049084053985,
+      "feature_group": "historical"
+    },
+    {
+      "rank": 5,
+      "feature": "segment_hours_since_prev_accident",
+      "mean_abs_shap_log_odds": 0.05698255556607186,
+      "mean_shap_log_odds": 0.013684273564449538,
+      "feature_group": "historical"
+    },
+    {
+      "rank": 6,
+      "feature": "segment_longitude",
+      "mean_abs_shap_log_odds": 0.05013892232923458,
+      "mean_shap_log_odds": -0.002701498700058638,
+      "feature_group": "road"
+    },
+    {
+      "rank": 7,
+      "feature": "poi_transit_stop_500m",
+      "mean_abs_shap_log_odds": 0.034393369349236834,
+      "mean_shap_log_odds": -0.0019196697895108876,
+      "feature_group": "POI"
+    },
+    {
+      "rank": 8,
+      "feature": "road_oneway",
+      "mean_abs_shap_log_odds": 0.0325481879557461,
+      "mean_shap_log_odds": 0.002492969265413865,
+      "feature_group": "road"
+    },
+    {
+      "rank": 9,
+      "feature": "segment_accidents_prev_30d",
+      "mean_abs_shap_log_odds": 0.02260250782501573,
+      "mean_shap_log_odds": 0.007994459276440097,
+      "feature_group": "historical"
+    },
+    {
+      "rank": 10,
+      "feature": "road_highway",
+      "mean_abs_shap_log_odds": 0.020526671029431016,
+      "mean_shap_log_odds": 0.0010959255515977616,
+      "feature_group": "road"
+    }
+  ],
+  "feature_group_contributions": [
+    {
+      "feature_group": "historical",
+      "sum_mean_abs_shap_log_odds": 0.5152035596975666,
+      "share_percent": 47.222332647513824
+    },
+    {
+      "feature_group": "road",
+      "sum_mean_abs_shap_log_odds": 0.43977644816273853,
+      "share_percent": 40.308863040219876
+    },
+    {
+      "feature_group": "POI",
+      "sum_mean_abs_shap_log_odds": 0.13402085350288648,
+      "share_percent": 12.284032605543574
+    },
+    {
+      "feature_group": "calendar",
+      "sum_mean_abs_shap_log_odds": 0.002015890272628307,
+      "share_percent": 0.1847717067227221
+    },
+    {
+      "feature_group": "weather",
+      "sum_mean_abs_shap_log_odds": 0.0,
+      "share_percent": 0.0
+    }
+  ],
+  "anomaly_check": [
+    "Подозрительного доминирования одного признака (>=50%) или группы (>=70%) не обнаружено на выборке."
+  ],
+  "local_example_counts": {
+    "high_risk": 20,
+    "true_positive": 20,
+    "false_positive": 20,
+    "false_negative": 20
+  },
+  "caution_ru": "SHAP отражает вклад признаков в выход конкретной модели на выбранных данных; это не причинная интерпретация."
+}
