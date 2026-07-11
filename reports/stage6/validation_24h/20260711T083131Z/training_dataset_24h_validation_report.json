@@ -1,0 +1,86 @@
+{
+  "generated_at_utc": "2026-07-11T08:31:29.304355+00:00",
+  "dataset": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\processed\\training_dataset_24h.parquet",
+  "timezone_interpretation": "Asia/Almaty",
+  "rows": 1787070,
+  "columns": 81,
+  "validations": {
+    "positive_labels": {
+      "passed": true,
+      "expected": 297845,
+      "actual": 297845,
+      "mismatches": 0
+    },
+    "negative_windows_accident_free": {
+      "passed": true,
+      "overlapping_positive_windows": 0
+    },
+    "duplicate_keys": {
+      "passed": true,
+      "count": 0
+    },
+    "horizon_definition": {
+      "passed": true,
+      "definition": "positive keys independently rebuilt from events in (datetime_hour, datetime_hour + 24h]"
+    },
+    "temporal_coverage": {
+      "passed": true,
+      "start": "2011-12-27 00:00:00",
+      "end": "2026-06-28 17:00:00",
+      "external_feature_start": "2011-12-27 00:00:00",
+      "external_feature_end": "2026-06-29 23:00:00"
+    },
+    "class_balance": {
+      "passed": true,
+      "positive": 297845,
+      "negative": 1489225,
+      "negative_to_positive": 5.0
+    },
+    "missing_values": {
+      "passed": true,
+      "nonzero": {}
+    },
+    "joins": {
+      "passed": true,
+      "rows_with_missing_joined_values": {
+        "road": 0,
+        "poi": 0,
+        "calendar": 0,
+        "weather": 0
+      }
+    },
+    "standard_historical_features": {
+      "passed": true,
+      "mismatches": {
+        "segment_accidents_total_prior": 0,
+        "segment_accidents_prev_24h": 0,
+        "segment_accidents_prev_7d": 0,
+        "segment_accidents_prev_30d": 0,
+        "segment_hours_since_prev_accident": 0,
+        "segment_has_history": 0,
+        "city_accidents_total_prior": 0,
+        "city_accidents_prev_24h": 0,
+        "city_accidents_prev_7d": 0,
+        "city_accidents_prev_30d": 0
+      }
+    },
+    "seasonal_historical_features": {
+      "passed": true,
+      "audit_sample_rows": 100000,
+      "mismatches": {
+        "segment_accidents_same_month_prior": 0,
+        "segment_accidents_same_hour_weekday_prior": 0,
+        "segment_accidents_same_month_hour_weekday_prior": 0,
+        "segment_accidents_holiday_prior": 0,
+        "segment_accidents_new_year_period_prior": 0
+      }
+    },
+    "leakage": {
+      "passed": true,
+      "forbidden_columns_present": [],
+      "current_weather_only": true,
+      "future_target_events_not_used_in_history": true
+    }
+  },
+  "final_status": "READY"
+}
