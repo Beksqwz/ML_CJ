@@ -1,0 +1,599 @@
+{
+  "generated_at_utc": "2026-07-11T12:15:53.022630+00:00",
+  "1h": {
+    "generated_at_utc": "2026-07-11T12:14:11.629480+00:00",
+    "horizon": "1h",
+    "experiment": "causal weather signal enrichment; no artificial model weighting",
+    "source_stage7a_config": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\reports\\stage7a\\1h\\20260711T090501Z\\training_dataset_1h_feature_config.json",
+    "source_weather": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\external\\weather_astana_hourly.parquet",
+    "causality": {
+      "current_weather": "Observed at datetime_hour and therefore available at prediction time.",
+      "rolling": "All rolling aggregates apply shift(1), so they use only hours strictly earlier than datetime_hour.",
+      "future_actual_weather_used": false
+    },
+    "new_numerical_features": [
+      "weather_code",
+      "weather_risk_precip_now",
+      "weather_risk_snow_now",
+      "weather_risk_freezing_now",
+      "weather_risk_high_wind_now",
+      "weather_risk_adverse_now",
+      "weather_precip_sum_prev_3h",
+      "weather_snow_sum_prev_3h",
+      "weather_wind_mean_prev_3h",
+      "weather_adverse_hours_prev_3h",
+      "weather_precip_sum_prev_6h",
+      "weather_snow_sum_prev_6h",
+      "weather_wind_mean_prev_6h",
+      "weather_adverse_hours_prev_6h",
+      "weather_precip_sum_prev_24h",
+      "weather_snow_sum_prev_24h",
+      "weather_wind_mean_prev_24h",
+      "weather_adverse_hours_prev_24h",
+      "weather_temperature_change_1h",
+      "weather_temperature_change_3h",
+      "weather_hours_since_precip",
+      "weather_interaction_adverse_rush_hour",
+      "weather_interaction_adverse_maxspeed",
+      "weather_interaction_precip_history",
+      "weather_interaction_adverse_history"
+    ],
+    "new_categorical_features": [
+      "weather_interaction_adverse_road_highway"
+    ],
+    "split_boundaries_preserved": true,
+    "model_path": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\models\\stage7d\\catboost_1h_weather_experiment.cbm",
+    "device": "GPU",
+    "best_iteration": 50,
+    "experimental_metrics": {
+      "validation": {
+        "pr_auc": 0.17573492175064576,
+        "lift_at_top_10pct": 2.3466666666666667,
+        "recall_at_top_10pct": 0.23469903894790087,
+        "calibration": {
+          "brier_score": 0.0806786131073082,
+          "expected_calibration_error_10_bins": 0.02400687808728328,
+          "bins": [
+            {
+              "bin": 0,
+              "rows": 11954,
+              "mean_prediction": 0.07766301509334307,
+              "observed_rate": 0.05956165300317885
+            },
+            {
+              "bin": 1,
+              "rows": 7707,
+              "mean_prediction": 0.13435631083377578,
+              "observed_rate": 0.10600752562605424
+            },
+            {
+              "bin": 2,
+              "rows": 1829,
+              "mean_prediction": 0.2358722613040337,
+              "observed_rate": 0.19300164024056862
+            },
+            {
+              "bin": 3,
+              "rows": 246,
+              "mean_prediction": 0.33190113297118584,
+              "observed_rate": 0.35772357723577236
+            },
+            {
+              "bin": 4,
+              "rows": 11,
+              "mean_prediction": 0.4138981337954004,
+              "observed_rate": 0.6363636363636364
+            }
+          ]
+        }
+      },
+      "test": {
+        "pr_auc": 0.1580147210307248,
+        "lift_at_top_10pct": 2.1492537313432836,
+        "recall_at_top_10pct": 0.21492537313432836,
+        "calibration": {
+          "brier_score": 0.08179419371013219,
+          "expected_calibration_error_10_bins": 0.028884006175384763,
+          "bins": [
+            {
+              "bin": 0,
+              "rows": 11246,
+              "mean_prediction": 0.07707204733080765,
+              "observed_rate": 0.064111684154366
+            },
+            {
+              "bin": 1,
+              "rows": 8281,
+              "mean_prediction": 0.13722946953072307,
+              "observed_rate": 0.09745199855089964
+            },
+            {
+              "bin": 2,
+              "rows": 2251,
+              "mean_prediction": 0.23811421666464128,
+              "observed_rate": 0.17059084851177256
+            },
+            {
+              "bin": 3,
+              "rows": 328,
+              "mean_prediction": 0.328633937619307,
+              "observed_rate": 0.29573170731707316
+            },
+            {
+              "bin": 4,
+              "rows": 4,
+              "mean_prediction": 0.4222154550840467,
+              "observed_rate": 0.25
+            }
+          ]
+        }
+      }
+    },
+    "stage7b_metrics": {
+      "validation": {
+        "pr_auc": 0.17420082347347715,
+        "lift_at_top_10pct": 2.336551724137931,
+        "calibration": {
+          "brier_score": 0.08196678099022896,
+          "expected_calibration_error_10_bins": 0.042386650725846436,
+          "bins": [
+            {
+              "bin": 0,
+              "rows": 6305,
+              "mean_prediction": 0.08774925887135807,
+              "observed_rate": 0.040444091990483745
+            },
+            {
+              "bin": 1,
+              "rows": 12834,
+              "mean_prediction": 0.13127107492872264,
+              "observed_rate": 0.09365747233909927
+            },
+            {
+              "bin": 2,
+              "rows": 2297,
+              "mean_prediction": 0.23976298614520025,
+              "observed_rate": 0.1802350892468437
+            },
+            {
+              "bin": 3,
+              "rows": 304,
+              "mean_prediction": 0.3258822698849018,
+              "observed_rate": 0.33223684210526316
+            },
+            {
+              "bin": 4,
+              "rows": 7,
+              "mean_prediction": 0.4109898020959029,
+              "observed_rate": 0.7142857142857143
+            },
+            {
+              "bin": 5,
+              "rows": 0,
+              "mean_prediction": null,
+              "observed_rate": null
+            },
+            {
+              "bin": 6,
+              "rows": 0,
+              "mean_prediction": null,
+              "observed_rate": null
+            },
+            {
+              "bin": 7,
+              "rows": 0,
+              "mean_prediction": null,
+              "observed_rate": null
+            },
+            {
+              "bin": 8,
+              "rows": 0,
+              "mean_prediction": null,
+              "observed_rate": null
+            },
+            {
+              "bin": 9,
+              "rows": 0,
+              "mean_prediction": null,
+              "observed_rate": null
+            }
+          ]
+        }
+      },
+      "test": {
+        "pr_auc": 0.15773494675427516,
+        "lift_at_top_10pct": 2.1094527363184077,
+        "calibration": {
+          "brier_score": 0.08316036900981585,
+          "expected_calibration_error_10_bins": 0.04734622870928256,
+          "bins": [
+            {
+              "bin": 0,
+              "rows": 6354,
+              "mean_prediction": 0.08726114591568157,
+              "observed_rate": 0.04406672961913755
+            },
+            {
+              "bin": 1,
+              "rows": 12552,
+              "mean_prediction": 0.1349528784549498,
+              "observed_rate": 0.09281389420012746
+            },
+            {
+              "bin": 2,
+              "rows": 2802,
+              "mean_prediction": 0.24102956460702585,
+              "observed_rate": 0.16238401142041398
+            },
+            {
+              "bin": 3,
+              "rows": 400,
+              "mean_prediction": 0.324713720067747,
+              "observed_rate": 0.27
+            },
+            {
+              "bin": 4,
+              "rows": 2,
+              "mean_prediction": 0.40553140425913603,
+              "observed_rate": 1.0
+            },
+            {
+              "bin": 5,
+              "rows": 0,
+              "mean_prediction": null,
+              "observed_rate": null
+            },
+            {
+              "bin": 6,
+              "rows": 0,
+              "mean_prediction": null,
+              "observed_rate": null
+            },
+            {
+              "bin": 7,
+              "rows": 0,
+              "mean_prediction": null,
+              "observed_rate": null
+            },
+            {
+              "bin": 8,
+              "rows": 0,
+              "mean_prediction": null,
+              "observed_rate": null
+            },
+            {
+              "bin": 9,
+              "rows": 0,
+              "mean_prediction": null,
+              "observed_rate": null
+            }
+          ]
+        }
+      }
+    },
+    "weather_shap": {
+      "stage7b": {
+        "sample_rows": 5000,
+        "weather_mean_abs_shap": 0.004495183224530958,
+        "all_mean_abs_shap": 0.789120079079538,
+        "weather_share_percent": 0.5696450190159049
+      },
+      "stage7d": {
+        "sample_rows": 5000,
+        "weather_mean_abs_shap": 0.033813229424978664,
+        "all_mean_abs_shap": 0.9966466913622932,
+        "weather_share_percent": 3.392699711746411
+      }
+    },
+    "acceptance_rule": "Accepted only if validation and test PR-AUC, Lift@10%, Brier score and ECE do not decline and weather SHAP share increases naturally.",
+    "ranking_not_degraded": true,
+    "calibration_not_degraded": true,
+    "quality_not_degraded": true,
+    "accepted_as_candidate": true,
+    "decision_ru": "Кандидат принят."
+  },
+  "24h": {
+    "generated_at_utc": "2026-07-11T12:15:09.445078+00:00",
+    "horizon": "24h",
+    "experiment": "causal weather signal enrichment; no artificial model weighting",
+    "source_stage7a_config": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\reports\\stage7a\\24h\\20260711T090515Z\\training_dataset_24h_feature_config.json",
+    "source_weather": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\external\\weather_astana_hourly.parquet",
+    "causality": {
+      "current_weather": "Observed at datetime_hour and therefore available at prediction time.",
+      "rolling": "All rolling aggregates apply shift(1), so they use only hours strictly earlier than datetime_hour.",
+      "future_actual_weather_used": false
+    },
+    "new_numerical_features": [
+      "weather_code",
+      "weather_risk_precip_now",
+      "weather_risk_snow_now",
+      "weather_risk_freezing_now",
+      "weather_risk_high_wind_now",
+      "weather_risk_adverse_now",
+      "weather_precip_sum_prev_3h",
+      "weather_snow_sum_prev_3h",
+      "weather_wind_mean_prev_3h",
+      "weather_adverse_hours_prev_3h",
+      "weather_precip_sum_prev_6h",
+      "weather_snow_sum_prev_6h",
+      "weather_wind_mean_prev_6h",
+      "weather_adverse_hours_prev_6h",
+      "weather_precip_sum_prev_24h",
+      "weather_snow_sum_prev_24h",
+      "weather_wind_mean_prev_24h",
+      "weather_adverse_hours_prev_24h",
+      "weather_temperature_change_1h",
+      "weather_temperature_change_3h",
+      "weather_hours_since_precip",
+      "weather_interaction_adverse_rush_hour",
+      "weather_interaction_adverse_maxspeed",
+      "weather_interaction_precip_history",
+      "weather_interaction_adverse_history"
+    ],
+    "new_categorical_features": [
+      "weather_interaction_adverse_road_highway"
+    ],
+    "split_boundaries_preserved": true,
+    "model_path": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\models\\stage7d\\catboost_24h_weather_experiment.cbm",
+    "device": "GPU",
+    "best_iteration": 74,
+    "experimental_metrics": {
+      "validation": {
+        "pr_auc": 0.2800769374393224,
+        "lift_at_top_10pct": 2.1547553333116864,
+        "recall_at_top_10pct": 0.21547693266832918,
+        "calibration": {
+          "brier_score": 0.13293550721852185,
+          "expected_calibration_error_10_bins": 0.017693130847424833,
+          "bins": [
+            {
+              "bin": 0,
+              "rows": 95266,
+              "mean_prediction": 0.07854913402570611,
+              "observed_rate": 0.10399303004219763
+            },
+            {
+              "bin": 1,
+              "rows": 149069,
+              "mean_prediction": 0.13848117054516942,
+              "observed_rate": 0.1509904809182325
+            },
+            {
+              "bin": 2,
+              "rows": 42185,
+              "mean_prediction": 0.24153371901363307,
+              "observed_rate": 0.25739006755955907
+            },
+            {
+              "bin": 3,
+              "rows": 18298,
+              "mean_prediction": 0.34098503370371636,
+              "observed_rate": 0.3538638102524866
+            },
+            {
+              "bin": 4,
+              "rows": 3117,
+              "mean_prediction": 0.4283777738205935,
+              "observed_rate": 0.505935194096888
+            },
+            {
+              "bin": 5,
+              "rows": 33,
+              "mean_prediction": 0.5129436124246783,
+              "observed_rate": 0.09090909090909091
+            }
+          ]
+        }
+      },
+      "test": {
+        "pr_auc": 0.2538811825188696,
+        "lift_at_top_10pct": 1.9172944382112518,
+        "recall_at_top_10pct": 0.19172944382112517,
+        "calibration": {
+          "brier_score": 0.13533093811446936,
+          "expected_calibration_error_10_bins": 0.020589359846428304,
+          "bins": [
+            {
+              "bin": 0,
+              "rows": 157770,
+              "mean_prediction": 0.07765825894693473,
+              "observed_rate": 0.11019839006148191
+            },
+            {
+              "bin": 1,
+              "rows": 258901,
+              "mean_prediction": 0.14116273362865162,
+              "observed_rate": 0.1522357966944894
+            },
+            {
+              "bin": 2,
+              "rows": 97133,
+              "mean_prediction": 0.24350627061045113,
+              "observed_rate": 0.21797947144636734
+            },
+            {
+              "bin": 3,
+              "rows": 41872,
+              "mean_prediction": 0.33817029960993356,
+              "observed_rate": 0.31271494077187617
+            },
+            {
+              "bin": 4,
+              "rows": 5723,
+              "mean_prediction": 0.4276727984027639,
+              "observed_rate": 0.4273982177179801
+            },
+            {
+              "bin": 5,
+              "rows": 111,
+              "mean_prediction": 0.5268912893128186,
+              "observed_rate": 0.6486486486486487
+            }
+          ]
+        }
+      }
+    },
+    "stage7b_metrics": {
+      "validation": {
+        "pr_auc": 0.2828499272698683,
+        "lift_at_top_10pct": 2.1302074877423127,
+        "calibration": {
+          "brier_score": 0.1335436695221157,
+          "expected_calibration_error_10_bins": 0.029847847470242626,
+          "bins": [
+            {
+              "bin": 0,
+              "rows": 13581,
+              "mean_prediction": 0.0909160422442583,
+              "observed_rate": 0.06538546498785068
+            },
+            {
+              "bin": 1,
+              "rows": 186783,
+              "mean_prediction": 0.1479588127862862,
+              "observed_rate": 0.12547715798546977
+            },
+            {
+              "bin": 2,
+              "rows": 65299,
+              "mean_prediction": 0.24117979825330757,
+              "observed_rate": 0.19528629841192055
+            },
+            {
+              "bin": 3,
+              "rows": 28996,
+              "mean_prediction": 0.345224702963319,
+              "observed_rate": 0.3008690853910884
+            },
+            {
+              "bin": 4,
+              "rows": 12249,
+              "mean_prediction": 0.43591502977130675,
+              "observed_rate": 0.4081149481590334
+            },
+            {
+              "bin": 5,
+              "rows": 1060,
+              "mean_prediction": 0.5196243947166502,
+              "observed_rate": 0.4981132075471698
+            },
+            {
+              "bin": 6,
+              "rows": 0,
+              "mean_prediction": null,
+              "observed_rate": null
+            },
+            {
+              "bin": 7,
+              "rows": 0,
+              "mean_prediction": null,
+              "observed_rate": null
+            },
+            {
+              "bin": 8,
+              "rows": 0,
+              "mean_prediction": null,
+              "observed_rate": null
+            },
+            {
+              "bin": 9,
+              "rows": 0,
+              "mean_prediction": null,
+              "observed_rate": null
+            }
+          ]
+        }
+      },
+      "test": {
+        "pr_auc": 0.2556304458420362,
+        "lift_at_top_10pct": 1.9948709729123257,
+        "calibration": {
+          "brier_score": 0.137846258527098,
+          "expected_calibration_error_10_bins": 0.04511661294828687,
+          "bins": [
+            {
+              "bin": 0,
+              "rows": 22548,
+              "mean_prediction": 0.09007348030022973,
+              "observed_rate": 0.10967713322689374
+            },
+            {
+              "bin": 1,
+              "rows": 298964,
+              "mean_prediction": 0.1485561803511439,
+              "observed_rate": 0.13137702198257983
+            },
+            {
+              "bin": 2,
+              "rows": 140577,
+              "mean_prediction": 0.24290627423703548,
+              "observed_rate": 0.16509813127325237
+            },
+            {
+              "bin": 3,
+              "rows": 67360,
+              "mean_prediction": 0.34605326870980285,
+              "observed_rate": 0.25489904988123513
+            },
+            {
+              "bin": 4,
+              "rows": 29862,
+              "mean_prediction": 0.4350126603713223,
+              "observed_rate": 0.34940727345790634
+            },
+            {
+              "bin": 5,
+              "rows": 2199,
+              "mean_prediction": 0.5197474807559185,
+              "observed_rate": 0.46475670759436105
+            },
+            {
+              "bin": 6,
+              "rows": 0,
+              "mean_prediction": null,
+              "observed_rate": null
+            },
+            {
+              "bin": 7,
+              "rows": 0,
+              "mean_prediction": null,
+              "observed_rate": null
+            },
+            {
+              "bin": 8,
+              "rows": 0,
+              "mean_prediction": null,
+              "observed_rate": null
+            },
+            {
+              "bin": 9,
+              "rows": 0,
+              "mean_prediction": null,
+              "observed_rate": null
+            }
+          ]
+        }
+      }
+    },
+    "weather_shap": {
+      "stage7b": {
+        "sample_rows": 10000,
+        "weather_mean_abs_shap": 0.0,
+        "all_mean_abs_shap": 1.0910167516358198,
+        "weather_share_percent": 0.0
+      },
+      "stage7d": {
+        "sample_rows": 10000,
+        "weather_mean_abs_shap": 0.009514603160454946,
+        "all_mean_abs_shap": 1.412565643269696,
+        "weather_share_percent": 0.6735689209056005
+      }
+    },
+    "acceptance_rule": "Accepted only if validation and test PR-AUC, Lift@10%, Brier score and ECE do not decline and weather SHAP share increases naturally.",
+    "ranking_not_degraded": false,
+    "calibration_not_degraded": true,
+    "quality_not_degraded": false,
+    "accepted_as_candidate": false,
+    "decision_ru": "Кандидат не принят: правило качества и естественного роста weather SHAP не выполнено."
+  }
+}
