@@ -1,4 +1,5 @@
 """Create read-only Stage 9A verification reports for the repository cleanup."""
+
 from __future__ import annotations
 
 import json
@@ -23,16 +24,28 @@ def main() -> None:
     import recommendations.engine  # noqa: F401
     import scripts.explain_stage8a_shap  # noqa: F401
 
-    models = [ROOT / "models" / "stage7d" / "catboost_1h_weather_experiment.cbm", ROOT / "models" / "stage7b" / "catboost_24h.cbm"]
+    models = [
+        ROOT / "models" / "stage7d" / "catboost_1h_weather_experiment.cbm",
+        ROOT / "models" / "stage7b" / "catboost_24h.cbm",
+    ]
     for path in models:
         model = CatBoostClassifier()
         model.load_model(path)
     tracked_files = [
-        "recommendations/engine.py", "recommendations/templates.py", "inference/export_geojson.py",
-        "inference/predict.py", "inference/risk_thresholds.py",
+        "recommendations/engine.py",
+        "recommendations/templates.py",
+        "inference/export_geojson.py",
+        "inference/predict.py",
+        "inference/risk_thresholds.py",
         "scripts/update_stage8c_threshold_provenance.py",
     ]
-    diff = subprocess.run(["git", "diff", "--numstat", "--", *tracked_files], cwd=ROOT, check=True, capture_output=True, text=True)
+    diff = subprocess.run(
+        ["git", "diff", "--numstat", "--", *tracked_files],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
     additions = deletions = 0
     for line in diff.stdout.splitlines():
         added, removed, _ = line.split("\t", 2)
@@ -51,7 +64,11 @@ def main() -> None:
         "tracked_production_files": tracked_files,
         "tracked_production_additions": additions,
         "tracked_production_deletions": deletions,
-        "new_audit_and_report_files": ["scripts/run_stage9a_audit.py", "scripts/create_stage9a_output_checksums.py", "reports/stage9a/*.json"],
+        "new_audit_and_report_files": [
+            "scripts/run_stage9a_audit.py",
+            "scripts/create_stage9a_output_checksums.py",
+            "reports/stage9a/*.json",
+        ],
         "compatibility_change": "Backward-compatible load and level wrappers preserve the prior risk_thresholds API.",
         "logic_changed": False,
         "repository_moves": "Not performed: legacy scripts contain direct sibling imports and moving them would risk runtime imports.",
@@ -71,11 +88,17 @@ def main() -> None:
         "logic_integrity": "No ML logic, feature definition, or model artifact changed in the tracked diff.",
     }
     REPORTS.mkdir(parents=True, exist_ok=True)
-    (REPORTS / "cleanup_report.json").write_text(json.dumps(cleanup, ensure_ascii=False, indent=2), encoding="utf-8")
-    (REPORTS / "repository_audit.json").write_text(json.dumps(audit, ensure_ascii=False, indent=2), encoding="utf-8")
+    (REPORTS / "cleanup_report.json").write_text(
+        json.dumps(cleanup, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    (REPORTS / "repository_audit.json").write_text(
+        json.dumps(audit, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
     LOGGER.info("Stage 9A reports written to %s", REPORTS)
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
+    logging.basicConfig(
+        level=logging.INFO, format="%(levelname)s %(name)s: %(message)s"
+    )
     main()

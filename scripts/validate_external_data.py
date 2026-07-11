@@ -28,15 +28,29 @@ def configure_logging() -> None:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     if hasattr(sys.stderr, "reconfigure"):
         sys.stderr.reconfigure(encoding="utf-8", errors="replace")
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
+    logging.basicConfig(
+        level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s"
+    )
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Validate stage-5 external data.")
-    parser.add_argument("--calendar", type=Path, default=EXTERNAL_ROOT / "calendar_features_hourly.parquet")
-    parser.add_argument("--weather", type=Path, default=EXTERNAL_ROOT / "weather_astana_hourly.parquet")
-    parser.add_argument("--pois", type=Path, default=EXTERNAL_ROOT / "pois_astana_osm.parquet")
-    parser.add_argument("--manifest", type=Path, default=EXTERNAL_ROOT / "stage5_external_data_manifest.json")
+    parser.add_argument(
+        "--calendar",
+        type=Path,
+        default=EXTERNAL_ROOT / "calendar_features_hourly.parquet",
+    )
+    parser.add_argument(
+        "--weather", type=Path, default=EXTERNAL_ROOT / "weather_astana_hourly.parquet"
+    )
+    parser.add_argument(
+        "--pois", type=Path, default=EXTERNAL_ROOT / "pois_astana_osm.parquet"
+    )
+    parser.add_argument(
+        "--manifest",
+        type=Path,
+        default=EXTERNAL_ROOT / "stage5_external_data_manifest.json",
+    )
     return parser.parse_args()
 
 
@@ -77,7 +91,9 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
             "end": str(calendar_hours.max()),
             "duplicate_hours": int(calendar_hours.duplicated().sum()),
             "holiday_hours": int(calendar["is_holiday"].sum()),
-            "school_break_hours": int(calendar["is_school_break"].sum()) if "is_school_break" in calendar else None,
+            "school_break_hours": int(calendar["is_school_break"].sum())
+            if "is_school_break" in calendar
+            else None,
         },
         "weather": {
             "path": str(args.weather.resolve()),
@@ -86,14 +102,23 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
             "start": str(weather_hours.min()),
             "end": str(weather_hours.max()),
             "duplicate_hours": int(weather_hours.duplicated().sum()),
-            "missing_values": {column: int(weather[column].isna().sum()) for column in weather_vars if column in weather.columns},
+            "missing_values": {
+                column: int(weather[column].isna().sum())
+                for column in weather_vars
+                if column in weather.columns
+            },
         },
         "pois": {
             "path": str(args.pois.resolve()),
             "rows": int(len(pois)),
             "columns": list(pois.columns),
-            "missing_coordinates": int(pois["latitude"].isna().sum() + pois["longitude"].isna().sum()),
-            "category_counts": {str(key): int(value) for key, value in pois["poi_category"].value_counts().to_dict().items()},
+            "missing_coordinates": int(
+                pois["latitude"].isna().sum() + pois["longitude"].isna().sum()
+            ),
+            "category_counts": {
+                str(key): int(value)
+                for key, value in pois["poi_category"].value_counts().to_dict().items()
+            },
         },
         "hour_alignment": {
             "calendar_weather_common_hours": int(len(common_hours)),
@@ -110,9 +135,15 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
     return summary
 
 
-def write_report(report_dir: Path, manifest_path: Path, summary: dict[str, Any]) -> None:
-    manifest_path.write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
-    (report_dir / "external_data_validation_summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
+def write_report(
+    report_dir: Path, manifest_path: Path, summary: dict[str, Any]
+) -> None:
+    manifest_path.write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    (report_dir / "external_data_validation_summary.json").write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
     lines = [
         "Stage 5 external data validation",
         f"Calendar rows: {summary['calendar']['rows']}",
@@ -121,7 +152,9 @@ def write_report(report_dir: Path, manifest_path: Path, summary: dict[str, Any])
         f"Calendar/weather common hours: {summary['hour_alignment']['calendar_weather_common_hours']}",
         f"Manifest: {manifest_path.resolve()}",
     ]
-    (report_dir / "external_data_validation_report.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (report_dir / "external_data_validation_report.txt").write_text(
+        "\n".join(lines) + "\n", encoding="utf-8"
+    )
 
 
 def main() -> int:
@@ -134,7 +167,9 @@ def main() -> int:
         print(f"Calendar rows: {summary['calendar']['rows']}")
         print(f"Weather rows: {summary['weather']['rows']}")
         print(f"POI rows: {summary['pois']['rows']}")
-        print(f"Common hours: {summary['hour_alignment']['calendar_weather_common_hours']}")
+        print(
+            f"Common hours: {summary['hour_alignment']['calendar_weather_common_hours']}"
+        )
         print(f"Manifest: {args.manifest.resolve()}")
         print(f"Report: {report_dir}")
         return 0

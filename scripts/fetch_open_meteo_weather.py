@@ -23,7 +23,9 @@ LOGGER = logging.getLogger(__name__)
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 EXTERNAL_ROOT = PROJECT_ROOT / "data" / "external"
 REPORTS_ROOT = PROJECT_ROOT / "reports" / "external_data"
-DEFAULT_ACCIDENTS = PROJECT_ROOT / "data" / "processed" / "accidents_with_roads_ml_ready.parquet"
+DEFAULT_ACCIDENTS = (
+    PROJECT_ROOT / "data" / "processed" / "accidents_with_roads_ml_ready.parquet"
+)
 
 OPEN_METEO_URL = "https://archive-api.open-meteo.com/v1/archive"
 ASTANA_LAT = 51.1694
@@ -46,18 +48,28 @@ def configure_logging() -> None:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     if hasattr(sys.stderr, "reconfigure"):
         sys.stderr.reconfigure(encoding="utf-8", errors="replace")
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
+    logging.basicConfig(
+        level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s"
+    )
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Fetch hourly Astana weather from Open-Meteo.")
+    parser = argparse.ArgumentParser(
+        description="Fetch hourly Astana weather from Open-Meteo."
+    )
     parser.add_argument("--accidents", type=Path, default=DEFAULT_ACCIDENTS)
     parser.add_argument("--start", type=str, help="Optional start date YYYY-MM-DD.")
     parser.add_argument("--end", type=str, help="Optional end date YYYY-MM-DD.")
     parser.add_argument("--latitude", type=float, default=ASTANA_LAT)
     parser.add_argument("--longitude", type=float, default=ASTANA_LON)
-    parser.add_argument("--output-parquet", type=Path, default=EXTERNAL_ROOT / "weather_astana_hourly.parquet")
-    parser.add_argument("--output-csv", type=Path, default=EXTERNAL_ROOT / "weather_astana_hourly.csv")
+    parser.add_argument(
+        "--output-parquet",
+        type=Path,
+        default=EXTERNAL_ROOT / "weather_astana_hourly.parquet",
+    )
+    parser.add_argument(
+        "--output-csv", type=Path, default=EXTERNAL_ROOT / "weather_astana_hourly.csv"
+    )
     return parser.parse_args()
 
 
@@ -69,7 +81,9 @@ def resolve_range(args: argparse.Namespace) -> tuple[pd.Timestamp, pd.Timestamp]
     return timestamps.min().floor("D"), timestamps.max().ceil("D")
 
 
-def year_chunks(start_date: pd.Timestamp, end_date: pd.Timestamp) -> list[tuple[pd.Timestamp, pd.Timestamp]]:
+def year_chunks(
+    start_date: pd.Timestamp, end_date: pd.Timestamp
+) -> list[tuple[pd.Timestamp, pd.Timestamp]]:
     chunks: list[tuple[pd.Timestamp, pd.Timestamp]] = []
     current = start_date
     while current <= end_date:
@@ -79,7 +93,9 @@ def year_chunks(start_date: pd.Timestamp, end_date: pd.Timestamp) -> list[tuple[
     return chunks
 
 
-def request_weather(start_date: pd.Timestamp, end_date: pd.Timestamp, latitude: float, longitude: float) -> pd.DataFrame:
+def request_weather(
+    start_date: pd.Timestamp, end_date: pd.Timestamp, latitude: float, longitude: float
+) -> pd.DataFrame:
     params = {
         "latitude": latitude,
         "longitude": longitude,
@@ -117,7 +133,9 @@ def make_report_dir() -> Path:
 
 
 def write_report(report_dir: Path, summary: dict[str, Any]) -> None:
-    (report_dir / "weather_summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
+    (report_dir / "weather_summary.json").write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
     lines = [
         "Open-Meteo weather fetch report",
         f"Rows: {summary['rows']}",
@@ -125,7 +143,9 @@ def write_report(report_dir: Path, summary: dict[str, Any]) -> None:
         f"Missing values: {summary['missing_values']}",
         f"Output Parquet: {summary['output_parquet']}",
     ]
-    (report_dir / "weather_report.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (report_dir / "weather_report.txt").write_text(
+        "\n".join(lines) + "\n", encoding="utf-8"
+    )
 
 
 def main() -> int:
@@ -135,15 +155,25 @@ def main() -> int:
         start_date, end_date = resolve_range(args)
         frames: list[pd.DataFrame] = []
         for chunk_start, chunk_end in year_chunks(start_date, end_date):
-            LOGGER.info("Fetching weather %s to %s", chunk_start.date(), chunk_end.date())
-            frames.append(request_weather(chunk_start, chunk_end, args.latitude, args.longitude))
+            LOGGER.info(
+                "Fetching weather %s to %s", chunk_start.date(), chunk_end.date()
+            )
+            frames.append(
+                request_weather(chunk_start, chunk_end, args.latitude, args.longitude)
+            )
             time.sleep(0.5)
-        weather = pd.concat(frames, ignore_index=True).drop_duplicates(subset=["datetime_hour"]).sort_values("datetime_hour")
+        weather = (
+            pd.concat(frames, ignore_index=True)
+            .drop_duplicates(subset=["datetime_hour"])
+            .sort_values("datetime_hour")
+        )
         args.output_parquet.parent.mkdir(parents=True, exist_ok=True)
         weather.to_parquet(args.output_parquet, index=False, engine="pyarrow")
         weather.to_csv(args.output_csv, index=False, encoding="utf-8-sig")
         report_dir = make_report_dir()
-        missing_values = {column: int(weather[column].isna().sum()) for column in HOURLY_VARIABLES}
+        missing_values = {
+            column: int(weather[column].isna().sum()) for column in HOURLY_VARIABLES
+        }
         summary = {
             "source": "Open-Meteo Historical Weather API /v1/archive",
             "source_url": OPEN_METEO_URL,

@@ -3,12 +3,14 @@
 These ranges label probabilities for the interface; they are not model training
 or binary-classification thresholds.
 """
+
 from __future__ import annotations
 import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PATH = ROOT / "config" / "risk_thresholds.json"
+
 
 def load_risk_thresholds() -> dict[str, object]:
     payload = json.loads(PATH.read_text(encoding="utf-8"))
@@ -17,10 +19,15 @@ def load_risk_thresholds() -> dict[str, object]:
         raise ValueError("Risk threshold ranges must cover [0, 1].")
     for previous, current in zip(levels, levels[1:]):
         if previous["max_exclusive"] != current["min_inclusive"]:
-            raise ValueError("Risk threshold ranges must be adjacent and non-overlapping.")
+            raise ValueError(
+                "Risk threshold ranges must be adjacent and non-overlapping."
+            )
     return payload
 
-def configured_risk_level(probability: float, payload: dict[str, object] | None = None) -> str:
+
+def configured_risk_level(
+    probability: float, payload: dict[str, object] | None = None
+) -> str:
     """Return the display level for a probability under the versioned config."""
     payload = payload or load_risk_thresholds()
     for item in payload["levels"]:

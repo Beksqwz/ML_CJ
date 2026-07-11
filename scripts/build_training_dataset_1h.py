@@ -44,7 +44,9 @@ ROAD_FEATURES = [
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Build the stage-6 1-hour road-segment dataset without model training.")
+    parser = argparse.ArgumentParser(
+        description="Build the stage-6 1-hour road-segment dataset without model training."
+    )
     parser.add_argument("--ready", type=Path, default=DEFAULT_READY)
     parser.add_argument("--poi-features", type=Path, default=DEFAULT_POI)
     parser.add_argument("--calendar", type=Path, default=DEFAULT_CALENDAR)
@@ -63,7 +65,9 @@ def static_segment_features(ready: pd.DataFrame) -> pd.DataFrame:
     static = ready[["road_segment_id", *ROAD_FEATURES]].copy()
     static["road_segment_id"] = static["road_segment_id"].astype(str)
     # Road attributes are static per segment; retain a deterministic first value.
-    static = static.sort_values("road_segment_id").drop_duplicates("road_segment_id", keep="first")
+    static = static.sort_values("road_segment_id").drop_duplicates(
+        "road_segment_id", keep="first"
+    )
     static["road_highway"] = static["road_highway"].fillna("unknown").astype("string")
     return static.reset_index(drop=True)
 
@@ -73,13 +77,25 @@ def positive_observations(ready: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFra
     events["road_segment_id"] = events["road_segment_id"].astype(str)
     event_time = pd.to_datetime(events["accident_datetime"], errors="raise")
     if getattr(event_time.dt, "tz", None) is not None:
-        raise ValueError("accident_datetime must be timezone-naive Asia/Almaty local time.")
+        raise ValueError(
+            "accident_datetime must be timezone-naive Asia/Almaty local time."
+        )
     events["event_datetime_hour"] = event_time.dt.floor("h")
-    event_counts = events.groupby(["road_segment_id", "event_datetime_hour"], as_index=False).size().rename(columns={"size": "event_count"})
-    positives = event_counts[["road_segment_id", "event_datetime_hour"]].rename(columns={"event_datetime_hour": "target_datetime_hour"})
-    positives["datetime_hour"] = positives["target_datetime_hour"] - pd.Timedelta(hours=1)
+    event_counts = (
+        events.groupby(["road_segment_id", "event_datetime_hour"], as_index=False)
+        .size()
+        .rename(columns={"size": "event_count"})
+    )
+    positives = event_counts[["road_segment_id", "event_datetime_hour"]].rename(
+        columns={"event_datetime_hour": "target_datetime_hour"}
+    )
+    positives["datetime_hour"] = positives["target_datetime_hour"] - pd.Timedelta(
+        hours=1
+    )
     positives["target_1h"] = np.int8(1)
-    positives = positives[["road_segment_id", "datetime_hour", "target_datetime_hour", "target_1h"]]
+    positives = positives[
+        ["road_segment_id", "datetime_hour", "target_datetime_hour", "target_1h"]
+    ]
     if positives.duplicated(["road_segment_id", "datetime_hour"]).any():
         raise AssertionError("Positive segment-hour keys are not unique.")
     return positives, event_counts
@@ -91,14 +107,18 @@ def sample_negatives(
     if ratio < 1:
         raise ValueError("negative-ratio must be at least 1.")
     rng = np.random.default_rng(seed)
-    segment_highway = static.set_index("road_segment_id")["road_highway"].astype(str).to_dict()
+    segment_highway = (
+        static.set_index("road_segment_id")["road_highway"].astype(str).to_dict()
+    )
     all_segments = np.array(sorted(segment_highway), dtype=object)
     by_highway: dict[str, np.ndarray] = {}
     for highway, group in static.groupby("road_highway", dropna=False):
         by_highway[str(highway)] = group["road_segment_id"].astype(str).to_numpy()
 
     positives = positives.copy()
-    positives["_highway"] = positives["road_segment_id"].map(segment_highway).fillna("unknown").astype(str)
+    positives["_highway"] = (
+        positives["road_segment_id"].map(segment_highway).fillna("unknown").astype(str)
+    )
     positive_keys = set(zip(positives["road_segment_id"], positives["datetime_hour"]))
     negative_keys: set[tuple[str, pd.Timestamp]] = set()
     rows: list[dict[str, object]] = []
@@ -121,7 +141,9 @@ def sample_negatives(
                 if selected is not None:
                     break
             if selected is None:
-                raise RuntimeError(f"Unable to draw a non-overlapping negative for {positive['datetime_hour']}.")
+                raise RuntimeError(
+                    f"Unable to draw a non-overlapping negative for {positive['datetime_hour']}."
+                )
             negative_keys.add((selected, positive["datetime_hour"]))
             rows.append(
                 {
@@ -134,10 +156,15 @@ def sample_negatives(
     negatives = pd.DataFrame(rows)
     if len(negatives) != len(positives) * ratio:
         raise AssertionError("Negative sampling did not preserve the requested ratio.")
-    return negatives, {"fallback_draws": fallback_draws, "negative_rows": int(len(negatives))}
+    return negatives, {
+        "fallback_draws": fallback_draws,
+        "negative_rows": int(len(negatives)),
+    }
 
 
-def prior_features(observations: pd.DataFrame, event_counts: pd.DataFrame) -> pd.DataFrame:
+def prior_features(
+    observations: pd.DataFrame, event_counts: pd.DataFrame
+) -> pd.DataFrame:
     """Add counts strictly before each row hour, never including the target hour."""
     result = observations.copy()
     result["segment_accidents_total_prior"] = 0
@@ -148,13 +175,25 @@ def prior_features(observations: pd.DataFrame, event_counts: pd.DataFrame) -> pd
     result["segment_has_history"] = False
 
     for segment, indices in result.groupby("road_segment_id").groups.items():
-        event_group = event_counts.loc[event_counts["road_segment_id"] == segment].sort_values("event_datetime_hour")
+        event_group = event_counts.loc[
+            event_counts["road_segment_id"] == segment
+        ].sort_values("event_datetime_hour")
         if event_group.empty:
             continue
-        event_times = event_group["event_datetime_hour"].astype("datetime64[ns]").astype("int64").to_numpy()
+        event_times = (
+            event_group["event_datetime_hour"]
+            .astype("datetime64[ns]")
+            .astype("int64")
+            .to_numpy()
+        )
         cumulative = event_group["event_count"].cumsum().to_numpy(dtype=np.int64)
         query_indices = np.asarray(list(indices))
-        query_times = result.loc[query_indices, "datetime_hour"].astype("datetime64[ns]").astype("int64").to_numpy()
+        query_times = (
+            result.loc[query_indices, "datetime_hour"]
+            .astype("datetime64[ns]")
+            .astype("int64")
+            .to_numpy()
+        )
 
         def count_before(times: np.ndarray) -> np.ndarray:
             positions = np.searchsorted(event_times, times, side="left")
@@ -162,20 +201,36 @@ def prior_features(observations: pd.DataFrame, event_counts: pd.DataFrame) -> pd
 
         total = count_before(query_times)
         result.loc[query_indices, "segment_accidents_total_prior"] = total
-        for label, hours in (("segment_accidents_prev_24h", 24), ("segment_accidents_prev_7d", 168), ("segment_accidents_prev_30d", 720)):
+        for label, hours in (
+            ("segment_accidents_prev_24h", 24),
+            ("segment_accidents_prev_7d", 168),
+            ("segment_accidents_prev_30d", 720),
+        ):
             window_ns = np.int64(hours * 3_600_000_000_000)
-            result.loc[query_indices, label] = total - count_before(query_times - window_ns)
+            result.loc[query_indices, label] = total - count_before(
+                query_times - window_ns
+            )
         positions = np.searchsorted(event_times, query_times, side="left")
         has_history = positions > 0
         hours_since = np.full(len(query_times), -1.0)
-        hours_since[has_history] = (query_times[has_history] - event_times[positions[has_history] - 1]) / 3_600_000_000_000
+        hours_since[has_history] = (
+            query_times[has_history] - event_times[positions[has_history] - 1]
+        ) / 3_600_000_000_000
         result.loc[query_indices, "segment_hours_since_prev_accident"] = hours_since
         result.loc[query_indices, "segment_has_history"] = has_history
 
-    city = event_counts.groupby("event_datetime_hour", as_index=False)["event_count"].sum().sort_values("event_datetime_hour")
-    event_times = city["event_datetime_hour"].astype("datetime64[ns]").astype("int64").to_numpy()
+    city = (
+        event_counts.groupby("event_datetime_hour", as_index=False)["event_count"]
+        .sum()
+        .sort_values("event_datetime_hour")
+    )
+    event_times = (
+        city["event_datetime_hour"].astype("datetime64[ns]").astype("int64").to_numpy()
+    )
     cumulative = city["event_count"].cumsum().to_numpy(dtype=np.int64)
-    query_times = result["datetime_hour"].astype("datetime64[ns]").astype("int64").to_numpy()
+    query_times = (
+        result["datetime_hour"].astype("datetime64[ns]").astype("int64").to_numpy()
+    )
 
     def city_count_before(times: np.ndarray) -> np.ndarray:
         positions = np.searchsorted(event_times, times, side="left")
@@ -183,44 +238,101 @@ def prior_features(observations: pd.DataFrame, event_counts: pd.DataFrame) -> pd
 
     city_total = city_count_before(query_times)
     result["city_accidents_total_prior"] = city_total
-    for label, hours in (("city_accidents_prev_24h", 24), ("city_accidents_prev_7d", 168), ("city_accidents_prev_30d", 720)):
-        result[label] = city_total - city_count_before(query_times - np.int64(hours * 3_600_000_000_000))
+    for label, hours in (
+        ("city_accidents_prev_24h", 24),
+        ("city_accidents_prev_7d", 168),
+        ("city_accidents_prev_30d", 720),
+    ):
+        result[label] = city_total - city_count_before(
+            query_times - np.int64(hours * 3_600_000_000_000)
+        )
     return result
 
 
 def prefix_columns(data: pd.DataFrame, prefix: str, excluded: set[str]) -> pd.DataFrame:
-    return data.rename(columns={column: f"{prefix}{column}" for column in data.columns if column not in excluded})
+    return data.rename(
+        columns={
+            column: f"{prefix}{column}"
+            for column in data.columns
+            if column not in excluded
+        }
+    )
 
 
 def build_dataset(args: argparse.Namespace) -> tuple[pd.DataFrame, dict[str, object]]:
     ready = pd.read_parquet(args.ready)
     static = static_segment_features(ready)
     positives, event_counts = positive_observations(ready)
-    negatives, sampling_summary = sample_negatives(positives, static, args.negative_ratio, args.seed)
-    observations = pd.concat([positives, negatives], ignore_index=True).sort_values(["datetime_hour", "road_segment_id"]).reset_index(drop=True)
-    observations = observations.merge(static, on="road_segment_id", how="left", validate="many_to_one", indicator="_road_join")
+    negatives, sampling_summary = sample_negatives(
+        positives, static, args.negative_ratio, args.seed
+    )
+    observations = (
+        pd.concat([positives, negatives], ignore_index=True)
+        .sort_values(["datetime_hour", "road_segment_id"])
+        .reset_index(drop=True)
+    )
+    observations = observations.merge(
+        static,
+        on="road_segment_id",
+        how="left",
+        validate="many_to_one",
+        indicator="_road_join",
+    )
     road_missing = int((observations.pop("_road_join") != "both").sum())
 
     poi = pd.read_parquet(args.poi_features)
-    observations = observations.merge(poi, on="road_segment_id", how="left", validate="many_to_one", indicator="_poi_join")
+    observations = observations.merge(
+        poi,
+        on="road_segment_id",
+        how="left",
+        validate="many_to_one",
+        indicator="_poi_join",
+    )
     poi_missing = int((observations.pop("_poi_join") != "both").sum())
 
     calendar = pd.read_parquet(args.calendar)
-    calendar["datetime_hour"] = pd.to_datetime(calendar["datetime_hour"], errors="raise")
+    calendar["datetime_hour"] = pd.to_datetime(
+        calendar["datetime_hour"], errors="raise"
+    )
     calendar = prefix_columns(calendar, "calendar_", {"datetime_hour"})
-    observations = observations.merge(calendar, on="datetime_hour", how="left", validate="many_to_one", indicator="_calendar_join")
+    observations = observations.merge(
+        calendar,
+        on="datetime_hour",
+        how="left",
+        validate="many_to_one",
+        indicator="_calendar_join",
+    )
     calendar_missing = int((observations.pop("_calendar_join") != "both").sum())
 
     weather = pd.read_parquet(args.weather)
     weather["datetime_hour"] = pd.to_datetime(weather["datetime_hour"], errors="raise")
-    weather = weather.drop(columns=[column for column in ("latitude_source", "longitude_source", "timezone_source") if column in weather])
+    weather = weather.drop(
+        columns=[
+            column
+            for column in ("latitude_source", "longitude_source", "timezone_source")
+            if column in weather
+        ]
+    )
     weather = prefix_columns(weather, "weather_", {"datetime_hour"})
-    observations = observations.merge(weather, on="datetime_hour", how="left", validate="many_to_one", indicator="_weather_join")
+    observations = observations.merge(
+        weather,
+        on="datetime_hour",
+        how="left",
+        validate="many_to_one",
+        indicator="_weather_join",
+    )
     weather_missing = int((observations.pop("_weather_join") != "both").sum())
     observations = prior_features(observations, event_counts)
-    observations = observations.sort_values(["datetime_hour", "road_segment_id"]).reset_index(drop=True)
+    observations = observations.sort_values(
+        ["datetime_hour", "road_segment_id"]
+    ).reset_index(drop=True)
 
-    join_summary = {"road_unmatched": road_missing, "poi_unmatched": poi_missing, "calendar_unmatched": calendar_missing, "weather_unmatched": weather_missing}
+    join_summary = {
+        "road_unmatched": road_missing,
+        "poi_unmatched": poi_missing,
+        "calendar_unmatched": calendar_missing,
+        "weather_unmatched": weather_missing,
+    }
     summary: dict[str, object] = {
         "input_rows": int(len(ready)),
         "positive_rows": int(len(positives)),
@@ -234,7 +346,9 @@ def build_dataset(args: argparse.Namespace) -> tuple[pd.DataFrame, dict[str, obj
     return observations, summary
 
 
-def write_report(dataset: pd.DataFrame, summary: dict[str, object], output: Path) -> Path:
+def write_report(
+    dataset: pd.DataFrame, summary: dict[str, object], output: Path
+) -> Path:
     report_dir = REPORTS_ROOT / datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
     report_dir.mkdir(parents=True, exist_ok=False)
     report = summary | {
@@ -242,19 +356,36 @@ def write_report(dataset: pd.DataFrame, summary: dict[str, object], output: Path
         "output": str(output.resolve()),
         "rows": int(len(dataset)),
         "columns": int(len(dataset.columns)),
-        "target_balance": {str(key): int(value) for key, value in dataset["target_1h"].value_counts().sort_index().items()},
-        "temporal_coverage": {"start": str(dataset["datetime_hour"].min()), "end": str(dataset["datetime_hour"].max())},
-        "duplicate_segment_hour_keys": int(dataset.duplicated(["road_segment_id", "datetime_hour"]).sum()),
-        "missing_values": {column: int(dataset[column].isna().sum()) for column in dataset.columns},
+        "target_balance": {
+            str(key): int(value)
+            for key, value in dataset["target_1h"].value_counts().sort_index().items()
+        },
+        "temporal_coverage": {
+            "start": str(dataset["datetime_hour"].min()),
+            "end": str(dataset["datetime_hour"].max()),
+        },
+        "duplicate_segment_hour_keys": int(
+            dataset.duplicated(["road_segment_id", "datetime_hour"]).sum()
+        ),
+        "missing_values": {
+            column: int(dataset[column].isna().sum()) for column in dataset.columns
+        },
         "leakage_checks": {
             "target_is_next_hour": True,
             "history_uses_strictly_prior_events": True,
-            "excluded_post_accident_fields": ["type_dtp", "fd1r17", "fd1r17_descrip", "distance_to_road_m"],
+            "excluded_post_accident_fields": [
+                "type_dtp",
+                "fd1r17",
+                "fd1r17_descrip",
+                "distance_to_road_m",
+            ],
             "weather_and_calendar_timestamp": "datetime_hour (observation hour, not future target hour)",
         },
     }
     report_path = report_dir / "training_dataset_1h_build_report.json"
-    report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
+    report_path.write_text(
+        json.dumps(report, ensure_ascii=False, indent=2, default=str), encoding="utf-8"
+    )
     return report_path
 
 
@@ -269,7 +400,9 @@ def main() -> int:
     dataset.to_parquet(args.output, index=False, engine="pyarrow")
     report_path = write_report(dataset, summary, args.output)
     print(f"Rows: {len(dataset)}")
-    print(f"Target balance: {dataset['target_1h'].value_counts().sort_index().to_dict()}")
+    print(
+        f"Target balance: {dataset['target_1h'].value_counts().sort_index().to_dict()}"
+    )
     print(f"Output: {args.output.resolve()}")
     print(f"Report: {report_path}")
     return 0

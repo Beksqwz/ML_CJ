@@ -59,14 +59,30 @@ def configure_logging() -> None:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     if hasattr(sys.stderr, "reconfigure"):
         sys.stderr.reconfigure(encoding="utf-8", errors="replace")
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
+    logging.basicConfig(
+        level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s"
+    )
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Normalize lanes and maxspeed in filtered ML accident-road data.")
-    parser.add_argument("--input", type=Path, default=PROCESSED_ROOT / "accidents_with_roads_ml_filtered.parquet")
-    parser.add_argument("--output-parquet", type=Path, default=PROCESSED_ROOT / "accidents_with_roads_ml_ready.parquet")
-    parser.add_argument("--output-csv", type=Path, default=PROCESSED_ROOT / "accidents_with_roads_ml_ready.csv")
+    parser = argparse.ArgumentParser(
+        description="Normalize lanes and maxspeed in filtered ML accident-road data."
+    )
+    parser.add_argument(
+        "--input",
+        type=Path,
+        default=PROCESSED_ROOT / "accidents_with_roads_ml_filtered.parquet",
+    )
+    parser.add_argument(
+        "--output-parquet",
+        type=Path,
+        default=PROCESSED_ROOT / "accidents_with_roads_ml_ready.parquet",
+    )
+    parser.add_argument(
+        "--output-csv",
+        type=Path,
+        default=PROCESSED_ROOT / "accidents_with_roads_ml_ready.csv",
+    )
     return parser.parse_args()
 
 
@@ -100,11 +116,17 @@ def parse_list_like(value: Any) -> list[str]:
 def highway_tokens(value: Any) -> list[str]:
     tokens: list[str] = []
     for item in parse_list_like(value):
-        tokens.extend(token.strip().lower() for token in re.split(r"[,;/|]", item) if token.strip())
+        tokens.extend(
+            token.strip().lower()
+            for token in re.split(r"[,;/|]", item)
+            if token.strip()
+        )
     return tokens
 
 
-def default_for_highway(value: Any, defaults: dict[str, float], link_default: float) -> float:
+def default_for_highway(
+    value: Any, defaults: dict[str, float], link_default: float
+) -> float:
     tokens = highway_tokens(value)
     if any(token.endswith("_link") for token in tokens):
         return link_default
@@ -127,14 +149,18 @@ def normalize_lanes(row: pd.Series) -> float:
     values = numeric_values(row.get("road_lanes"))
     if values:
         return max(values)
-    return default_for_highway(row.get("road_highway"), LANES_DEFAULTS, link_default=1.0)
+    return default_for_highway(
+        row.get("road_highway"), LANES_DEFAULTS, link_default=1.0
+    )
 
 
 def normalize_maxspeed(row: pd.Series) -> float:
     values = numeric_values(row.get("road_maxspeed"))
     if values:
         return max(values)
-    return default_for_highway(row.get("road_highway"), MAXSPEED_DEFAULTS, link_default=40.0)
+    return default_for_highway(
+        row.get("road_highway"), MAXSPEED_DEFAULTS, link_default=40.0
+    )
 
 
 def normalize_features(args: argparse.Namespace) -> dict[str, Any]:
@@ -151,11 +177,17 @@ def normalize_features(args: argparse.Namespace) -> dict[str, Any]:
     result = data.copy()
     result["road_lanes_raw"] = result["road_lanes"]
     result["road_maxspeed_raw"] = result["road_maxspeed"]
-    result["road_lanes_missing"] = result["road_lanes"].map(is_missing).astype("boolean")
-    result["road_maxspeed_missing"] = result["road_maxspeed"].map(is_missing).astype("boolean")
+    result["road_lanes_missing"] = (
+        result["road_lanes"].map(is_missing).astype("boolean")
+    )
+    result["road_maxspeed_missing"] = (
+        result["road_maxspeed"].map(is_missing).astype("boolean")
+    )
     result["road_name_missing"] = result["road_name"].map(is_missing).astype("boolean")
     result["road_lanes_num"] = result.apply(normalize_lanes, axis=1).astype("float64")
-    result["road_maxspeed_kmh"] = result.apply(normalize_maxspeed, axis=1).astype("float64")
+    result["road_maxspeed_kmh"] = result.apply(normalize_maxspeed, axis=1).astype(
+        "float64"
+    )
 
     args.output_parquet.resolve().parent.mkdir(parents=True, exist_ok=True)
     result.to_parquet(args.output_parquet.resolve(), index=False, engine="pyarrow")
@@ -172,16 +204,26 @@ def normalize_features(args: argparse.Namespace) -> dict[str, Any]:
         "road_maxspeed_missing_before": int(result["road_maxspeed_missing"].sum()),
         "road_name_missing_before": int(result["road_name_missing"].sum()),
         "road_lanes_num_missing_after": int(result["road_lanes_num"].isna().sum()),
-        "road_maxspeed_kmh_missing_after": int(result["road_maxspeed_kmh"].isna().sum()),
-        "road_lanes_num_distribution": result["road_lanes_num"].value_counts(dropna=False).sort_index().to_dict(),
-        "road_maxspeed_kmh_distribution": result["road_maxspeed_kmh"].value_counts(dropna=False).sort_index().to_dict(),
+        "road_maxspeed_kmh_missing_after": int(
+            result["road_maxspeed_kmh"].isna().sum()
+        ),
+        "road_lanes_num_distribution": result["road_lanes_num"]
+        .value_counts(dropna=False)
+        .sort_index()
+        .to_dict(),
+        "road_maxspeed_kmh_distribution": result["road_maxspeed_kmh"]
+        .value_counts(dropna=False)
+        .sort_index()
+        .to_dict(),
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
     }
     return summary
 
 
 def write_report(report_dir: Path, summary: dict[str, Any]) -> None:
-    (report_dir / "road_features_summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
+    (report_dir / "road_features_summary.json").write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
     lines = [
         "Road feature normalization report",
         f"Input: {summary['input_path']}",
@@ -194,7 +236,9 @@ def write_report(report_dir: Path, summary: dict[str, Any]) -> None:
         f"Missing maxspeed after: {summary['road_maxspeed_kmh_missing_after']}",
         f"Output Parquet: {summary['output_parquet']}",
     ]
-    (report_dir / "road_features_report.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (report_dir / "road_features_report.txt").write_text(
+        "\n".join(lines) + "\n", encoding="utf-8"
+    )
 
 
 def main() -> int:
@@ -205,8 +249,12 @@ def main() -> int:
         summary = normalize_features(args)
         write_report(report_dir, summary)
         print(f"Rows: {summary['rows']}")
-        print(f"Missing lanes before/after: {summary['road_lanes_missing_before']} / {summary['road_lanes_num_missing_after']}")
-        print(f"Missing maxspeed before/after: {summary['road_maxspeed_missing_before']} / {summary['road_maxspeed_kmh_missing_after']}")
+        print(
+            f"Missing lanes before/after: {summary['road_lanes_missing_before']} / {summary['road_lanes_num_missing_after']}"
+        )
+        print(
+            f"Missing maxspeed before/after: {summary['road_maxspeed_missing_before']} / {summary['road_maxspeed_kmh_missing_after']}"
+        )
         print(f"Output: {summary['output_parquet']}")
         print(f"Report: {report_dir}")
         return 0

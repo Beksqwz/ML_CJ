@@ -74,11 +74,15 @@ def configure_logging() -> None:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     if hasattr(sys.stderr, "reconfigure"):
         sys.stderr.reconfigure(encoding="utf-8", errors="replace")
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
+    logging.basicConfig(
+        level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s"
+    )
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Create leakage-free accident-road ML base data.")
+    parser = argparse.ArgumentParser(
+        description="Create leakage-free accident-road ML base data."
+    )
     parser.add_argument(
         "--input",
         type=Path,
@@ -107,14 +111,20 @@ def make_report_dir() -> Path:
     return report_dir
 
 
-def create_ml_base(input_path: Path, output_parquet: Path, output_csv: Path) -> dict[str, Any]:
+def create_ml_base(
+    input_path: Path, output_parquet: Path, output_csv: Path
+) -> dict[str, Any]:
     if not input_path.is_file():
         raise FileNotFoundError(f"Input dataset does not exist: {input_path}")
 
     dataframe = pd.read_parquet(input_path)
-    missing_required = [column for column in KEEP_COLUMNS if column not in dataframe.columns]
+    missing_required = [
+        column for column in KEEP_COLUMNS if column not in dataframe.columns
+    ]
     if missing_required:
-        raise ValueError(f"Input is missing required ML base columns: {', '.join(missing_required)}")
+        raise ValueError(
+            f"Input is missing required ML base columns: {', '.join(missing_required)}"
+        )
 
     ml_base = dataframe.loc[:, KEEP_COLUMNS].copy()
     if ml_base["objectid"].duplicated().any():
@@ -128,12 +138,15 @@ def create_ml_base(input_path: Path, output_parquet: Path, output_csv: Path) -> 
     ml_base.to_parquet(output_parquet, index=False, engine="pyarrow")
     ml_base.to_csv(output_csv, index=False, encoding="utf-8-sig")
 
-    removed_columns = [column for column in dataframe.columns if column not in KEEP_COLUMNS]
+    removed_columns = [
+        column for column in dataframe.columns if column not in KEEP_COLUMNS
+    ]
     likely_leakage_removed = [
         column
         for column in removed_columns
         if column.startswith("fd")
-        or column in {
+        or column
+        in {
             "type_dtp",
             "vehicle_category",
             "is_public_transport",
@@ -159,7 +172,9 @@ def create_ml_base(input_path: Path, output_parquet: Path, output_csv: Path) -> 
 
 
 def write_report(report_dir: Path, summary: dict[str, Any]) -> None:
-    (report_dir / "ml_base_summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
+    (report_dir / "ml_base_summary.json").write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
     lines = [
         "ML base accident-road dataset report",
         f"Input: {summary['input_path']}",
@@ -171,7 +186,9 @@ def write_report(report_dir: Path, summary: dict[str, Any]) -> None:
         "Removed columns:",
         *[f"- {column}" for column in summary["removed_columns"]],
     ]
-    (report_dir / "ml_base_report.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (report_dir / "ml_base_report.txt").write_text(
+        "\n".join(lines) + "\n", encoding="utf-8"
+    )
 
 
 def main() -> int:
@@ -179,7 +196,11 @@ def main() -> int:
     try:
         args = parse_args()
         report_dir = make_report_dir()
-        summary = create_ml_base(args.input.resolve(), args.output_parquet.resolve(), args.output_csv.resolve())
+        summary = create_ml_base(
+            args.input.resolve(),
+            args.output_parquet.resolve(),
+            args.output_csv.resolve(),
+        )
         write_report(report_dir, summary)
         print(f"Rows: {summary['rows_after']}")
         print(f"Columns: {summary['columns_after']}")

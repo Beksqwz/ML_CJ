@@ -34,20 +34,30 @@ def configure_logging() -> None:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     if hasattr(sys.stderr, "reconfigure"):
         sys.stderr.reconfigure(encoding="utf-8", errors="replace")
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
+    logging.basicConfig(
+        level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s"
+    )
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Fetch OSM POIs for Astana.")
     parser.add_argument("--geojson", type=Path, default=PROJECT_ROOT / "astana.geojson")
-    parser.add_argument("--output-parquet", type=Path, default=EXTERNAL_ROOT / "pois_astana_osm.parquet")
-    parser.add_argument("--output-csv", type=Path, default=EXTERNAL_ROOT / "pois_astana_osm.csv")
+    parser.add_argument(
+        "--output-parquet", type=Path, default=EXTERNAL_ROOT / "pois_astana_osm.parquet"
+    )
+    parser.add_argument(
+        "--output-csv", type=Path, default=EXTERNAL_ROOT / "pois_astana_osm.csv"
+    )
     return parser.parse_args()
 
 
 def read_bbox(path: Path) -> tuple[float, float, float, float]:
     payload = json.loads(path.read_text(encoding="utf-8"))
-    properties = payload["features"][0]["properties"] if payload.get("features") else payload.get("properties", {})
+    properties = (
+        payload["features"][0]["properties"]
+        if payload.get("features")
+        else payload.get("properties", {})
+    )
     west = float(properties["bbox_west"])
     south = float(properties["bbox_south"])
     east = float(properties["bbox_east"])
@@ -100,7 +110,9 @@ def fetch_pois(bbox: tuple[float, float, float, float]) -> tuple[pd.DataFrame, s
     last_error: Exception | None = None
     for url in OVERPASS_URLS:
         try:
-            response = requests.get(url, params={"data": query}, headers=headers, timeout=240)
+            response = requests.get(
+                url, params={"data": query}, headers=headers, timeout=240
+            )
             response.raise_for_status()
             source_url = url
             break
@@ -142,14 +154,18 @@ def make_report_dir() -> Path:
 
 
 def write_report(report_dir: Path, summary: dict[str, Any]) -> None:
-    (report_dir / "pois_summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
+    (report_dir / "pois_summary.json").write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
     lines = [
         "OSM POI fetch report",
         f"Rows: {summary['rows']}",
         f"Category counts: {summary['category_counts']}",
         f"Output Parquet: {summary['output_parquet']}",
     ]
-    (report_dir / "pois_report.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (report_dir / "pois_report.txt").write_text(
+        "\n".join(lines) + "\n", encoding="utf-8"
+    )
 
 
 def main() -> int:
@@ -167,7 +183,10 @@ def main() -> int:
             "source_url": source_url,
             "bbox_south_west_north_east": bbox,
             "rows": int(len(pois)),
-            "category_counts": {str(key): int(value) for key, value in pois["poi_category"].value_counts().to_dict().items()},
+            "category_counts": {
+                str(key): int(value)
+                for key, value in pois["poi_category"].value_counts().to_dict().items()
+            },
             "output_parquet": str(args.output_parquet.resolve()),
             "output_csv": str(args.output_csv.resolve()),
             "generated_at_utc": datetime.now(timezone.utc).isoformat(),

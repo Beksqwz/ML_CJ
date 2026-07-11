@@ -52,7 +52,9 @@ def configure_logging() -> None:
 
 def parse_args() -> argparse.Namespace:
     """Parse command-line arguments."""
-    parser = argparse.ArgumentParser(description="Validate historical accident CSV or Parquet data.")
+    parser = argparse.ArgumentParser(
+        description="Validate historical accident CSV or Parquet data."
+    )
     parser.add_argument(
         "--input",
         type=Path,
@@ -86,7 +88,11 @@ def discover_input() -> Path:
         historical_priority = int("historical" in name and "accident" in name)
         accident_priority = int("accident" in name or "dtp" in name)
         parquet_priority = int(path.suffix.lower() == ".parquet")
-        return historical_priority * 4 + accident_priority * 2 + parquet_priority, parquet_priority, path.stat().st_mtime
+        return (
+            historical_priority * 4 + accident_priority * 2 + parquet_priority,
+            parquet_priority,
+            path.stat().st_mtime,
+        )
 
     selected = max(candidates, key=ranking)
     LOGGER.info("Automatically selected input: %s", selected.relative_to(PROJECT_ROOT))
@@ -127,7 +133,14 @@ def result(name: str, status: str, message: str, **metrics: Any) -> CheckResult:
 def first_existing(columns: Iterable[str], candidates: Iterable[str]) -> str | None:
     """Match a candidate column case-insensitively."""
     lookup = {column.lower(): column for column in columns}
-    return next((lookup[candidate.lower()] for candidate in candidates if candidate.lower() in lookup), None)
+    return next(
+        (
+            lookup[candidate.lower()]
+            for candidate in candidates
+            if candidate.lower() in lookup
+        ),
+        None,
+    )
 
 
 def profile_columns(dataframe: pd.DataFrame, report_dir: Path) -> None:
@@ -137,7 +150,9 @@ def profile_columns(dataframe: pd.DataFrame, report_dir: Path) -> None:
     for column in dataframe.columns:
         series = dataframe[column]
         non_null = int(series.notna().sum())
-        examples = [str(value) for value in series.dropna().drop_duplicates().head(5).tolist()]
+        examples = [
+            str(value) for value in series.dropna().drop_duplicates().head(5).tolist()
+        ]
         rows.append(
             {
                 "column": column,
@@ -145,16 +160,18 @@ def profile_columns(dataframe: pd.DataFrame, report_dir: Path) -> None:
                 "rows": total_rows,
                 "non_null_count": non_null,
                 "missing_count": total_rows - non_null,
-                "missing_percent": round((total_rows - non_null) * 100 / total_rows, 3) if total_rows else 0.0,
+                "missing_percent": round((total_rows - non_null) * 100 / total_rows, 3)
+                if total_rows
+                else 0.0,
                 "unique_count": int(series.nunique(dropna=True)),
                 "sample_values": " | ".join(examples),
             }
         )
     profile = pd.DataFrame(rows)
     profile.to_csv(report_dir / "column_profile.csv", index=False, encoding="utf-8-sig")
-    profile.loc[profile["missing_count"] > 0].sort_values("missing_count", ascending=False).to_csv(
-        report_dir / "missing_values.csv", index=False, encoding="utf-8-sig"
-    )
+    profile.loc[profile["missing_count"] > 0].sort_values(
+        "missing_count", ascending=False
+    ).to_csv(report_dir / "missing_values.csv", index=False, encoding="utf-8-sig")
 
 
 def check_duplicates(dataframe: pd.DataFrame, report_dir: Path) -> list[CheckResult]:
@@ -167,16 +184,33 @@ def check_duplicates(dataframe: pd.DataFrame, report_dir: Path) -> list[CheckRes
         duplicate_rows = dataframe.loc[full_mask].copy()
         duplicate_rows.insert(0, "duplicate_check", "full_row")
         examples.append(duplicate_rows.head(100))
-        results.append(result("full_duplicates", "WARNING", "Full duplicate rows found.", rows=full_count))
+        results.append(
+            result(
+                "full_duplicates",
+                "WARNING",
+                "Full duplicate rows found.",
+                rows=full_count,
+            )
+        )
     else:
-        results.append(result("full_duplicates", "PASS", "No full duplicate rows found.", rows=0))
+        results.append(
+            result("full_duplicates", "PASS", "No full duplicate rows found.", rows=0)
+        )
 
     for identifier in ("objectid", "fd1id", "globalid"):
         column = first_existing(dataframe.columns, [identifier])
         if column is None:
-            results.append(result(f"duplicates_{identifier}", "SKIPPED", f"Column {identifier} is absent."))
+            results.append(
+                result(
+                    f"duplicates_{identifier}",
+                    "SKIPPED",
+                    f"Column {identifier} is absent.",
+                )
+            )
             continue
-        non_empty = dataframe[column].notna() & dataframe[column].astype("string").str.strip().ne("")
+        non_empty = dataframe[column].notna() & dataframe[column].astype(
+            "string"
+        ).str.strip().ne("")
         duplicate_mask = dataframe.loc[non_empty, column].duplicated(keep=False)
         duplicate_index = duplicate_mask.index[duplicate_mask]
         count = len(duplicate_index)
@@ -184,12 +218,32 @@ def check_duplicates(dataframe: pd.DataFrame, report_dir: Path) -> list[CheckRes
             duplicate_rows = dataframe.loc[duplicate_index].copy()
             duplicate_rows.insert(0, "duplicate_check", f"duplicate_{column}")
             examples.append(duplicate_rows.head(100))
-            results.append(result(f"duplicates_{identifier}", "WARNING", f"Duplicate {column} values found.", rows=count))
+            results.append(
+                result(
+                    f"duplicates_{identifier}",
+                    "WARNING",
+                    f"Duplicate {column} values found.",
+                    rows=count,
+                )
+            )
         else:
-            results.append(result(f"duplicates_{identifier}", "PASS", f"No duplicate non-empty {column} values.", rows=0))
+            results.append(
+                result(
+                    f"duplicates_{identifier}",
+                    "PASS",
+                    f"No duplicate non-empty {column} values.",
+                    rows=0,
+                )
+            )
 
-    output = pd.concat(examples, ignore_index=True) if examples else dataframe.head(0).assign(duplicate_check=pd.Series(dtype="string"))
-    output.to_csv(report_dir / "duplicate_examples.csv", index=False, encoding="utf-8-sig")
+    output = (
+        pd.concat(examples, ignore_index=True)
+        if examples
+        else dataframe.head(0).assign(duplicate_check=pd.Series(dtype="string"))
+    )
+    output.to_csv(
+        report_dir / "duplicate_examples.csv", index=False, encoding="utf-8-sig"
+    )
     return results
 
 
@@ -217,17 +271,27 @@ def compare_date_part(
     )
 
 
-def check_dates(dataframe: pd.DataFrame, report_dir: Path) -> tuple[list[CheckResult], pd.Series | None]:
+def check_dates(
+    dataframe: pd.DataFrame, report_dir: Path
+) -> tuple[list[CheckResult], pd.Series | None]:
     """Validate timestamps and use cleaned datetime fields when they are available."""
     checks: list[CheckResult] = []
     parsed_rta: pd.Series | None = None
     for requested_name in ("rta_date", "load_date"):
         column = first_existing(dataframe.columns, [requested_name])
         if column is None:
-            checks.append(result(f"{requested_name}_timestamp", "SKIPPED", f"Column {requested_name} is absent."))
+            checks.append(
+                result(
+                    f"{requested_name}_timestamp",
+                    "SKIPPED",
+                    f"Column {requested_name} is absent.",
+                )
+            )
             continue
         numeric = pd.to_numeric(dataframe[column], errors="coerce")
-        parsed = pd.to_datetime(numeric, unit="ms", errors="coerce", utc=True).dt.tz_convert("Asia/Almaty")
+        parsed = pd.to_datetime(
+            numeric, unit="ms", errors="coerce", utc=True
+        ).dt.tz_convert("Asia/Almaty")
         invalid = int(numeric.notna().sum() - parsed.notna().sum())
         date_min = parsed.min()
         date_max = parsed.max()
@@ -237,7 +301,8 @@ def check_dates(dataframe: pd.DataFrame, report_dir: Path) -> tuple[list[CheckRe
                 f"{requested_name}_timestamp",
                 status,
                 f"Parsed {requested_name} as Unix milliseconds.",
-                non_null=int(parsed.notna().sum()), invalid=invalid,
+                non_null=int(parsed.notna().sum()),
+                invalid=invalid,
                 min=str(date_min) if pd.notna(date_min) else None,
                 max=str(date_max) if pd.notna(date_max) else None,
             )
@@ -246,44 +311,71 @@ def check_dates(dataframe: pd.DataFrame, report_dir: Path) -> tuple[list[CheckRe
             parsed_rta = parsed
 
     if parsed_rta is None:
-        pd.DataFrame(columns=["year", "accident_count"]).to_csv(report_dir / "year_distribution.csv", index=False)
-        pd.DataFrame(columns=["month", "accident_count"]).to_csv(report_dir / "month_distribution.csv", index=False)
+        pd.DataFrame(columns=["year", "accident_count"]).to_csv(
+            report_dir / "year_distribution.csv", index=False
+        )
+        pd.DataFrame(columns=["month", "accident_count"]).to_csv(
+            report_dir / "month_distribution.csv", index=False
+        )
         return checks, None
 
     valid_dates = parsed_rta.dropna()
-    valid_dates.dt.year.value_counts().sort_index().rename_axis("year").reset_index(name="accident_count").to_csv(
-        report_dir / "year_distribution.csv", index=False, encoding="utf-8-sig"
-    )
-    valid_dates.dt.month.value_counts().sort_index().rename_axis("month").reset_index(name="accident_count").to_csv(
-        report_dir / "month_distribution.csv", index=False, encoding="utf-8-sig"
-    )
+    valid_dates.dt.year.value_counts().sort_index().rename_axis("year").reset_index(
+        name="accident_count"
+    ).to_csv(report_dir / "year_distribution.csv", index=False, encoding="utf-8-sig")
+    valid_dates.dt.month.value_counts().sort_index().rename_axis("month").reset_index(
+        name="accident_count"
+    ).to_csv(report_dir / "month_distribution.csv", index=False, encoding="utf-8-sig")
     accident_datetime_column = first_existing(dataframe.columns, ["accident_datetime"])
     cleaned_year_column = first_existing(dataframe.columns, ["year"])
     cleaned_month_column = first_existing(dataframe.columns, ["month"])
     if accident_datetime_column and cleaned_year_column and cleaned_month_column:
-        accident_datetime = pd.to_datetime(dataframe[accident_datetime_column], errors="coerce")
+        accident_datetime = pd.to_datetime(
+            dataframe[accident_datetime_column], errors="coerce"
+        )
         checks.append(
             compare_date_part(
-                dataframe, cleaned_year_column, accident_datetime, "year",
-                "year_matches_accident_datetime", accident_datetime_column, "WARNING",
+                dataframe,
+                cleaned_year_column,
+                accident_datetime,
+                "year",
+                "year_matches_accident_datetime",
+                accident_datetime_column,
+                "WARNING",
             )
         )
         checks.append(
             compare_date_part(
-                dataframe, cleaned_month_column, accident_datetime, "month",
-                "month_matches_accident_datetime", accident_datetime_column, "WARNING",
+                dataframe,
+                cleaned_month_column,
+                accident_datetime,
+                "month",
+                "month_matches_accident_datetime",
+                accident_datetime_column,
+                "WARNING",
             )
         )
     else:
         for expected, accessor in (("yr", "year"), ("period", "month")):
             column = first_existing(dataframe.columns, [expected])
             if column is None:
-                checks.append(result(f"{expected}_matches_rta_date", "SKIPPED", f"Column {expected} is absent."))
+                checks.append(
+                    result(
+                        f"{expected}_matches_rta_date",
+                        "SKIPPED",
+                        f"Column {expected} is absent.",
+                    )
+                )
                 continue
             checks.append(
                 compare_date_part(
-                    dataframe, column, parsed_rta, accessor,
-                    f"{expected}_matches_rta_date", "rta_date", "WARNING",
+                    dataframe,
+                    column,
+                    parsed_rta,
+                    accessor,
+                    f"{expected}_matches_rta_date",
+                    "rta_date",
+                    "WARNING",
                 )
             )
 
@@ -294,8 +386,13 @@ def check_dates(dataframe: pd.DataFrame, report_dir: Path) -> tuple[list[CheckRe
             continue
         checks.append(
             compare_date_part(
-                dataframe, column, parsed_rta, accessor,
-                f"source_{expected}_matches_rta_date", "rta_date", "INFO",
+                dataframe,
+                column,
+                parsed_rta,
+                accessor,
+                f"source_{expected}_matches_rta_date",
+                "rta_date",
+                "INFO",
             )
         )
     return checks, parsed_rta
@@ -312,22 +409,29 @@ def check_time(dataframe: pd.DataFrame, report_dir: Path) -> list[CheckResult]:
     invalid = int((~valid_mask).sum())
     if valid_mask.any():
         hours = values.loc[valid_mask].str.slice(0, 2).astype(int)
-        hours.value_counts().sort_index().rename_axis("hour").reset_index(name="accident_count").to_csv(
+        hours.value_counts().sort_index().rename_axis("hour").reset_index(
+            name="accident_count"
+        ).to_csv(
             report_dir / "hour_distribution.csv", index=False, encoding="utf-8-sig"
         )
     else:
-        pd.DataFrame(columns=["hour", "accident_count"]).to_csv(report_dir / "hour_distribution.csv", index=False)
+        pd.DataFrame(columns=["hour", "accident_count"]).to_csv(
+            report_dir / "hour_distribution.csv", index=False
+        )
     return [
         result(
             "time_format",
             "WARNING" if invalid else "PASS",
             "Validated fd1r05p1 as 24-hour time.",
-            non_empty=int(len(values)), invalid=invalid,
+            non_empty=int(len(values)),
+            invalid=invalid,
         )
     ]
 
 
-def check_coordinates(dataframe: pd.DataFrame, report_dir: Path) -> tuple[list[CheckResult], int]:
+def check_coordinates(
+    dataframe: pd.DataFrame, report_dir: Path
+) -> tuple[list[CheckResult], int]:
     """Validate coordinates and check their temporary WGS84 location near Astana."""
     x_column = first_existing(dataframe.columns, ["x"])
     y_column = first_existing(dataframe.columns, ["y"])
@@ -336,27 +440,54 @@ def check_coordinates(dataframe: pd.DataFrame, report_dir: Path) -> tuple[list[C
     if x_column and y_column:
         x = pd.to_numeric(dataframe[x_column], errors="coerce")
         y = pd.to_numeric(dataframe[y_column], errors="coerce")
-        valid = x.notna() & y.notna() & x.between(-20_037_508.35, 20_037_508.35) & y.between(-20_048_966.1, 20_048_966.1)
+        valid = (
+            x.notna()
+            & y.notna()
+            & x.between(-20_037_508.35, 20_037_508.35)
+            & y.between(-20_048_966.1, 20_048_966.1)
+        )
         transformer = Transformer.from_crs("EPSG:3857", "EPSG:4326", always_xy=True)
-        longitude, latitude = transformer.transform(x.where(valid).to_numpy(), y.where(valid).to_numpy())
-        longitude, latitude = pd.Series(longitude, index=dataframe.index), pd.Series(latitude, index=dataframe.index)
+        longitude, latitude = transformer.transform(
+            x.where(valid).to_numpy(), y.where(valid).to_numpy()
+        )
+        longitude, latitude = (
+            pd.Series(longitude, index=dataframe.index),
+            pd.Series(latitude, index=dataframe.index),
+        )
         source_crs = "EPSG:3857"
     elif lon_column and lat_column:
         longitude = pd.to_numeric(dataframe[lon_column], errors="coerce")
         latitude = pd.to_numeric(dataframe[lat_column], errors="coerce")
-        valid = longitude.notna() & latitude.notna() & longitude.between(-180, 180) & latitude.between(-90, 90)
+        valid = (
+            longitude.notna()
+            & latitude.notna()
+            & longitude.between(-180, 180)
+            & latitude.between(-90, 90)
+        )
         source_crs = "EPSG:4326"
     else:
-        pd.DataFrame(columns=["reason"]).to_csv(report_dir / "suspicious_coordinates.csv", index=False)
-        return [result("coordinates", "SKIPPED", "No x/y or longitude/latitude coordinate pair found.")], 0
+        pd.DataFrame(columns=["reason"]).to_csv(
+            report_dir / "suspicious_coordinates.csv", index=False
+        )
+        return [
+            result(
+                "coordinates",
+                "SKIPPED",
+                "No x/y or longitude/latitude coordinate pair found.",
+            )
+        ], 0
 
-    region_ok = longitude.between(ASTANA_REGION_BOUNDS[0], ASTANA_REGION_BOUNDS[2]) & latitude.between(ASTANA_REGION_BOUNDS[1], ASTANA_REGION_BOUNDS[3])
+    region_ok = longitude.between(
+        ASTANA_REGION_BOUNDS[0], ASTANA_REGION_BOUNDS[2]
+    ) & latitude.between(ASTANA_REGION_BOUNDS[1], ASTANA_REGION_BOUNDS[3])
     suspicious = (~valid) | (valid & ~region_ok)
     suspicious_rows = dataframe.loc[suspicious].copy()
     suspicious_rows.insert(0, "reason", "outside_astana_region_or_invalid_coordinate")
     suspicious_rows.insert(1, "longitude_wgs84", longitude.loc[suspicious].round(6))
     suspicious_rows.insert(2, "latitude_wgs84", latitude.loc[suspicious].round(6))
-    suspicious_rows.to_csv(report_dir / "suspicious_coordinates.csv", index=False, encoding="utf-8-sig")
+    suspicious_rows.to_csv(
+        report_dir / "suspicious_coordinates.csv", index=False, encoding="utf-8-sig"
+    )
     count = int(suspicious.sum())
     status = "ERROR" if int(valid.sum()) == 0 else ("WARNING" if count else "PASS")
     return [
@@ -364,7 +495,9 @@ def check_coordinates(dataframe: pd.DataFrame, report_dir: Path) -> tuple[list[C
             "coordinates",
             status,
             f"Validated {source_crs} coordinates and checked temporary EPSG:4326 positions near Astana.",
-            valid=int(valid.sum()), suspicious=count, total=int(len(dataframe)),
+            valid=int(valid.sum()),
+            suspicious=count,
+            total=int(len(dataframe)),
         )
     ], count
 
@@ -378,7 +511,18 @@ def check_numeric_values(dataframe: pd.DataFrame) -> list[CheckResult]:
         numeric = pd.to_numeric(dataframe[column], errors="coerce")
         infinite_count += int((~numeric.isna() & ~numeric.map(math.isfinite)).sum())
         lowered = column.lower()
-        if any(token in lowered for token in ("dead", "fatal", "killed", "injur", "victim", "погиб", "ранен")):
+        if any(
+            token in lowered
+            for token in (
+                "dead",
+                "fatal",
+                "killed",
+                "injur",
+                "victim",
+                "погиб",
+                "ранен",
+            )
+        ):
             negatives = int((numeric < 0).sum())
             if negatives:
                 negative_columns[column] = negatives
@@ -388,33 +532,78 @@ def check_numeric_values(dataframe: pd.DataFrame) -> list[CheckResult]:
             "numeric_values",
             status,
             "Checked numeric values for infinities and negative casualty counts.",
-            numeric_columns=int(len(numeric_columns)), infinite_values=infinite_count, negative_counts=negative_columns,
+            numeric_columns=int(len(numeric_columns)),
+            infinite_values=infinite_count,
+            negative_counts=negative_columns,
         )
     ]
 
 
 def categorical_summary(dataframe: pd.DataFrame) -> list[CheckResult]:
     """Summarise frequent values for important semantic and coded category columns."""
-    preferred = ["type_dtp", "vehicle_category", "area_code", "fd1r07p1", "fd1r17", "fd1r06p1", "fd1r08p1"]
+    preferred = [
+        "type_dtp",
+        "vehicle_category",
+        "area_code",
+        "fd1r07p1",
+        "fd1r17",
+        "fd1r06p1",
+        "fd1r08p1",
+    ]
     available = [column for column in preferred if column in dataframe.columns]
     if not available:
-        return [result("categorical_values", "SKIPPED", "No configured categorical fields are present.")]
+        return [
+            result(
+                "categorical_values",
+                "SKIPPED",
+                "No configured categorical fields are present.",
+            )
+        ]
     frequent = {
         column: dataframe[column].value_counts(dropna=False).head(10).to_dict()
         for column in available
     }
-    return [result("categorical_values", "PASS", "Computed ten most frequent values for important categories.", frequent_values=frequent)]
+    return [
+        result(
+            "categorical_values",
+            "PASS",
+            "Computed ten most frequent values for important categories.",
+            frequent_values=frequent,
+        )
+    ]
 
 
 def check_ml_leakage(dataframe: pd.DataFrame) -> list[CheckResult]:
     """Flag fields likely known only after an accident and unsafe as prediction features."""
     leakage_tokens = (
-        "type_dtp", "death", "dead", "fatal", "injur", "victim", "offender", "culprit",
-        "violation", "guilt", "погиб", "ранен", "винов", "наруш",
+        "type_dtp",
+        "death",
+        "dead",
+        "fatal",
+        "injur",
+        "victim",
+        "offender",
+        "culprit",
+        "violation",
+        "guilt",
+        "погиб",
+        "ранен",
+        "винов",
+        "наруш",
     )
-    columns = [column for column in dataframe.columns if any(token in column.lower() for token in leakage_tokens)]
+    columns = [
+        column
+        for column in dataframe.columns
+        if any(token in column.lower() for token in leakage_tokens)
+    ]
     if not columns:
-        return [result("ml_leakage", "SKIPPED", "No semantically identifiable post-accident fields were found by name.")]
+        return [
+            result(
+                "ml_leakage",
+                "SKIPPED",
+                "No semantically identifiable post-accident fields were found by name.",
+            )
+        ]
     return [
         result(
             "ml_leakage",
@@ -426,7 +615,11 @@ def check_ml_leakage(dataframe: pd.DataFrame) -> list[CheckResult]:
 
 
 def write_text_report(
-    report_dir: Path, input_path: Path, dataframe: pd.DataFrame, checks: list[CheckResult], final_status: str
+    report_dir: Path,
+    input_path: Path,
+    dataframe: pd.DataFrame,
+    checks: list[CheckResult],
+    final_status: str,
 ) -> None:
     """Write a readable report including all statuses, metrics, and category frequencies."""
     lines = [
@@ -442,8 +635,12 @@ def write_text_report(
     for check in checks:
         lines.append(f"[{check.status}] {check.name}: {check.message}")
         if check.metrics:
-            lines.append(json.dumps(check.metrics, ensure_ascii=False, default=str, indent=2))
-    (report_dir / "validation_report.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
+            lines.append(
+                json.dumps(check.metrics, ensure_ascii=False, default=str, indent=2)
+            )
+    (report_dir / "validation_report.txt").write_text(
+        "\n".join(lines) + "\n", encoding="utf-8"
+    )
 
 
 def final_status(checks: list[CheckResult]) -> str:
@@ -472,15 +669,21 @@ def main() -> int:
                 "dataset_structure",
                 "PASS",
                 "Dataset loaded successfully.",
-                rows=int(len(dataframe)), columns=int(len(dataframe.columns)), file_size_bytes=input_path.stat().st_size,
-                dtypes={column: str(dtype) for column, dtype in dataframe.dtypes.items()},
+                rows=int(len(dataframe)),
+                columns=int(len(dataframe.columns)),
+                file_size_bytes=input_path.stat().st_size,
+                dtypes={
+                    column: str(dtype) for column, dtype in dataframe.dtypes.items()
+                },
             )
         ]
         checks.extend(check_duplicates(dataframe, report_dir))
         date_checks, parsed_rta = check_dates(dataframe, report_dir)
         checks.extend(date_checks)
         checks.extend(check_time(dataframe, report_dir))
-        coordinate_checks, suspicious_coordinates = check_coordinates(dataframe, report_dir)
+        coordinate_checks, suspicious_coordinates = check_coordinates(
+            dataframe, report_dir
+        )
         checks.extend(coordinate_checks)
         checks.extend(check_numeric_values(dataframe))
         checks.extend(categorical_summary(dataframe))
@@ -495,24 +698,35 @@ def main() -> int:
             "rows": int(len(dataframe)),
             "columns": int(len(dataframe.columns)),
             "date_range": {
-                "min": str(parsed_rta.min()) if parsed_rta is not None and pd.notna(parsed_rta.min()) else None,
-                "max": str(parsed_rta.max()) if parsed_rta is not None and pd.notna(parsed_rta.max()) else None,
+                "min": str(parsed_rta.min())
+                if parsed_rta is not None and pd.notna(parsed_rta.min())
+                else None,
+                "max": str(parsed_rta.max())
+                if parsed_rta is not None and pd.notna(parsed_rta.max())
+                else None,
             },
             "checks": [asdict(check) for check in checks],
         }
         (report_dir / "validation_summary.json").write_text(
-            json.dumps(payload, ensure_ascii=False, default=str, indent=2), encoding="utf-8"
+            json.dumps(payload, ensure_ascii=False, default=str, indent=2),
+            encoding="utf-8",
         )
         write_text_report(report_dir, input_path, dataframe, checks, outcome)
-        dataframe.head(100).to_csv(report_dir / "sample_rows.csv", index=False, encoding="utf-8-sig")
+        dataframe.head(100).to_csv(
+            report_dir / "sample_rows.csv", index=False, encoding="utf-8-sig"
+        )
 
         warning_count = sum(check.status == "WARNING" for check in checks)
         error_count = sum(check.status == "ERROR" for check in checks)
         duplicate_count = sum(
-            int(check.metrics.get("rows", 0)) for check in checks if check.name.startswith("duplicates_") or check.name == "full_duplicates"
+            int(check.metrics.get("rows", 0))
+            for check in checks
+            if check.name.startswith("duplicates_") or check.name == "full_duplicates"
         )
         print(f"Rows / columns: {len(dataframe)} / {len(dataframe.columns)}")
-        print(f"Date range: {payload['date_range']['min']} — {payload['date_range']['max']}")
+        print(
+            f"Date range: {payload['date_range']['min']} — {payload['date_range']['max']}"
+        )
         print(f"Duplicate rows (check totals): {duplicate_count}")
         print(f"Suspicious coordinates: {suspicious_coordinates}")
         print(f"Errors / warnings: {error_count} / {warning_count}")
