@@ -1,0 +1,298 @@
+{
+  "generated_at_utc": "2026-07-11T09:59:36.058897+00:00",
+  "horizon": "1h",
+  "stage7a_feature_config": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\reports\\stage7a\\1h\\20260711T090501Z\\training_dataset_1h_feature_config.json",
+  "stage7a_baseline_report": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\reports\\stage7a\\1h\\20260711T090501Z\\training_dataset_1h_stage7a_report.json",
+  "model_path": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\models\\stage7b\\catboost_1h.cbm",
+  "device": "GPU",
+  "gpu_fallback_reason": null,
+  "best_iteration": 34,
+  "best_score": {
+    "learn": {
+      "Logloss": 0.22568932142319156,
+      "PRAUC": 0.4760314324082769
+    },
+    "validation": {
+      "Logloss": 0.2927145841955212,
+      "PRAUC": 0.17386872317247581
+    }
+  },
+  "threshold": {
+    "rule": "maximum validation F1",
+    "value": 0.18440954217215164
+  },
+  "metrics": {
+    "train": {
+      "rows": 92939,
+      "positive_rows": 8449,
+      "positive_rate": 0.09090909090909091,
+      "pr_auc": 0.23571740942494457,
+      "roc_auc": 0.7072310731123493,
+      "precision": 0.2598239209791711,
+      "recall": 0.28642442892650016,
+      "f1": 0.2724764960873726,
+      "recall_at_top_10pct": 0.28583264291632143,
+      "lift_at_top_10pct": 2.858295674628793,
+      "confusion_matrix": {
+        "tn": 77596,
+        "fp": 6894,
+        "fn": 6029,
+        "tp": 2420
+      }
+    },
+    "validation": {
+      "rows": 21747,
+      "positive_rows": 1977,
+      "positive_rate": 0.09090909090909091,
+      "pr_auc": 0.17420082347347715,
+      "roc_auc": 0.6512305396736214,
+      "precision": 0.18209225203497137,
+      "recall": 0.3055134041476985,
+      "f1": 0.22818284850774462,
+      "recall_at_top_10pct": 0.2336874051593323,
+      "lift_at_top_10pct": 2.336551724137931,
+      "confusion_matrix": {
+        "tn": 17057,
+        "fp": 2713,
+        "fn": 1373,
+        "tp": 604
+      }
+    },
+    "test": {
+      "rows": 22110,
+      "positive_rows": 2010,
+      "positive_rate": 0.09090909090909091,
+      "pr_auc": 0.15773494675427516,
+      "roc_auc": 0.6384479468329992,
+      "precision": 0.16401468788249693,
+      "recall": 0.3333333333333333,
+      "f1": 0.21985233798195242,
+      "recall_at_top_10pct": 0.2109452736318408,
+      "lift_at_top_10pct": 2.1094527363184077,
+      "confusion_matrix": {
+        "tn": 16685,
+        "fp": 3415,
+        "fn": 1340,
+        "tp": 670
+      }
+    }
+  },
+  "calibration": {
+    "validation": {
+      "brier_score": 0.08196678099022896,
+      "expected_calibration_error_10_bins": 0.042386650725846436,
+      "bins": [
+        {
+          "bin": 0,
+          "rows": 6305,
+          "mean_prediction": 0.08774925887135807,
+          "observed_rate": 0.040444091990483745
+        },
+        {
+          "bin": 1,
+          "rows": 12834,
+          "mean_prediction": 0.13127107492872264,
+          "observed_rate": 0.09365747233909927
+        },
+        {
+          "bin": 2,
+          "rows": 2297,
+          "mean_prediction": 0.23976298614520025,
+          "observed_rate": 0.1802350892468437
+        },
+        {
+          "bin": 3,
+          "rows": 304,
+          "mean_prediction": 0.3258822698849018,
+          "observed_rate": 0.33223684210526316
+        },
+        {
+          "bin": 4,
+          "rows": 7,
+          "mean_prediction": 0.4109898020959029,
+          "observed_rate": 0.7142857142857143
+        },
+        {
+          "bin": 5,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        },
+        {
+          "bin": 6,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        },
+        {
+          "bin": 7,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        },
+        {
+          "bin": 8,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        },
+        {
+          "bin": 9,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        }
+      ]
+    },
+    "test": {
+      "brier_score": 0.08316036900981585,
+      "expected_calibration_error_10_bins": 0.04734622870928256,
+      "bins": [
+        {
+          "bin": 0,
+          "rows": 6354,
+          "mean_prediction": 0.08726114591568157,
+          "observed_rate": 0.04406672961913755
+        },
+        {
+          "bin": 1,
+          "rows": 12552,
+          "mean_prediction": 0.1349528784549498,
+          "observed_rate": 0.09281389420012746
+        },
+        {
+          "bin": 2,
+          "rows": 2802,
+          "mean_prediction": 0.24102956460702585,
+          "observed_rate": 0.16238401142041398
+        },
+        {
+          "bin": 3,
+          "rows": 400,
+          "mean_prediction": 0.324713720067747,
+          "observed_rate": 0.27
+        },
+        {
+          "bin": 4,
+          "rows": 2,
+          "mean_prediction": 0.40553140425913603,
+          "observed_rate": 1.0
+        },
+        {
+          "bin": 5,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        },
+        {
+          "bin": 6,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        },
+        {
+          "bin": 7,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        },
+        {
+          "bin": 8,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        },
+        {
+          "bin": 9,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        }
+      ]
+    }
+  },
+  "baseline_comparison": {
+    "validation": {
+      "pr_auc": {
+        "absolute": 0.029324717173762116,
+        "relative_percent": 20.241237787752304
+      },
+      "roc_auc": {
+        "absolute": 0.07990511263956335,
+        "relative_percent": 13.985919207968317
+      },
+      "precision": {
+        "absolute": 0.012337320773763955,
+        "relative_percent": 7.267724526234892
+      },
+      "recall": {
+        "absolute": 0.018209408194233667,
+        "relative_percent": 6.338028169014078
+      },
+      "f1": {
+        "absolute": 0.014769359873515797,
+        "relative_percent": 6.920537201296178
+      },
+      "recall_at_top_10pct": {
+        "absolute": 0.021244309559939306,
+        "relative_percent": 10.000000000000002
+      },
+      "lift_at_top_10pct": {
+        "absolute": 0.21241379310344843,
+        "relative_percent": 10.000000000000009
+      }
+    },
+    "test": {
+      "pr_auc": {
+        "absolute": 0.027384587128486182,
+        "relative_percent": 21.008447699800836
+      },
+      "roc_auc": {
+        "absolute": 0.09772974678844581,
+        "relative_percent": 18.07406275216799
+      },
+      "precision": {
+        "absolute": 0.01066005529463751,
+        "relative_percent": 6.951244390044876
+      },
+      "recall": {
+        "absolute": 0.07064676616915422,
+        "relative_percent": 26.89393939393939
+      },
+      "f1": {
+        "absolute": 0.02619746910243656,
+        "relative_percent": 13.527916573445697
+      },
+      "recall_at_top_10pct": {
+        "absolute": 0.01791044776119402,
+        "relative_percent": 9.278350515463913
+      },
+      "lift_at_top_10pct": {
+        "absolute": 0.17910447761193993,
+        "relative_percent": 9.278350515463899
+      }
+    }
+  },
+  "overfitting_check": {
+    "train_validation_pr_auc_gap": 0.06151658595146742,
+    "validation_test_pr_auc_gap": 0.016465876719201994,
+    "train_validation_roc_auc_gap": 0.056000533438727906,
+    "interpretation": "Large positive train-validation gaps indicate possible overfitting; validation-test gaps indicate temporal generalization drift."
+  },
+  "prediction_files": {
+    "validation": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\processed\\stage7b\\predictions\\training_dataset_1h_validation_predictions.parquet",
+    "test": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\processed\\stage7b\\predictions\\training_dataset_1h_test_predictions.parquet"
+  },
+  "training_exclusions": [
+    "calendar_date",
+    "datetime_hour",
+    "road_segment_id",
+    "target_1h",
+    "target_datetime_hour"
+  ],
+  "not_run": [
+    "SHAP",
+    "recommendation engine",
+    "git commit"
+  ]
+}

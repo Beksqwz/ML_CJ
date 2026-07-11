@@ -1,0 +1,297 @@
+{
+  "generated_at_utc": "2026-07-11T10:05:04.958917+00:00",
+  "horizon": "24h",
+  "stage7a_feature_config": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\reports\\stage7a\\24h\\20260711T090515Z\\training_dataset_24h_feature_config.json",
+  "stage7a_baseline_report": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\reports\\stage7a\\24h\\20260711T090515Z\\training_dataset_24h_stage7a_report.json",
+  "model_path": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\models\\stage7b\\catboost_24h.cbm",
+  "device": "GPU",
+  "gpu_fallback_reason": null,
+  "best_iteration": 43,
+  "best_score": {
+    "learn": {
+      "Logloss": 0.31754406927994167,
+      "PRAUC": 0.676872529962907
+    },
+    "validation": {
+      "Logloss": 0.43114919813097463,
+      "PRAUC": 0.28259539170397147
+    }
+  },
+  "threshold": {
+    "rule": "maximum validation F1",
+    "value": 0.18556131282293417
+  },
+  "metrics": {
+    "train": {
+      "rows": 916398,
+      "positive_rows": 152733,
+      "positive_rate": 0.16666666666666666,
+      "pr_auc": 0.38799305279722696,
+      "roc_auc": 0.7288648236137588,
+      "precision": 0.2953867078597057,
+      "recall": 0.6285020264121047,
+      "f1": 0.40189069869187594,
+      "recall_at_top_10pct": 0.2775628056805013,
+      "lift_at_top_10pct": 2.775621999127019,
+      "confusion_matrix": {
+        "tn": 534684,
+        "fp": 228981,
+        "fn": 56740,
+        "tp": 95993
+      }
+    },
+    "validation": {
+      "rows": 307968,
+      "positive_rows": 51328,
+      "positive_rate": 0.16666666666666666,
+      "pr_auc": 0.2828499272698683,
+      "roc_auc": 0.642696946501178,
+      "precision": 0.24245813626486004,
+      "recall": 0.5912562344139651,
+      "f1": 0.343894479194996,
+      "recall_at_top_10pct": 0.21302213216957605,
+      "lift_at_top_10pct": 2.1302074877423127,
+      "confusion_matrix": {
+        "tn": 161820,
+        "fp": 94820,
+        "fn": 20980,
+        "tp": 30348
+      }
+    },
+    "test": {
+      "rows": 561510,
+      "positive_rows": 93585,
+      "positive_rate": 0.16666666666666666,
+      "pr_auc": 0.2556304458420362,
+      "roc_auc": 0.6119725037777589,
+      "precision": 0.20944462747507803,
+      "recall": 0.604584067959609,
+      "f1": 0.31111159987683107,
+      "recall_at_top_10pct": 0.19948709729123257,
+      "lift_at_top_10pct": 1.9948709729123257,
+      "confusion_matrix": {
+        "tn": 254362,
+        "fp": 213563,
+        "fn": 37005,
+        "tp": 56580
+      }
+    }
+  },
+  "calibration": {
+    "validation": {
+      "brier_score": 0.1335436695221157,
+      "expected_calibration_error_10_bins": 0.029847847470242626,
+      "bins": [
+        {
+          "bin": 0,
+          "rows": 13581,
+          "mean_prediction": 0.0909160422442583,
+          "observed_rate": 0.06538546498785068
+        },
+        {
+          "bin": 1,
+          "rows": 186783,
+          "mean_prediction": 0.1479588127862862,
+          "observed_rate": 0.12547715798546977
+        },
+        {
+          "bin": 2,
+          "rows": 65299,
+          "mean_prediction": 0.24117979825330757,
+          "observed_rate": 0.19528629841192055
+        },
+        {
+          "bin": 3,
+          "rows": 28996,
+          "mean_prediction": 0.345224702963319,
+          "observed_rate": 0.3008690853910884
+        },
+        {
+          "bin": 4,
+          "rows": 12249,
+          "mean_prediction": 0.43591502977130675,
+          "observed_rate": 0.4081149481590334
+        },
+        {
+          "bin": 5,
+          "rows": 1060,
+          "mean_prediction": 0.5196243947166502,
+          "observed_rate": 0.4981132075471698
+        },
+        {
+          "bin": 6,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        },
+        {
+          "bin": 7,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        },
+        {
+          "bin": 8,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        },
+        {
+          "bin": 9,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        }
+      ]
+    },
+    "test": {
+      "brier_score": 0.137846258527098,
+      "expected_calibration_error_10_bins": 0.04511661294828687,
+      "bins": [
+        {
+          "bin": 0,
+          "rows": 22548,
+          "mean_prediction": 0.09007348030022973,
+          "observed_rate": 0.10967713322689374
+        },
+        {
+          "bin": 1,
+          "rows": 298964,
+          "mean_prediction": 0.1485561803511439,
+          "observed_rate": 0.13137702198257983
+        },
+        {
+          "bin": 2,
+          "rows": 140577,
+          "mean_prediction": 0.24290627423703548,
+          "observed_rate": 0.16509813127325237
+        },
+        {
+          "bin": 3,
+          "rows": 67360,
+          "mean_prediction": 0.34605326870980285,
+          "observed_rate": 0.25489904988123513
+        },
+        {
+          "bin": 4,
+          "rows": 29862,
+          "mean_prediction": 0.4350126603713223,
+          "observed_rate": 0.34940727345790634
+        },
+        {
+          "bin": 5,
+          "rows": 2199,
+          "mean_prediction": 0.5197474807559185,
+          "observed_rate": 0.46475670759436105
+        },
+        {
+          "bin": 6,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        },
+        {
+          "bin": 7,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        },
+        {
+          "bin": 8,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        },
+        {
+          "bin": 9,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        }
+      ]
+    }
+  },
+  "baseline_comparison": {
+    "validation": {
+      "pr_auc": {
+        "absolute": 0.035069200475449064,
+        "relative_percent": 14.153320530270932
+      },
+      "roc_auc": {
+        "absolute": 0.05899452199366617,
+        "relative_percent": 10.106951678921277
+      },
+      "precision": {
+        "absolute": -0.03594480030993838,
+        "relative_percent": -12.911070821367254
+      },
+      "recall": {
+        "absolute": 0.2307122817955113,
+        "relative_percent": 63.990057278720435
+      },
+      "f1": {
+        "absolute": 0.029700930807899206,
+        "relative_percent": 9.453068326949438
+      },
+      "recall_at_top_10pct": {
+        "absolute": 0.013676745635910204,
+        "relative_percent": 6.860828772478487
+      },
+      "lift_at_top_10pct": {
+        "absolute": 0.13676656817222477,
+        "relative_percent": 6.860828772478508
+      }
+    },
+    "test": {
+      "pr_auc": {
+        "absolute": 0.04127500162807202,
+        "relative_percent": 19.255401596832016
+      },
+      "roc_auc": {
+        "absolute": 0.0816932809020684,
+        "relative_percent": 15.405710308438609
+      },
+      "precision": {
+        "absolute": -0.03029948121713083,
+        "relative_percent": -12.638258926324763
+      },
+      "recall": {
+        "absolute": 0.31345835336859545,
+        "relative_percent": 107.67113231785652
+      },
+      "f1": {
+        "absolute": 0.04816323890070345,
+        "relative_percent": 18.316614989311937
+      },
+      "recall_at_top_10pct": {
+        "absolute": 0.02295239621734252,
+        "relative_percent": 13.001634283639001
+      },
+      "lift_at_top_10pct": {
+        "absolute": 0.2295239621734253,
+        "relative_percent": 13.00163428363901
+      }
+    }
+  },
+  "overfitting_check": {
+    "train_validation_pr_auc_gap": 0.10514312552735866,
+    "validation_test_pr_auc_gap": 0.027219481427832093,
+    "train_validation_roc_auc_gap": 0.08616787711258078,
+    "interpretation": "Large positive train-validation gaps indicate possible overfitting; validation-test gaps indicate temporal generalization drift."
+  },
+  "prediction_files": {
+    "validation": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\processed\\stage7b\\predictions\\training_dataset_24h_validation_predictions.parquet",
+    "test": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\processed\\stage7b\\predictions\\training_dataset_24h_test_predictions.parquet"
+  },
+  "training_exclusions": [
+    "calendar_date",
+    "datetime_hour",
+    "road_segment_id",
+    "target_24h"
+  ],
+  "not_run": [
+    "SHAP",
+    "recommendation engine",
+    "git commit"
+  ]
+}
