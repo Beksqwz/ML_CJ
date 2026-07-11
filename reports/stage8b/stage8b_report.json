@@ -1,0 +1,19 @@
+{
+  "generated_at_utc": "2026-07-11T13:58:07.512004+00:00",
+  "models": {
+    "1h": "Stage 7D / catboost_1h_weather_experiment.cbm",
+    "24h": "Stage 7B / catboost_24h.cbm"
+  },
+  "horizons": {
+    "1h": {
+      "demo_rows": 80,
+      "recommendations": 363,
+      "all_recommendations_positive_shap_evidence": true
+    },
+    "24h": {
+      "demo_rows": 80,
+      "recommendations": 208,
+      "all_recommendations_positive_shap_evidence": true
+    }
+  }
+}
