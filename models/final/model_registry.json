@@ -1,0 +1,17 @@
+{
+  "version": "final-model-registry-v1",
+  "models": {
+    "1h": {
+      "stage": "Stage 7D",
+      "model_version": "stage7d-final-v1",
+      "path": "models/stage7d/catboost_1h_weather_experiment.cbm",
+      "feature_count": 97
+    },
+    "24h": {
+      "stage": "Stage 7B",
+      "model_version": "stage7b-final-v1",
+      "path": "models/stage7b/catboost_24h.cbm",
+      "feature_count": 77
+    }
+  }
+}
