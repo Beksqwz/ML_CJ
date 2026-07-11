@@ -1,0 +1,86 @@
+{
+  "generated_at_utc": "2026-07-11T09:05:01.568166+00:00",
+  "source_dataset": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\processed\\training_dataset_1h.parquet",
+  "horizon_hours": 1,
+  "timezone_interpretation": "Asia/Almaty",
+  "source_rows": 136807,
+  "split_boundaries": {
+    "split_time_axis": "datetime_hour interpreted as Asia/Almaty local civil time",
+    "initial_train_validation_boundary": "2024-09-06 13:00:00",
+    "initial_validation_test_boundary": "2025-08-09 12:00:00",
+    "purge_horizon_hours": 1,
+    "train_end_exclusive": "2024-09-06 12:00:00",
+    "validation_start": "2024-09-06 13:00:00",
+    "validation_end_exclusive": "2025-08-09 11:00:00",
+    "test_start": "2025-08-09 12:00:00",
+    "purged_boundary_rows": 11
+  },
+  "splits": {
+    "train": {
+      "rows": 92939,
+      "positive_rows": 8449,
+      "negative_rows": 84490,
+      "start": "2011-12-27 12:00:00",
+      "end": "2024-09-06 08:00:00"
+    },
+    "validation": {
+      "rows": 21747,
+      "positive_rows": 1977,
+      "negative_rows": 19770,
+      "start": "2024-09-06 13:00:00",
+      "end": "2025-08-09 10:00:00"
+    },
+    "test": {
+      "rows": 22110,
+      "positive_rows": 2010,
+      "negative_rows": 20100,
+      "start": "2025-08-09 12:00:00",
+      "end": "2026-06-28 17:00:00"
+    }
+  },
+  "feature_config": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\reports\\stage7a\\1h\\20260711T090501Z\\training_dataset_1h_feature_config.json",
+  "output_split_paths": {
+    "train": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\processed\\stage7a\\training_dataset_1h_train.parquet",
+    "validation": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\processed\\stage7a\\training_dataset_1h_validation.parquet",
+    "test": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\processed\\stage7a\\training_dataset_1h_test.parquet"
+  },
+  "baseline": {
+    "name": "train_only_smoothed_segment_historical_rate",
+    "formula": "(train_segment_positive_count + alpha * train_global_positive_rate) / (train_segment_row_count + alpha)",
+    "smoothing_alpha": 20.0,
+    "train_global_positive_rate": 0.09090909090909091,
+    "train_segments_with_rate": 3967,
+    "classification_threshold_selected_on_train_f1": 0.13166144200626959,
+    "metrics": {
+      "validation": {
+        "pr_auc": 0.14487610629971504,
+        "roc_auc": 0.5713254270340581,
+        "precision": 0.16975493126120741,
+        "recall": 0.28730399595346484,
+        "f1": 0.21341348863422882,
+        "recall_at_top_10pct": 0.212443095599393,
+        "lift_at_top_10pct": 2.1241379310344826,
+        "predicted_positive_rows": 3346,
+        "top_10pct_rows": 2175,
+        "rows": 21747,
+        "positive_rows": 1977,
+        "unseen_segments_fallback_to_global_rate": 0
+      },
+      "test": {
+        "pr_auc": 0.13035035962578898,
+        "roc_auc": 0.5407182000445534,
+        "precision": 0.15335463258785942,
+        "recall": 0.2626865671641791,
+        "f1": 0.19365486887951586,
+        "recall_at_top_10pct": 0.19303482587064677,
+        "lift_at_top_10pct": 1.9303482587064678,
+        "predicted_positive_rows": 3443,
+        "top_10pct_rows": 2211,
+        "rows": 22110,
+        "positive_rows": 2010,
+        "unseen_segments_fallback_to_global_rate": 1
+      }
+    }
+  },
+  "model_training": "Not run. CatBoost and SHAP were intentionally not invoked."
+}
