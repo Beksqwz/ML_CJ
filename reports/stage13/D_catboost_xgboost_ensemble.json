@@ -1,0 +1,76 @@
+{
+  "name": "D_catboost_xgboost_ensemble",
+  "ensemble_weight_catboost": 0.9,
+  "validation_grid": [
+    [
+      0.1,
+      0.17001980963149602
+    ],
+    [
+      0.2,
+      0.17110443684367377
+    ],
+    [
+      0.30000000000000004,
+      0.17203572835681213
+    ],
+    [
+      0.4,
+      0.17296186023182514
+    ],
+    [
+      0.5,
+      0.1737147560318741
+    ],
+    [
+      0.6,
+      0.174459699237203
+    ],
+    [
+      0.7000000000000001,
+      0.1749197930882286
+    ],
+    [
+      0.8,
+      0.17544582569501793
+    ],
+    [
+      0.9,
+      0.1757367822193869
+    ]
+  ],
+  "metrics": {
+    "validation": {
+      "pr_auc": 0.1757367822193869,
+      "recall_at_top_10pct": 0.23469903894790087,
+      "lift_at_top_10pct": 2.3466666666666667,
+      "brier_score": 0.08055687255623496,
+      "expected_calibration_error_10_bins": 0.02210553706736676
+    },
+    "test": {
+      "pr_auc": 0.1588930439998246,
+      "recall_at_top_10pct": 0.21691542288557214,
+      "lift_at_top_10pct": 2.1691542288557213,
+      "brier_score": 0.08161294837157046,
+      "expected_calibration_error_10_bins": 0.02684284982556995
+    }
+  },
+  "comparison_single_xgboost": {
+    "validation": {
+      "pr_auc": 0.16897773397402227,
+      "recall_at_top_10pct": 0.2225594334850784,
+      "lift_at_top_10pct": 2.225287356321839,
+      "brier_score": 0.08016602694988251,
+      "expected_calibration_error_10_bins": 0.004171054984841636
+    },
+    "test": {
+      "pr_auc": 0.1604775948653394,
+      "recall_at_top_10pct": 0.21343283582089553,
+      "lift_at_top_10pct": 2.1343283582089554,
+      "brier_score": 0.08076523244380951,
+      "expected_calibration_error_10_bins": 0.011734240688804807
+    }
+  },
+  "accepted_as_candidate": false,
+  "decision_ru": "Кандидат отклонён или прогон failed; Stage 7D остаётся финальной."
+}

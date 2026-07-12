@@ -21,7 +21,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_READY = (
     PROJECT_ROOT / "data" / "processed" / "accidents_with_roads_ml_ready.parquet"
 )
-DEFAULT_ROADS = PROJECT_ROOT / "astana_edges.csv"
+DEFAULT_ROADS = PROJECT_ROOT / "data" / "roads" / "astana_edges.csv"
 DEFAULT_POIS = PROJECT_ROOT / "data" / "external" / "pois_astana_osm.parquet"
 DEFAULT_OUTPUT = (
     PROJECT_ROOT / "data" / "processed" / "road_segment_poi_features.parquet"

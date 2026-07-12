@@ -6,9 +6,9 @@ import json
 from typing import Any, Iterable
 import pandas as pd
 from catboost import CatBoostClassifier, CatBoostError, Pool
-from inference.export_geojson import _geometry_map
-from inference.feature_builder import _config, build_features
-from inference.risk_thresholds import configured_risk_level, load_risk_thresholds
+from .inference.export_geojson import _geometry_map
+from .inference.feature_builder import _config, build_features
+from .inference.risk_thresholds import configured_risk_level, load_risk_thresholds
 from recommendations.engine import recommend
 from .exceptions import (
     ConfigNotFoundError,
@@ -61,7 +61,7 @@ class AccidentRiskPredictor:
         self._cache: dict[
             tuple[str, str], tuple[list[dict[str, Any]], pd.DataFrame]
         ] = {}
-        self._geometry = _geometry_map(ROOT / "astana_edges.csv")
+        self._geometry = _geometry_map(ROOT / "data" / "roads" / "astana_edges.csv")
         for horizon in self.registry.info()["models"]:
             entry = self.registry.get(horizon)
             model = CatBoostClassifier()

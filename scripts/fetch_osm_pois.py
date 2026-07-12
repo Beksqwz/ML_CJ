@@ -41,7 +41,7 @@ def configure_logging() -> None:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Fetch OSM POIs for Astana.")
-    parser.add_argument("--geojson", type=Path, default=PROJECT_ROOT / "astana.geojson")
+    parser.add_argument("--geojson", type=Path, default=PROJECT_ROOT / "data" / "raw" / "astana.geojson")
     parser.add_argument(
         "--output-parquet", type=Path, default=EXTERNAL_ROOT / "pois_astana_osm.parquet"
     )

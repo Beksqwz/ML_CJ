@@ -120,6 +120,34 @@ def recommend(
             "Проверить участок и актуальность схемы организации движения из-за модельной связи с предшествующими происшествиями.",
         )
 
+    # Independent structural signal: unlike SHAP-derived rules, it intentionally
+    # covers segments without crash history and does not require a high ML score.
+    structural_names = (
+        "speed_infra_mismatch",
+        "pedestrian_exposure_gap",
+        "narrow_fast_road",
+        "junction_complexity_unregulated",
+        "visibility_risk",
+    )
+    structural_hits = [name for name in structural_names if _truth(feature_values.get(name))]
+    if (
+        _number(feature_values.get("segment_accidents_total_prior"))
+        < float(rules["historical_accidents_min"])
+        and structural_hits
+    ):
+        recommendations.append(
+            {
+                "priority": "medium",
+                "category": "inspection",
+                "rule": "structural_risk_flag",
+                "rationale": "Сегмент не имеет истории ДТП, но выявлены инфраструктурные факторы риска: "
+                + ", ".join(structural_hits)
+                + ". Рекомендуется выездная проверка.",
+                "human_review_required": True,
+                "evidence": {"features": structural_hits, "source": "structural_rule"},
+            }
+        )
+
     weather_candidates = [
         name
         for name in shap_values

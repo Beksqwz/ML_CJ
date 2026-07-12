@@ -1,0 +1,99 @@
+{
+  "name": "A_exposure_normalization",
+  "winner": {
+    "params": {
+      "iterations": 1500,
+      "learning_rate": 0.05,
+      "depth": 7,
+      "l2_leaf_reg": 5.0,
+      "loss_function": "Logloss",
+      "eval_metric": "PRAUC",
+      "random_seed": 20260713,
+      "allow_writing_files": false,
+      "task_type": "GPU",
+      "devices": "0"
+    },
+    "best_iteration": 53
+  },
+  "stability_three_seeds": {
+    "runs": [
+      {
+        "status": "completed",
+        "seed": 20260711,
+        "validation_pr_auc": 0.1720414114598326,
+        "best_iteration": 53,
+        "params": {
+          "iterations": 1500,
+          "learning_rate": 0.05,
+          "depth": 7,
+          "l2_leaf_reg": 5.0,
+          "loss_function": "Logloss",
+          "eval_metric": "PRAUC",
+          "random_seed": 20260711,
+          "allow_writing_files": false,
+          "task_type": "GPU",
+          "devices": "0"
+        },
+        "seconds": 10.942938199994387
+      },
+      {
+        "status": "completed",
+        "seed": 20260712,
+        "validation_pr_auc": 0.17318337715319926,
+        "best_iteration": 74,
+        "params": {
+          "iterations": 1500,
+          "learning_rate": 0.05,
+          "depth": 7,
+          "l2_leaf_reg": 5.0,
+          "loss_function": "Logloss",
+          "eval_metric": "PRAUC",
+          "random_seed": 20260712,
+          "allow_writing_files": false,
+          "task_type": "GPU",
+          "devices": "0"
+        },
+        "seconds": 12.374917799985269
+      },
+      {
+        "status": "completed",
+        "seed": 20260713,
+        "validation_pr_auc": 0.17635262062311222,
+        "best_iteration": 105,
+        "params": {
+          "iterations": 1500,
+          "learning_rate": 0.05,
+          "depth": 7,
+          "l2_leaf_reg": 5.0,
+          "loss_function": "Logloss",
+          "eval_metric": "PRAUC",
+          "random_seed": 20260713,
+          "allow_writing_files": false,
+          "task_type": "GPU",
+          "devices": "0"
+        },
+        "seconds": 14.400119800004177
+      }
+    ],
+    "pr_auc_std": 0.0018237541947544026
+  },
+  "metrics": {
+    "validation": {
+      "pr_auc": 0.1720414114598326,
+      "recall_at_top_10pct": 0.22964087000505817,
+      "lift_at_top_10pct": 2.2960919540229887,
+      "brier_score": 0.08041064328214068,
+      "expected_calibration_error_10_bins": 0.018963025504309096
+    },
+    "test": {
+      "pr_auc": 0.15981143382172694,
+      "recall_at_top_10pct": 0.21542288557213932,
+      "lift_at_top_10pct": 2.154228855721393,
+      "brier_score": 0.08142642651537685,
+      "expected_calibration_error_10_bins": 0.025430271362527564
+    }
+  },
+  "feature_formula": "segment_accidents_total_prior / (road_length + alpha=20)",
+  "accepted_as_candidate": false,
+  "decision_ru": "Кандидат отклонён или прогон failed; Stage 7D остаётся финальной."
+}

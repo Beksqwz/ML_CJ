@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
-from inference.risk_thresholds import PATH, configured_risk_level, load_risk_thresholds
+from ml_service.inference.risk_thresholds import PATH, configured_risk_level, load_risk_thresholds
 
 
 def main() -> None:

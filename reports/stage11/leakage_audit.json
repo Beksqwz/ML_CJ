@@ -1,0 +1,6 @@
+{
+  "sample_rows": 100,
+  "window": "[T-24h,T), accident_datetime < T",
+  "mismatch_count": 0,
+  "mismatches": []
+}

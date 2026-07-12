@@ -16,8 +16,8 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 RAW_FILES = [
-    PROJECT_ROOT / "astana_accidents.csv",
-    PROJECT_ROOT / "astana_accidents.parquet",
+    PROJECT_ROOT / "data" / "raw" / "astana_accidents.csv",
+    PROJECT_ROOT / "data" / "raw" / "astana_accidents.parquet",
 ]
 
 

@@ -20,7 +20,7 @@ def main() -> None:
     if str(ROOT) not in sys.path:
         sys.path.insert(0, str(ROOT))
     from catboost import CatBoostClassifier
-    import inference.predict  # noqa: F401
+    import ml_service.inference.predict  # noqa: F401
     import recommendations.engine  # noqa: F401
     import scripts.explain_stage8a_shap  # noqa: F401
 

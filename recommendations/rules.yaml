@@ -7,6 +7,6 @@
   "road_spatial_importance_fraction": 0.10,
   "rules": [
     "historical_accidents", "weather_hazard", "confirmed_high_speed", "missing_speed_limit",
-    "nearby_poi", "oneway", "road_spatial", "positive_rush_holiday"
+    "nearby_poi", "oneway", "road_spatial", "positive_rush_holiday", "structural_risk_flag"
   ]
 }

@@ -1,0 +1,145 @@
+{
+  "generated_at_utc": "2026-07-12T09:27:41.814967+00:00",
+  "stage": "11",
+  "winner": {
+    "params": {
+      "iterations": 1500,
+      "learning_rate": 0.05,
+      "depth": 7,
+      "l2_leaf_reg": 5.0,
+      "loss_function": "Logloss",
+      "eval_metric": "PRAUC",
+      "allow_writing_files": false
+    },
+    "best_iteration": 63
+  },
+  "stability_three_seeds": {
+    "runs": [
+      {
+        "seed": 20260711,
+        "best_iteration": 63,
+        "validation_pr_auc": 0.17100979266247018
+      },
+      {
+        "seed": 20260712,
+        "best_iteration": 56,
+        "validation_pr_auc": 0.17566235679942305
+      },
+      {
+        "seed": 20260713,
+        "best_iteration": 102,
+        "validation_pr_auc": 0.17386934421637149
+      }
+    ],
+    "pr_auc_std": 0.0019159645746220687,
+    "threshold_max": 0.01
+  },
+  "metrics": {
+    "validation": {
+      "pr_auc": 0.17100979266247018,
+      "recall_at_top_10pct": 0.22964087000505817,
+      "lift_at_top_10pct": 2.2960919540229887,
+      "brier_score": 0.08051157431664635,
+      "expected_calibration_error_10_bins": 0.017512766631698012
+    },
+    "test": {
+      "pr_auc": 0.15696127434063217,
+      "recall_at_top_10pct": 0.21293532338308457,
+      "lift_at_top_10pct": 2.129353233830846,
+      "brier_score": 0.08165358791996817,
+      "expected_calibration_error_10_bins": 0.02526261038593361
+    }
+  },
+  "shap_feature_group_contributions_percent": {
+    "spatial": 7.484578887462925,
+    "historical": 45.57047874601851
+  },
+  "acceptance_rule": "validation PR-AUC >=3%, test PR-AUC not worse, std<=0.01, Brier and ECE not worse than Stage7D",
+  "comparison_stage7d": {
+    "validation": {
+      "pr_auc": 0.17573492175064576,
+      "lift_at_top_10pct": 2.3466666666666667,
+      "recall_at_top_10pct": 0.23469903894790087,
+      "calibration": {
+        "brier_score": 0.0806786131073082,
+        "expected_calibration_error_10_bins": 0.02400687808728328,
+        "bins": [
+          {
+            "bin": 0,
+            "rows": 11954,
+            "mean_prediction": 0.07766301509334307,
+            "observed_rate": 0.05956165300317885
+          },
+          {
+            "bin": 1,
+            "rows": 7707,
+            "mean_prediction": 0.13435631083377578,
+            "observed_rate": 0.10600752562605424
+          },
+          {
+            "bin": 2,
+            "rows": 1829,
+            "mean_prediction": 0.2358722613040337,
+            "observed_rate": 0.19300164024056862
+          },
+          {
+            "bin": 3,
+            "rows": 246,
+            "mean_prediction": 0.33190113297118584,
+            "observed_rate": 0.35772357723577236
+          },
+          {
+            "bin": 4,
+            "rows": 11,
+            "mean_prediction": 0.4138981337954004,
+            "observed_rate": 0.6363636363636364
+          }
+        ]
+      }
+    },
+    "test": {
+      "pr_auc": 0.1580147210307248,
+      "lift_at_top_10pct": 2.1492537313432836,
+      "recall_at_top_10pct": 0.21492537313432836,
+      "calibration": {
+        "brier_score": 0.08179419371013219,
+        "expected_calibration_error_10_bins": 0.028884006175384763,
+        "bins": [
+          {
+            "bin": 0,
+            "rows": 11246,
+            "mean_prediction": 0.07707204733080765,
+            "observed_rate": 0.064111684154366
+          },
+          {
+            "bin": 1,
+            "rows": 8281,
+            "mean_prediction": 0.13722946953072307,
+            "observed_rate": 0.09745199855089964
+          },
+          {
+            "bin": 2,
+            "rows": 2251,
+            "mean_prediction": 0.23811421666464128,
+            "observed_rate": 0.17059084851177256
+          },
+          {
+            "bin": 3,
+            "rows": 328,
+            "mean_prediction": 0.328633937619307,
+            "observed_rate": 0.29573170731707316
+          },
+          {
+            "bin": 4,
+            "rows": 4,
+            "mean_prediction": 0.4222154550840467,
+            "observed_rate": 0.25
+          }
+        ]
+      }
+    }
+  },
+  "accepted_as_candidate": false,
+  "decision_ru": "Кандидат отклонён; Stage 7D остаётся финальной моделью.",
+  "model_path": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\models\\stage11\\catboost_1h_stage11_candidate.cbm"
+}

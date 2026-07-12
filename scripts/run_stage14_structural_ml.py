@@ -1,0 +1,39 @@
+"""Stage 14 parallel structural-feature experiment; Stage 7 assets stay read-only."""
+from __future__ import annotations
+import json,sys
+from pathlib import Path
+import networkx as nx
+import numpy as np,pandas as pd
+from catboost import CatBoostClassifier,Pool
+ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/'scripts'))
+from prepare_stage7a_splits import apply_train_only_transforms,feature_configuration
+from run_stage7d_weather_experiment import risk_features,add_features
+OUT=ROOT/'data/processed/stage14';REP=ROOT/'reports/stage14';MOD=ROOT/'models/stage14';SEEDS=(20260711,20260712,20260713); COM=['speed_infra_mismatch','pedestrian_exposure_gap','narrow_fast_road','junction_complexity_unregulated','visibility_risk']
+def prep(d,f,c):
+ x=d[f].copy()
+ for z in c:x[z]=x[z].astype('string').fillna('__MISSING__').astype(str)
+ return x
+def pr(y,p):
+ g=pd.DataFrame({'p':p,'y':y}).groupby('p').y.agg(['count','sum']).sort_index(ascending=False);r=g['sum'].cumsum()/y.sum();q=g['sum'].cumsum()/g['count'].cumsum();return float((q*r.diff().fillna(r)).sum())
+def metric(y,p):
+ top=np.argsort(-p)[:int(np.ceil(.1*len(y)))];b=np.clip(np.digitize(p,np.linspace(0,1,11),right=True)-1,0,9);e=sum(abs(p[b==i].mean()-y[b==i].mean())*(b==i).sum() for i in range(10) if(b==i).any())/len(y);return {'pr_auc':pr(y,p),'recall_at_top_10pct':float(y[top].sum()/y.sum()),'lift_at_top_10pct':float(y[top].mean()/y.mean()),'brier_score':float(np.mean((p-y)**2)),'expected_calibration_error_10_bins':float(e)}
+def main():
+ REP.mkdir(parents=True,exist_ok=True);OUT.mkdir(parents=True,exist_ok=True); r7=json.loads(next((ROOT/'reports/stage7a/1h').glob('*/training_dataset_1h_stage7a_report.json')).read_text())['split_boundaries'];raw=pd.read_parquet(ROOT/'data/processed/training_dataset_1h.parquet');t=pd.to_datetime(raw.datetime_hour);sp={'train':raw[t<pd.Timestamp(r7['train_end_exclusive'])].copy(),'validation':raw[(t>=pd.Timestamp(r7['validation_start']))&(t<pd.Timestamp(r7['validation_end_exclusive']))].copy(),'test':raw[t>=pd.Timestamp(r7['test_start'])].copy()};cfg0=feature_configuration(raw,'target_1h');sp,_=apply_train_only_transforms(sp,cfg0,100);w,der,_=risk_features();sp={k:add_features(v,w,der)[0] for k,v in sp.items()}; audit={}
+ for k,v in sp.items():
+  z=pd.read_parquet(ROOT/f'data/processed/stage7d/training_dataset_1h_{k}.parquet'); cols=['datetime_hour','target_1h','segment_accidents_total_prior','road_length'];a=v[cols].sort_values(cols[:2]).reset_index(drop=True);b=z[cols].sort_values(cols[:2]).reset_index(drop=True);audit[k]={'rows_rebuilt':len(v),'rows_stage7d':len(z),'target_matches':a.target_1h.equals(b.target_1h),'segment_accidents_total_prior_matches':a.segment_accidents_total_prior.equals(b.segment_accidents_total_prior),'road_length_matches':bool(np.allclose(a.road_length,b.road_length,equal_nan=True))}
+ if not all(all(x for n,x in q.items() if n.endswith('matches')) and q['rows_rebuilt']==q['rows_stage7d'] for q in audit.values()):raise RuntimeError(audit)
+ e=pd.read_csv(ROOT/'data/roads/astana_edges.csv');e['road_segment_id']=e.u.astype(str)+'_'+e.v.astype(str)+'_'+e.key.astype(str);g=nx.read_graphml(ROOT/'data/roads/astana_roads.graphml');deg=dict(g.degree()); nodes=dict(g.nodes(data=True));
+ def truth(x):return str(x).lower() in {'yes','true','1'}
+ tags=[]
+ for r in e.itertuples(index=False):
+  a,b=str(r.u),str(r.v);na,nb=nodes.get(a,{}),nodes.get(b,{});tags.append({'road_segment_id':r.road_segment_id,'junction':str(r.junction) if pd.notna(r.junction) else '','bridge':truth(r.bridge),'tunnel':truth(r.tunnel),'width':pd.to_numeric(r.width,errors='coerce'),'access':str(r.access) if pd.notna(r.access) else '','has_traffic_signals_endpoint':str(na.get('highway',''))=='traffic_signals' or str(nb.get('highway',''))=='traffic_signals','has_crossing_endpoint':str(na.get('highway',''))=='crossing' or str(nb.get('highway',''))=='crossing','endpoint_degree_max':max(deg.get(a,0),deg.get(b,0))})
+ tags=pd.DataFrame(tags).drop_duplicates('road_segment_id');tags.to_parquet(OUT/'segment_structural_tags.parquet',index=False)
+ train=sp['train'].merge(tags,on='road_segment_id',how='left',validate='many_to_one');medw=train.groupby('road_highway').width.median();meds=train.groupby('road_highway').road_maxspeed_kmh.median()
+ for k,v in sp.items():
+  v=v.merge(tags,on='road_segment_id',how='left',validate='many_to_one');v['speed_infra_mismatch']=(v.road_maxspeed_kmh>=60)&~v.has_traffic_signals_endpoint&~v.has_crossing_endpoint;v['pedestrian_exposure_gap']=((v.poi_education_100m>0)|(v.poi_healthcare_100m>0))&(v.poi_crossing_100m==0)&~v.has_crossing_endpoint;v['narrow_fast_road']=(v.width<v.road_highway.map(medw))&(v.road_maxspeed_kmh>v.road_highway.map(meds));v['junction_complexity_unregulated']=((v.junction!='')|(v.endpoint_degree_max>=4))&~v.has_traffic_signals_endpoint;v['visibility_risk']=v.bridge|v.tunnel;sp[k]=v;v.to_parquet(OUT/f'training_dataset_1h_{k}.parquet',index=False)
+ basecfg=json.loads((ROOT/'reports/stage7d/1h/stage7d_feature_config.json').read_text());basecfg['numerical_features']+=COM;basecfg['excluded_from_model_features']=sorted(set(basecfg['excluded_from_model_features'])|{'road_segment_id'});basecfg['structural_features']=COM;(REP/'stage14_feature_config.json').write_text(json.dumps(basecfg,ensure_ascii=False,indent=2));(REP/'stage14_reconstruction_report.json').write_text(json.dumps({'parallel_split_not_modification':True,'boundaries':r7,'audit':audit},ensure_ascii=False,indent=2))
+ f=basecfg['numerical_features']+basecfg['categorical_features'];c=basecfg['categorical_features'];x={k:prep(v,f,c) for k,v in sp.items()};y={k:v.target_1h.to_numpy(np.int8) for k,v in sp.items()};idx=[f.index(z) for z in c];runs=[];m0=None
+ for seed in SEEDS:
+  m=CatBoostClassifier(iterations=1500,learning_rate=.05,depth=7,l2_leaf_reg=5.,loss_function='Logloss',eval_metric='PRAUC',random_seed=seed,allow_writing_files=False,task_type='GPU',devices='0');m.fit(x['train'],y['train'],cat_features=idx,eval_set=(x['validation'],y['validation']),early_stopping_rounds=100,verbose=False);runs.append({'seed':seed,'validation_pr_auc':pr(y['validation'],m.predict_proba(x['validation'])[:,1]),'best_iteration':int(m.get_best_iteration())});m0=m if seed==SEEDS[0] else m0
+ pv=m0.predict_proba(x['validation'])[:,1];pt=m0.predict_proba(x['test'])[:,1];mm={'validation':metric(y['validation'],pv),'test':metric(y['test'],pt)};base=json.loads((ROOT/'reports/stage7d/1h/stage7d_weather_experiment_report.json').read_text())['experimental_metrics'];std=float(np.std([z['validation_pr_auc'] for z in runs]));vals=np.abs(m0.get_feature_importance(Pool(x['test'].iloc[:5000],cat_features=idx),type='ShapValues')[:,:-1]).mean(0);ind=dict(zip(f,map(float,vals)));struct=float(sum(ind[z] for z in COM)/vals.sum()*100);ok=mm['validation']['pr_auc']>=base['validation']['pr_auc']*1.03 and mm['test']['pr_auc']>=base['test']['pr_auc'] and std<=.01 and all(mm[s][q]<=base[s]['calibration'][q] for s in ('validation','test') for q in ('brier_score','expected_calibration_error_10_bins'));MOD.mkdir(parents=True,exist_ok=True);path=MOD/'catboost_1h_stage14_candidate.cbm';m0.save_model(path);(REP/'stage14_candidate_report.json').write_text(json.dumps({'stage':'14','winner':{'params':{'depth':7,'learning_rate':.05,'l2_leaf_reg':5.},'best_iteration':runs[0]['best_iteration']},'stability_three_seeds':{'runs':runs,'pr_auc_std':std},'metrics':mm,'comparison_with_stage7d':base,'shap_feature_group_contributions_percent':{'structural':struct},'individual_structural_mean_abs_shap':{z:ind[z] for z in COM},'accepted_as_candidate':ok,'decision_ru':'Кандидат принят для ручного решения.' if ok else 'Кандидат отклонён; Stage 7D остаётся финальной.','model_path':str(path.resolve())},ensure_ascii=False,indent=2))
+if __name__=='__main__':main()

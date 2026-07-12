@@ -1,0 +1,39 @@
+{
+  "adjacency_path": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\processed\\stage11\\segment_adjacency.parquet",
+  "graph_source": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\astana_roads.graphml",
+  "neighbor_definition": "all segments at graph distance <=2 via shared endpoints",
+  "betweenness_method": "networkx sampled betweenness_centrality k=512, seed=20260711",
+  "spatial_features": {
+    "temporal": [
+      "segment_neighbors_accidents_prev_24h",
+      "segment_neighbors_accidents_prev_7d"
+    ],
+    "static": [
+      "graph_degree",
+      "graph_betweenness_centrality"
+    ]
+  },
+  "parallel_split_audit": {
+    "train": {
+      "rows_rebuilt": 92939,
+      "rows_stage7d": 92939,
+      "target_matches": true,
+      "segment_accidents_total_prior_matches": true,
+      "road_length_matches": true
+    },
+    "validation": {
+      "rows_rebuilt": 21747,
+      "rows_stage7d": 21747,
+      "target_matches": true,
+      "segment_accidents_total_prior_matches": true,
+      "road_length_matches": true
+    },
+    "test": {
+      "rows_rebuilt": 22110,
+      "rows_stage7d": 22110,
+      "target_matches": true,
+      "segment_accidents_total_prior_matches": true,
+      "road_length_matches": true
+    }
+  }
+}

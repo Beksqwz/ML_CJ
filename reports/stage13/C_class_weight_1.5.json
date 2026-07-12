@@ -1,0 +1,103 @@
+{
+  "name": "C_class_weight_1.5",
+  "winner": {
+    "params": {
+      "iterations": 1500,
+      "learning_rate": 0.05,
+      "depth": 7,
+      "l2_leaf_reg": 5.0,
+      "loss_function": "Logloss",
+      "eval_metric": "PRAUC",
+      "random_seed": 20260713,
+      "allow_writing_files": false,
+      "task_type": "GPU",
+      "devices": "0",
+      "scale_pos_weight": 1.5
+    },
+    "best_iteration": 46
+  },
+  "stability_three_seeds": {
+    "runs": [
+      {
+        "status": "completed",
+        "seed": 20260711,
+        "validation_pr_auc": 0.17585420669395296,
+        "best_iteration": 46,
+        "params": {
+          "iterations": 1500,
+          "learning_rate": 0.05,
+          "depth": 7,
+          "l2_leaf_reg": 5.0,
+          "loss_function": "Logloss",
+          "eval_metric": "PRAUC",
+          "random_seed": 20260711,
+          "allow_writing_files": false,
+          "task_type": "GPU",
+          "devices": "0",
+          "scale_pos_weight": 1.5
+        },
+        "seconds": 73.91795639999327
+      },
+      {
+        "status": "completed",
+        "seed": 20260712,
+        "validation_pr_auc": 0.1753051076359926,
+        "best_iteration": 66,
+        "params": {
+          "iterations": 1500,
+          "learning_rate": 0.05,
+          "depth": 7,
+          "l2_leaf_reg": 5.0,
+          "loss_function": "Logloss",
+          "eval_metric": "PRAUC",
+          "random_seed": 20260712,
+          "allow_writing_files": false,
+          "task_type": "GPU",
+          "devices": "0",
+          "scale_pos_weight": 1.5
+        },
+        "seconds": 144.98546200001147
+      },
+      {
+        "status": "completed",
+        "seed": 20260713,
+        "validation_pr_auc": 0.17693488502040566,
+        "best_iteration": 121,
+        "params": {
+          "iterations": 1500,
+          "learning_rate": 0.05,
+          "depth": 7,
+          "l2_leaf_reg": 5.0,
+          "loss_function": "Logloss",
+          "eval_metric": "PRAUC",
+          "random_seed": 20260713,
+          "allow_writing_files": false,
+          "task_type": "GPU",
+          "devices": "0",
+          "scale_pos_weight": 1.5
+        },
+        "seconds": 185.72318850000738
+      }
+    ],
+    "pr_auc_std": 0.0006770483113782962
+  },
+  "metrics": {
+    "validation": {
+      "pr_auc": 0.17585420669395296,
+      "recall_at_top_10pct": 0.2321699544764795,
+      "lift_at_top_10pct": 2.3213793103448275,
+      "brier_score": 0.08523873106731822,
+      "expected_calibration_error_10_bins": 0.06864329025426819
+    },
+    "test": {
+      "pr_auc": 0.1589858058828421,
+      "recall_at_top_10pct": 0.21492537313432836,
+      "lift_at_top_10pct": 2.1492537313432836,
+      "brier_score": 0.08725081105819192,
+      "expected_calibration_error_10_bins": 0.07467735646229562
+    }
+  },
+  "scale_pos_weight": 1.5,
+  "accepted_as_candidate": false,
+  "decision_ru": "Кандидат отклонён или прогон failed; Stage 7D остаётся финальной."
+}

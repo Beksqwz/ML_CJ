@@ -110,7 +110,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--roads",
         type=Path,
-        default=PROJECT_ROOT / "astana_edges.csv",
+        default=PROJECT_ROOT / "data" / "roads" / "astana_edges.csv",
         help="Road edges CSV with WKT LINESTRING geometries. Defaults to astana_edges.csv.",
     )
     parser.add_argument(

@@ -1,0 +1,237 @@
+{
+  "generated_at_utc": "2026-07-12T09:51:12.422709+00:00",
+  "stage": "12",
+  "individual_spatial_shap": {
+    "segment_neighbors_accidents_prev_24h": {
+      "mean_abs": 0.0005015386163215112,
+      "share_percent": 0.04056112731202772
+    },
+    "segment_neighbors_accidents_prev_7d": {
+      "mean_abs": 0.01765107644618636,
+      "share_percent": 1.4275023609929582
+    },
+    "graph_degree": {
+      "mean_abs": 0.041993436828392273,
+      "share_percent": 3.3961515265937403
+    },
+    "graph_betweenness_centrality": {
+      "mean_abs": 0.032400817186237774,
+      "share_percent": 2.6203638725642007
+    }
+  },
+  "feature_config": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\reports\\stage12\\stage12_feature_config.json",
+  "search": {
+    "trials": [
+      {
+        "depth": 5,
+        "learning_rate": 0.03,
+        "l2_leaf_reg": 2,
+        "border_count": 64,
+        "iterations": 1500,
+        "validation_pr_auc": 0.17253433328409895,
+        "validation_recall_at_top_10pct": 0.2276176024279211,
+        "gap": 0.056541388852880514,
+        "best_iteration": 131
+      },
+      {
+        "depth": 5,
+        "learning_rate": 0.05,
+        "l2_leaf_reg": 5,
+        "border_count": 128,
+        "iterations": 1500,
+        "validation_pr_auc": 0.17401382178717462,
+        "validation_recall_at_top_10pct": 0.22458270106221548,
+        "gap": 0.05892003776240887,
+        "best_iteration": 225
+      },
+      {
+        "depth": 6,
+        "learning_rate": 0.03,
+        "l2_leaf_reg": 5,
+        "border_count": 128,
+        "iterations": 1500,
+        "validation_pr_auc": 0.13293096266349289,
+        "validation_recall_at_top_10pct": 0.19575113808801214,
+        "gap": 0.041084329225648336,
+        "best_iteration": 0
+      },
+      {
+        "depth": 6,
+        "learning_rate": 0.05,
+        "l2_leaf_reg": 3,
+        "border_count": 64,
+        "iterations": 1500,
+        "validation_pr_auc": 0.13293096266349289,
+        "validation_recall_at_top_10pct": 0.19575113808801214,
+        "gap": 0.041084329225648336,
+        "best_iteration": 0
+      },
+      {
+        "depth": 7,
+        "learning_rate": 0.04,
+        "l2_leaf_reg": 5,
+        "border_count": 128,
+        "iterations": 1500,
+        "validation_pr_auc": 0.17515262430633277,
+        "validation_recall_at_top_10pct": 0.22205361659079415,
+        "gap": 0.07385833011860382,
+        "best_iteration": 127
+      },
+      {
+        "depth": 7,
+        "learning_rate": 0.06,
+        "l2_leaf_reg": 2,
+        "border_count": 32,
+        "iterations": 1500,
+        "validation_pr_auc": 0.17322309140840841,
+        "validation_recall_at_top_10pct": 0.22357106727364695,
+        "gap": 0.07427171918993727,
+        "best_iteration": 51
+      }
+    ],
+    "selection_rule": "max validation PR-AUC, Recall@10%, min gap"
+  },
+  "winner": {
+    "depth": 7,
+    "learning_rate": 0.04,
+    "l2_leaf_reg": 5,
+    "border_count": 128,
+    "iterations": 1500,
+    "validation_pr_auc": 0.17515262430633277,
+    "validation_recall_at_top_10pct": 0.22205361659079415,
+    "gap": 0.07385833011860382,
+    "best_iteration": 127
+  },
+  "stability_three_seeds": {
+    "runs": [
+      {
+        "seed": 20260711,
+        "validation_pr_auc": 0.17515262430633277,
+        "best_iteration": 127
+      },
+      {
+        "seed": 20260712,
+        "validation_pr_auc": 0.17394170283800386,
+        "best_iteration": 104
+      },
+      {
+        "seed": 20260713,
+        "validation_pr_auc": 0.1726970198871073,
+        "best_iteration": 95
+      }
+    ],
+    "pr_auc_std": 0.0010025278890236529
+  },
+  "metrics": {
+    "validation": {
+      "pr_auc": 0.17515262430633277,
+      "recall_at_top_10pct": 0.22205361659079415,
+      "lift_at_top_10pct": 2.220229885057471,
+      "brier_score": 0.08047820017970224,
+      "expected_calibration_error_10_bins": 0.019595576728211245
+    },
+    "test": {
+      "pr_auc": 0.16053371436843272,
+      "recall_at_top_10pct": 0.20696517412935322,
+      "lift_at_top_10pct": 2.0696517412935322,
+      "brier_score": 0.08178680988464737,
+      "expected_calibration_error_10_bins": 0.0280408530050289
+    }
+  },
+  "comparison_with_stage7d": {
+    "validation": {
+      "pr_auc": 0.17573492175064576,
+      "lift_at_top_10pct": 2.3466666666666667,
+      "recall_at_top_10pct": 0.23469903894790087,
+      "calibration": {
+        "brier_score": 0.0806786131073082,
+        "expected_calibration_error_10_bins": 0.02400687808728328,
+        "bins": [
+          {
+            "bin": 0,
+            "rows": 11954,
+            "mean_prediction": 0.07766301509334307,
+            "observed_rate": 0.05956165300317885
+          },
+          {
+            "bin": 1,
+            "rows": 7707,
+            "mean_prediction": 0.13435631083377578,
+            "observed_rate": 0.10600752562605424
+          },
+          {
+            "bin": 2,
+            "rows": 1829,
+            "mean_prediction": 0.2358722613040337,
+            "observed_rate": 0.19300164024056862
+          },
+          {
+            "bin": 3,
+            "rows": 246,
+            "mean_prediction": 0.33190113297118584,
+            "observed_rate": 0.35772357723577236
+          },
+          {
+            "bin": 4,
+            "rows": 11,
+            "mean_prediction": 0.4138981337954004,
+            "observed_rate": 0.6363636363636364
+          }
+        ]
+      }
+    },
+    "test": {
+      "pr_auc": 0.1580147210307248,
+      "lift_at_top_10pct": 2.1492537313432836,
+      "recall_at_top_10pct": 0.21492537313432836,
+      "calibration": {
+        "brier_score": 0.08179419371013219,
+        "expected_calibration_error_10_bins": 0.028884006175384763,
+        "bins": [
+          {
+            "bin": 0,
+            "rows": 11246,
+            "mean_prediction": 0.07707204733080765,
+            "observed_rate": 0.064111684154366
+          },
+          {
+            "bin": 1,
+            "rows": 8281,
+            "mean_prediction": 0.13722946953072307,
+            "observed_rate": 0.09745199855089964
+          },
+          {
+            "bin": 2,
+            "rows": 2251,
+            "mean_prediction": 0.23811421666464128,
+            "observed_rate": 0.17059084851177256
+          },
+          {
+            "bin": 3,
+            "rows": 328,
+            "mean_prediction": 0.328633937619307,
+            "observed_rate": 0.29573170731707316
+          },
+          {
+            "bin": 4,
+            "rows": 4,
+            "mean_prediction": 0.4222154550840467,
+            "observed_rate": 0.25
+          }
+        ]
+      }
+    }
+  },
+  "acceptance_rule": "validation PR-AUC +3%, test PR-AUC not worse, std<=0.01, Brier/ECE not worse",
+  "accepted_as_candidate": false,
+  "decision_ru": "Spatial-направление закрыто: очистка и retune не дали требуемого +3% PR-AUC; Stage 7D остаётся финальной.",
+  "model_path": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\models\\stage12\\catboost_1h_stage12_candidate.cbm",
+  "shap_feature_group_contributions_percent": {
+    "spatial": 7.668082201166694,
+    "historical": 39.30390134252392,
+    "weather": 4.10281152780312,
+    "POI": 8.02916398720486,
+    "calendar": 16.291214268100312,
+    "road": 24.60482667320109
+  }
+}

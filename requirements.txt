@@ -34,5 +34,8 @@ six==1.17.0
 slicer==0.0.8
 threadpoolctl==3.6.0
 tqdm==4.68.4
+networkx==3.6.1
+lightgbm==4.6.0
+xgboost==3.3.0
 tzdata==2026.3
 urllib3==2.7.0

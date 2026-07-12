@@ -1,0 +1,19 @@
+{
+  "status": "completed",
+  "seed": 20260713,
+  "validation_pr_auc": 0.1208805691708471,
+  "best_iteration": 0,
+  "params": {
+    "iterations": 1500,
+    "learning_rate": 0.05,
+    "depth": 7,
+    "l2_leaf_reg": 5.0,
+    "loss_function": "Poisson",
+    "eval_metric": "RMSE",
+    "random_seed": 20260713,
+    "allow_writing_files": false,
+    "task_type": "GPU",
+    "devices": "0"
+  },
+  "seconds": 5.599303900002269
+}

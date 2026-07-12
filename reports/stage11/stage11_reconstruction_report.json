@@ -1,0 +1,84 @@
+{
+  "stage": "11",
+  "horizon": "1h",
+  "status": "parallel_split_reconstruction_complete",
+  "parallel_split_not_modification": true,
+  "source_dataset": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\processed\\training_dataset_1h.parquet",
+  "frozen_stage7a_boundaries": {
+    "split_time_axis": "datetime_hour interpreted as Asia/Almaty local civil time",
+    "initial_train_validation_boundary": "2024-09-06 13:00:00",
+    "initial_validation_test_boundary": "2025-08-09 12:00:00",
+    "purge_horizon_hours": 1,
+    "train_end_exclusive": "2024-09-06 12:00:00",
+    "validation_start": "2024-09-06 13:00:00",
+    "validation_end_exclusive": "2025-08-09 11:00:00",
+    "test_start": "2025-08-09 12:00:00",
+    "purged_boundary_rows": 11
+  },
+  "row_level_reconstruction_audit": {
+    "train": {
+      "rows_rebuilt": 92939,
+      "rows_stage7d": 92939,
+      "target_matches": true,
+      "segment_accidents_total_prior_matches": true,
+      "road_length_matches": true
+    },
+    "validation": {
+      "rows_rebuilt": 21747,
+      "rows_stage7d": 21747,
+      "target_matches": true,
+      "segment_accidents_total_prior_matches": true,
+      "road_length_matches": true
+    },
+    "test": {
+      "rows_rebuilt": 22110,
+      "rows_stage7d": 22110,
+      "target_matches": true,
+      "segment_accidents_total_prior_matches": true,
+      "road_length_matches": true
+    }
+  },
+  "road_segment_id": "Retained only as a join key; excluded from model features.",
+  "stage7a_train_only_transform": {
+    "road_highway_grouping": {
+      "source": "train only",
+      "rare_min_train_rows": 100,
+      "rare_categories_mapped_to_OTHER": [
+        "['residential', 'secondary_link']",
+        "['residential', 'unclassified']",
+        "['secondary_link', 'secondary']",
+        "['tertiary', 'residential']",
+        "['tertiary', 'secondary']",
+        "['tertiary', 'unclassified']",
+        "busway",
+        "living_street",
+        "trunk_link"
+      ],
+      "train_category_counts_before_grouping": {
+        "secondary": 39082,
+        "tertiary": 18750,
+        "primary": 17202,
+        "residential": 13675,
+        "trunk": 1699,
+        "secondary_link": 954,
+        "unclassified": 641,
+        "primary_link": 508,
+        "tertiary_link": 232,
+        "busway": 57,
+        "trunk_link": 49,
+        "living_street": 48,
+        "['tertiary', 'secondary']": 24,
+        "['residential', 'unclassified']": 6,
+        "['secondary_link', 'secondary']": 4,
+        "['tertiary', 'unclassified']": 4,
+        "['tertiary', 'residential']": 2,
+        "['residential', 'secondary_link']": 2
+      }
+    },
+    "missing_numeric_values_masked": [
+      "road_lanes_num",
+      "road_maxspeed_kmh"
+    ]
+  },
+  "next_step": "Add causal graph features, then train and evaluate the isolated candidate."
+}
