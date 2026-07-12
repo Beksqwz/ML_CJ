@@ -1,0 +1,298 @@
+{
+  "generated_at_utc": "2026-07-12T20:10:48.641277+00:00",
+  "horizon": "1h",
+  "stage7a_feature_config": "C:\\Users\\yedil\\OneDrive\\Рабочий стол\\CJ\\reports\\stage7a\\1h\\20260712T185922Z\\training_dataset_1h_feature_config.json",
+  "stage7a_baseline_report": "C:\\Users\\yedil\\OneDrive\\Рабочий стол\\CJ\\reports\\stage7a\\1h\\20260712T185922Z\\training_dataset_1h_stage7a_report.json",
+  "model_path": "C:\\Users\\yedil\\OneDrive\\Рабочий стол\\CJ\\models\\stage7b\\catboost_1h.cbm",
+  "device": "GPU",
+  "gpu_fallback_reason": null,
+  "best_iteration": 56,
+  "best_score": {
+    "learn": {
+      "Logloss": 0.2197249968729489,
+      "PRAUC": 0.488981325695104
+    },
+    "validation": {
+      "Logloss": 0.29184554820061387,
+      "PRAUC": 0.17311991697148627
+    }
+  },
+  "threshold": {
+    "rule": "maximum validation F1",
+    "value": 0.14767074048865308
+  },
+  "metrics": {
+    "train": {
+      "rows": 92939,
+      "positive_rows": 8449,
+      "positive_rate": 0.09090909090909091,
+      "pr_auc": 0.24399319236480285,
+      "roc_auc": 0.7139108921979939,
+      "precision": 0.2552103434967194,
+      "recall": 0.31305479938454256,
+      "f1": 0.2811885398394727,
+      "recall_at_top_10pct": 0.29281571783643034,
+      "lift_at_top_10pct": 2.9281256724768667,
+      "confusion_matrix": {
+        "tn": 76771,
+        "fp": 7719,
+        "fn": 5804,
+        "tp": 2645
+      }
+    },
+    "validation": {
+      "rows": 21747,
+      "positive_rows": 1977,
+      "positive_rate": 0.09090909090909091,
+      "pr_auc": 0.17359214021399147,
+      "roc_auc": 0.6594088338605137,
+      "precision": 0.1743309950636529,
+      "recall": 0.33940313606474454,
+      "f1": 0.2303467215928596,
+      "recall_at_top_10pct": 0.2271117855336368,
+      "lift_at_top_10pct": 2.2708045977011495,
+      "confusion_matrix": {
+        "tn": 16592,
+        "fp": 3178,
+        "fn": 1306,
+        "tp": 671
+      }
+    },
+    "test": {
+      "rows": 22110,
+      "positive_rows": 2010,
+      "positive_rate": 0.09090909090909091,
+      "pr_auc": 0.15992261853050208,
+      "roc_auc": 0.6444523279126755,
+      "precision": 0.15523173446670716,
+      "recall": 0.38159203980099504,
+      "f1": 0.22068767083872823,
+      "recall_at_top_10pct": 0.21492537313432836,
+      "lift_at_top_10pct": 2.1492537313432836,
+      "confusion_matrix": {
+        "tn": 15926,
+        "fp": 4174,
+        "fn": 1243,
+        "tp": 767
+      }
+    }
+  },
+  "calibration": {
+    "validation": {
+      "brier_score": 0.0802986123238068,
+      "expected_calibration_error_10_bins": 0.01607034108052372,
+      "bins": [
+        {
+          "bin": 0,
+          "rows": 12939,
+          "mean_prediction": 0.07214486852268139,
+          "observed_rate": 0.061442151634593094
+        },
+        {
+          "bin": 1,
+          "rows": 7109,
+          "mean_prediction": 0.13537470854220193,
+          "observed_rate": 0.11211140807427204
+        },
+        {
+          "bin": 2,
+          "rows": 1491,
+          "mean_prediction": 0.2352273019739418,
+          "observed_rate": 0.20791415157612342
+        },
+        {
+          "bin": 3,
+          "rows": 199,
+          "mean_prediction": 0.3334396934730744,
+          "observed_rate": 0.34673366834170855
+        },
+        {
+          "bin": 4,
+          "rows": 9,
+          "mean_prediction": 0.4165508450382258,
+          "observed_rate": 0.6666666666666666
+        },
+        {
+          "bin": 5,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        },
+        {
+          "bin": 6,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        },
+        {
+          "bin": 7,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        },
+        {
+          "bin": 8,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        },
+        {
+          "bin": 9,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        }
+      ]
+    },
+    "test": {
+      "brier_score": 0.08140459105220581,
+      "expected_calibration_error_10_bins": 0.02398739996428576,
+      "bins": [
+        {
+          "bin": 0,
+          "rows": 11849,
+          "mean_prediction": 0.07252736747143569,
+          "observed_rate": 0.06287450417756772
+        },
+        {
+          "bin": 1,
+          "rows": 7872,
+          "mean_prediction": 0.13738714111797937,
+          "observed_rate": 0.1016260162601626
+        },
+        {
+          "bin": 2,
+          "rows": 2060,
+          "mean_prediction": 0.23679068721267776,
+          "observed_rate": 0.18155339805825244
+        },
+        {
+          "bin": 3,
+          "rows": 324,
+          "mean_prediction": 0.33269381505094797,
+          "observed_rate": 0.2716049382716049
+        },
+        {
+          "bin": 4,
+          "rows": 5,
+          "mean_prediction": 0.42171011480805926,
+          "observed_rate": 0.6
+        },
+        {
+          "bin": 5,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        },
+        {
+          "bin": 6,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        },
+        {
+          "bin": 7,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        },
+        {
+          "bin": 8,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        },
+        {
+          "bin": 9,
+          "rows": 0,
+          "mean_prediction": null,
+          "observed_rate": null
+        }
+      ]
+    }
+  },
+  "baseline_comparison": {
+    "validation": {
+      "pr_auc": {
+        "absolute": 0.028716033914276434,
+        "relative_percent": 19.8210972448898
+      },
+      "roc_auc": {
+        "absolute": 0.08808340682645566,
+        "relative_percent": 15.417379073031313
+      },
+      "precision": {
+        "absolute": 0.00457606380244549,
+        "relative_percent": 2.695688289257502
+      },
+      "recall": {
+        "absolute": 0.052099140111279696,
+        "relative_percent": 18.1338028169014
+      },
+      "f1": {
+        "absolute": 0.01693323295863078,
+        "relative_percent": 7.934471746372503
+      },
+      "recall_at_top_10pct": {
+        "absolute": 0.014668689934243806,
+        "relative_percent": 6.904761904761907
+      },
+      "lift_at_top_10pct": {
+        "absolute": 0.14666666666666694,
+        "relative_percent": 6.904761904761919
+      }
+    },
+    "test": {
+      "pr_auc": {
+        "absolute": 0.0295722589047131,
+        "relative_percent": 22.6867489967879
+      },
+      "roc_auc": {
+        "absolute": 0.10373412786812208,
+        "relative_percent": 19.184508281684383
+      },
+      "precision": {
+        "absolute": 0.0018771018788477367,
+        "relative_percent": 1.224026850165295
+      },
+      "recall": {
+        "absolute": 0.11890547263681595,
+        "relative_percent": 45.26515151515152
+      },
+      "f1": {
+        "absolute": 0.02703280195921237,
+        "relative_percent": 13.959267905642525
+      },
+      "recall_at_top_10pct": {
+        "absolute": 0.021890547263681587,
+        "relative_percent": 11.340206185567007
+      },
+      "lift_at_top_10pct": {
+        "absolute": 0.2189054726368158,
+        "relative_percent": 11.340206185567006
+      }
+    }
+  },
+  "overfitting_check": {
+    "train_validation_pr_auc_gap": 0.07040105215081138,
+    "validation_test_pr_auc_gap": 0.013669521683489394,
+    "train_validation_roc_auc_gap": 0.05450205833748012,
+    "interpretation": "Large positive train-validation gaps indicate possible overfitting; validation-test gaps indicate temporal generalization drift."
+  },
+  "prediction_files": {
+    "validation": "C:\\Users\\yedil\\OneDrive\\Рабочий стол\\CJ\\data\\processed\\stage7b\\predictions\\training_dataset_1h_validation_predictions.parquet",
+    "test": "C:\\Users\\yedil\\OneDrive\\Рабочий стол\\CJ\\data\\processed\\stage7b\\predictions\\training_dataset_1h_test_predictions.parquet"
+  },
+  "training_exclusions": [
+    "calendar_date",
+    "datetime_hour",
+    "road_segment_id",
+    "target_1h",
+    "target_datetime_hour"
+  ],
+  "not_run": [
+    "SHAP",
+    "recommendation engine",
+    "git commit"
+  ]
+}

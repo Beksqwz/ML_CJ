@@ -15,6 +15,10 @@ Thumbs.db
 .vscode/
 cache/
 
+# Credentials and locally collected real-time traffic snapshots
+.env
+data/live_traffic/
+
 # Keep Parquet as the canonical data format; CSV exports are reproducible.
 data/processed/*.csv
 data/external/*.csv

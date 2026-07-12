@@ -32,10 +32,13 @@
     "poi_transit_stop_500m",
     "weather_temperature_2m",
     "weather_relative_humidity_2m",
+    "weather_dew_point_2m",
+    "weather_surface_pressure",
     "weather_precipitation",
     "weather_rain",
     "weather_snowfall",
     "weather_cloud_cover",
+    "weather_sunshine_duration",
     "weather_wind_speed_10m",
     "weather_wind_gusts_10m",
     "segment_accidents_total_prior",
@@ -113,7 +116,7 @@
     "road_segment_id",
     "target_24h"
   ],
-  "source_stage7a_config": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\reports\\stage7a\\24h\\20260711T090515Z\\training_dataset_24h_feature_config.json",
+  "source_stage7a_config": "C:\\Users\\yedil\\OneDrive\\Рабочий стол\\CJ\\reports\\stage7a\\24h\\20260712T185929Z\\training_dataset_24h_feature_config.json",
   "new_weather_numerical_features": [
     "weather_code",
     "weather_risk_precip_now",

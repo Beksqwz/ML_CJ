@@ -1,0 +1,42 @@
+{
+  "source": "Open-Meteo Historical Weather API /v1/archive",
+  "source_url": "https://archive-api.open-meteo.com/v1/archive",
+  "latitude": 51.1694,
+  "longitude": 71.4491,
+  "timezone": "Asia/Almaty",
+  "model": "era5",
+  "hourly_variables": [
+    "temperature_2m",
+    "relative_humidity_2m",
+    "dew_point_2m",
+    "surface_pressure",
+    "precipitation",
+    "rain",
+    "snowfall",
+    "weather_code",
+    "cloud_cover",
+    "sunshine_duration",
+    "wind_speed_10m",
+    "wind_gusts_10m"
+  ],
+  "start": "2011-12-27",
+  "end": "2026-06-29",
+  "rows": 127176,
+  "missing_values": {
+    "temperature_2m": 0,
+    "relative_humidity_2m": 0,
+    "dew_point_2m": 0,
+    "surface_pressure": 0,
+    "precipitation": 0,
+    "rain": 0,
+    "snowfall": 0,
+    "weather_code": 0,
+    "cloud_cover": 0,
+    "sunshine_duration": 0,
+    "wind_speed_10m": 0,
+    "wind_gusts_10m": 0
+  },
+  "output_parquet": "C:\\Users\\yedil\\OneDrive\\Рабочий стол\\CJ\\data\\external\\weather_astana_hourly.parquet",
+  "output_csv": "C:\\Users\\yedil\\OneDrive\\Рабочий стол\\CJ\\data\\external\\weather_astana_hourly.csv",
+  "generated_at_utc": "2026-07-12T18:56:22.925461+00:00"
+}

@@ -1,0 +1,5 @@
+{
+  "rule": "Maximum F1 selected exclusively on validation probabilities.",
+  "threshold": 0.18757560072057805,
+  "validation_f1_at_threshold": 0.3419803535451265
+}

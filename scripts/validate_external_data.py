@@ -73,11 +73,14 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
     weather_vars = [
         "temperature_2m",
         "relative_humidity_2m",
+        "dew_point_2m",
+        "surface_pressure",
         "precipitation",
         "rain",
         "snowfall",
         "weather_code",
         "cloud_cover",
+        "sunshine_duration",
         "wind_speed_10m",
         "wind_gusts_10m",
     ]

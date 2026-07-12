@@ -63,6 +63,69 @@ python scripts/run_stage8c_inference.py
 
 The demo uses a fixed historical hour, not the current date.
 
+## Live weather (OpenWeather)
+
+For a current-hour prediction, the backend can replace the archived weather row
+with live observations from OpenWeather. Put `OPENWEATHER_API_KEY` in the
+untracked `.env` file (copy `.env.example` first), then call:
+
+```python
+from ml_service import AccidentRiskPredictor
+
+result = AccidentRiskPredictor().predict_current_city(horizon="1h")
+```
+
+`result["live_weather"]` contains the normalized current conditions and source.
+If the key or API is unavailable, the call returns no predictions and an explicit
+reason; it never silently falls back to the static historical weather file.
+
+## Live traffic (TomTom, optional)
+
+TomTom Flow Segment Data is integrated as an **independent live indicator**. For
+each `road_segment_id`, the service calculates the geometrical midpoint of the
+stored OSM line and asks TomTom for the closest traffic-flow segment at that
+WGS84 point. The response exposes `current_speed`, `free_flow_speed`,
+`congestion_ratio` (`current/free-flow`), and `confidence`. The TomTom segment
+can differ slightly from the OSM segment, so this is a point-near-segment
+enrichment rather than an identity join.
+
+It is intentionally not a CatBoost feature and is never written into a training
+dataset: there is no historical traffic series aligned with the historical ДТП
+labels. The backend method keeps the two signals separate:
+
+```python
+from ml_service import AccidentRiskPredictor
+
+result = AccidentRiskPredictor().predict_segment_with_live_traffic(
+    "2744171408_2744219355_0", "2022-09-08 15:00:00", "1h"
+)
+# result["predictions"][0]["risk_probability"] is frozen-model risk
+# result["live_traffic"]["congestion_ratio"] is current traffic only
+```
+
+Create an untracked local `.env` from `.env.example` and set `TOMTOM_API_KEY`
+(or export it in the process environment). Then run a bounded collection for
+the top model-risk segments:
+
+```powershell
+$env:TOMTOM_API_KEY = "your-key"
+.\.venv\Scripts\python.exe scripts\collect_tomtom_live_traffic.py --datetime 2022-09-08T15:00:00 --top-n 100 --interval-seconds 3600 --iterations 1
+```
+
+Snapshots append to `data/live_traffic/tomtom_flow_snapshots.parquet` with
+`timestamp`, `road_segment_id`, WGS84 query `coordinates` (`lat,lon`), `current_speed`,
+`free_flow_speed`, `congestion_ratio`, and `confidence`. Missing key, no local
+road match, TomTom coverage gaps, timeouts, and API errors return
+`available: false` with a reason; model inference still succeeds.
+
+The current TomTom Freemium allowance is 2,500 free **non-tile** requests per
+day. Flow Segment Data counts as one request per queried segment: 100 segments
+hourly is 2,400/day; 50 segments every 15 minutes is 4,800/day and exceeds the
+free cap. Watch actual dashboard usage, handle HTTP 429, and use a paid plan or
+a lower frequency before enabling a continuous production collector. Traffic
+coverage and confidence vary by road; do not interpret congestion as a causal
+change in accident risk.
+
 ## Reproducibility runbook
 
 Use the repository virtual environment on Windows:

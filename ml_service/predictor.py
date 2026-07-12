@@ -19,6 +19,8 @@ from .exceptions import (
 )
 from .registry import ModelRegistry, ROOT
 from .utils import parse_datetime, validate_bbox
+from .traffic import TomTomTrafficService
+from .weather import OpenWeatherService
 
 
 class AccidentRiskPredictor:
@@ -74,15 +76,15 @@ class AccidentRiskPredictor:
             self.models[horizon] = model
 
     def _score_city(
-        self, datetime_hour: str, horizon: str
+        self, datetime_hour: str, horizon: str, *, weather_override: dict[str, Any] | None = None
     ) -> tuple[list[dict[str, Any]], pd.DataFrame]:
-        when = parse_datetime(datetime_hour, self.datetime_min, self.datetime_max)
-        key = (str(when), horizon)
+        when = parse_datetime(datetime_hour) if weather_override else parse_datetime(datetime_hour, self.datetime_min, self.datetime_max)
+        key = (str(when), horizon, bool(weather_override))
         if key in self._cache:
             return self._cache[key]
         entry = self.registry.get(horizon)
         try:
-            data, _ = build_features(when, horizon)
+            data, _ = build_features(when, horizon, weather_override=weather_override)
         except (FileNotFoundError, json.JSONDecodeError, KeyError, IndexError, TypeError) as exc:
             raise ConfigNotFoundError(
                 "Feature construction configuration is unavailable for this prediction."
@@ -146,12 +148,15 @@ class AccidentRiskPredictor:
         horizon: str,
     ) -> dict[str, Any]:
         features = []
+        missing_geometry = 0
         for record in records:
             geometry = self._geometry.get(record["road_segment_id"])
             if geometry is None:
-                raise UnknownRoadSegmentError(
-                    f"Missing geometry: {record['road_segment_id']}"
-                )
+                # Data preparation can contain a segment absent from the map
+                # export. Keep its numerical prediction, but omit only its
+                # non-renderable GeoJSON feature.
+                missing_geometry += 1
+                continue
             properties = {
                 key: record[key]
                 for key in (
@@ -173,7 +178,12 @@ class AccidentRiskPredictor:
             "model_horizon": horizon,
             "predictions": records,
             "geojson": {"type": "FeatureCollection", "features": features},
-            "summary": {"segments": len(records), "risk_level_counts": dict(counts)},
+            "summary": {
+                "segments": len(records),
+                "geojson_segments": len(features),
+                "segments_without_geometry": missing_geometry,
+                "risk_level_counts": dict(counts),
+            },
         }
 
     def predict_city(self, datetime_hour: str, horizon: str) -> dict[str, Any]:
@@ -238,6 +248,43 @@ class AccidentRiskPredictor:
     def get_model_info(self) -> dict[str, Any]:
         """Expose final model stages, feature counts, registry version, and display thresholds."""
         return self.registry.info() | {"risk_thresholds": self.thresholds}
+
+    def predict_segment_with_live_traffic(
+        self, road_segment_id: str, datetime_hour: str, horizon: str,
+        traffic: TomTomTrafficService | None = None,
+    ) -> dict[str, Any]:
+        """Serve model risk and current congestion as independent indicators."""
+        response = self.predict_segment(road_segment_id, datetime_hour, horizon)
+        service = traffic or TomTomTrafficService()
+        response["live_traffic"] = service.get_segment(road_segment_id)
+        return response
+
+    def get_live_weather(self, weather: OpenWeatherService | None = None) -> dict[str, Any]:
+        """Return current OpenWeather conditions without changing model inputs."""
+        return (weather or OpenWeatherService()).get_current()
+
+    def predict_current_city(self, horizon: str, weather: OpenWeatherService | None = None) -> dict[str, Any]:
+        """Score the current Astana hour using OpenWeather observations.
+
+        The frozen model receives live weather, while the response clearly
+        reports unavailable data instead of silently reverting to static weather.
+        """
+        live = self.get_live_weather(weather)
+        if not live.get("available"):
+            return {"live_weather": live, "predictions": [], "summary": {"segments": 0}}
+        from datetime import datetime
+        from zoneinfo import ZoneInfo
+        # Archived calendar and accident timestamps are local, timezone-naive
+        # values. Keep the live request in that same representation after
+        # obtaining the current Astana local hour.
+        now = datetime.now(ZoneInfo("Asia/Almaty")).replace(
+            minute=0, second=0, microsecond=0, tzinfo=None
+        )
+        records, frame = self._score_city(str(now), horizon, weather_override=live)
+        response = self._response(records, frame, str(now), horizon)
+        response["live_weather"] = live
+        response["weather_mode"] = "openweather_current"
+        return response
 
     def healthcheck(self) -> dict[str, Any]:
         """Report readiness after the constructor has loaded every final model once."""
