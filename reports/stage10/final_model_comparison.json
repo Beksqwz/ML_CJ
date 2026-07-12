@@ -1,0 +1,236 @@
+{
+  "generated_at_utc": "2026-07-12T07:31:00.854072+00:00",
+  "stage": "10",
+  "comparison_rows": [
+    {
+      "horizon": "1h",
+      "split": "validation",
+      "metric": "pr_auc",
+      "catboost": 0.17573492175064576,
+      "xgboost": 0.16897773397402224,
+      "lightgbm": 0.17063812110934767
+    },
+    {
+      "horizon": "1h",
+      "split": "validation",
+      "metric": "roc_auc",
+      "catboost": 0.653605077511258,
+      "xgboost": 0.6611174306241554,
+      "lightgbm": 0.6538028245408951
+    },
+    {
+      "horizon": "1h",
+      "split": "validation",
+      "metric": "lift_at_top_10pct",
+      "catboost": 2.3466666666666667,
+      "xgboost": 2.225287356321839,
+      "lightgbm": 2.220229885057471
+    },
+    {
+      "horizon": "1h",
+      "split": "validation",
+      "metric": "brier_score",
+      "catboost": 0.0806786131073082,
+      "xgboost": 0.08016602694988251,
+      "lightgbm": 0.0804085765691075
+    },
+    {
+      "horizon": "1h",
+      "split": "validation",
+      "metric": "expected_calibration_error_10_bins",
+      "catboost": 0.02400687808728328,
+      "xgboost": 0.004171054984841636,
+      "lightgbm": 0.01274772998998298
+    },
+    {
+      "horizon": "1h",
+      "split": "test",
+      "metric": "pr_auc",
+      "catboost": 0.1580147210307248,
+      "xgboost": 0.1604775948653394,
+      "lightgbm": 0.15572607683242357
+    },
+    {
+      "horizon": "1h",
+      "split": "test",
+      "metric": "roc_auc",
+      "catboost": 0.6369856315437737,
+      "xgboost": 0.653725637979258,
+      "lightgbm": 0.6364222172718497
+    },
+    {
+      "horizon": "1h",
+      "split": "test",
+      "metric": "lift_at_top_10pct",
+      "catboost": 2.1492537313432836,
+      "xgboost": 2.1343283582089554,
+      "lightgbm": 2.1094527363184077
+    },
+    {
+      "horizon": "1h",
+      "split": "test",
+      "metric": "brier_score",
+      "catboost": 0.08179419371013219,
+      "xgboost": 0.08076523244380951,
+      "lightgbm": 0.0815175889258916
+    },
+    {
+      "horizon": "1h",
+      "split": "test",
+      "metric": "expected_calibration_error_10_bins",
+      "catboost": 0.028884006175384763,
+      "xgboost": 0.011734240688804807,
+      "lightgbm": 0.02001773484572122
+    },
+    {
+      "horizon": "1h",
+      "split": "resource",
+      "metric": "training_time_seconds",
+      "catboost": null,
+      "xgboost": 3.783608700003242,
+      "lightgbm": 2.6513667999824975
+    },
+    {
+      "horizon": "1h",
+      "split": "resource",
+      "metric": "prediction_time_validation_seconds",
+      "catboost": 0.17238020000513643,
+      "xgboost": 0.020932699990225956,
+      "lightgbm": 0.047157300024991855
+    },
+    {
+      "horizon": "1h",
+      "split": "resource",
+      "metric": "prediction_time_test_seconds",
+      "catboost": 0.1763193000224419,
+      "xgboost": 0.02490140000008978,
+      "lightgbm": 0.056506199995055795
+    },
+    {
+      "horizon": "1h",
+      "split": "resource",
+      "metric": "model_size_bytes",
+      "catboost": 267584,
+      "xgboost": 1525063,
+      "lightgbm": 1027869
+    },
+    {
+      "horizon": "24h",
+      "split": "validation",
+      "metric": "pr_auc",
+      "catboost": 0.2828499272698683,
+      "xgboost": 0.28260233336371593,
+      "lightgbm": 0.28112094904592816
+    },
+    {
+      "horizon": "24h",
+      "split": "validation",
+      "metric": "roc_auc",
+      "catboost": 0.642696946501178,
+      "xgboost": 0.6393714902270509,
+      "lightgbm": 0.6391503603581276
+    },
+    {
+      "horizon": "24h",
+      "split": "validation",
+      "metric": "lift_at_top_10pct",
+      "catboost": 2.1302074877423127,
+      "xgboost": 2.164301717699776,
+      "lightgbm": 2.1574828717082832
+    },
+    {
+      "horizon": "24h",
+      "split": "validation",
+      "metric": "brier_score",
+      "catboost": 0.1335436695221157,
+      "xgboost": 0.1328139305114746,
+      "lightgbm": 0.13287133329692175
+    },
+    {
+      "horizon": "24h",
+      "split": "validation",
+      "metric": "expected_calibration_error_10_bins",
+      "catboost": 0.029847847470242626,
+      "xgboost": 0.013713915796970972,
+      "lightgbm": 0.012915036615948573
+    },
+    {
+      "horizon": "24h",
+      "split": "test",
+      "metric": "pr_auc",
+      "catboost": 0.2556304458420362,
+      "xgboost": 0.2510537934668091,
+      "lightgbm": 0.25678704867339697
+    },
+    {
+      "horizon": "24h",
+      "split": "test",
+      "metric": "roc_auc",
+      "catboost": 0.6119725037777589,
+      "xgboost": 0.6059404707252619,
+      "lightgbm": 0.6089806681568611
+    },
+    {
+      "horizon": "24h",
+      "split": "test",
+      "metric": "lift_at_top_10pct",
+      "catboost": 1.9948709729123257,
+      "xgboost": 1.9246674146497837,
+      "lightgbm": 2.0220120745846026
+    },
+    {
+      "horizon": "24h",
+      "split": "test",
+      "metric": "brier_score",
+      "catboost": 0.137846258527098,
+      "xgboost": 0.13657473027706146,
+      "lightgbm": 0.13634503966015524
+    },
+    {
+      "horizon": "24h",
+      "split": "test",
+      "metric": "expected_calibration_error_10_bins",
+      "catboost": 0.04511661294828687,
+      "xgboost": 0.03016303682902183,
+      "lightgbm": 0.031933966601505125
+    },
+    {
+      "horizon": "24h",
+      "split": "resource",
+      "metric": "training_time_seconds",
+      "catboost": null,
+      "xgboost": 28.930401599995093,
+      "lightgbm": 9.705948199989507
+    },
+    {
+      "horizon": "24h",
+      "split": "resource",
+      "metric": "prediction_time_validation_seconds",
+      "catboost": 2.2835303000174463,
+      "xgboost": 0.14311390000511892,
+      "lightgbm": 0.18145410000579432
+    },
+    {
+      "horizon": "24h",
+      "split": "resource",
+      "metric": "prediction_time_test_seconds",
+      "catboost": 4.312374800007092,
+      "xgboost": 0.25163630000315607,
+      "lightgbm": 0.3634946000238415
+    },
+    {
+      "horizon": "24h",
+      "split": "resource",
+      "metric": "model_size_bytes",
+      "catboost": 113272,
+      "xgboost": 1653884,
+      "lightgbm": 385471
+    }
+  ],
+  "winner_by_horizon": {
+    "1h": "CatBoost",
+    "24h": "LightGBM"
+  },
+  "conclusion_ru": "После объективного сравнения CatBoost, XGBoost и LightGBM на одинаковых данных, одинаковых признаках и одинаковом temporal split: для 1h финальной production-моделью остаётся CatBoost; для 24h LightGBM является победителем изолированного эксперимента, так как проходит все заданные test-критерии. Production-модели этим экспериментом не изменяются.",
+  "catboost_training_time_note": "Historic CatBoost training duration was not recorded; retraining frozen final models is intentionally prohibited."
+}

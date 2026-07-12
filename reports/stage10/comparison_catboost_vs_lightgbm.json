@@ -1,0 +1,222 @@
+{
+  "generated_at_utc": "2026-07-12T07:29:46.436920+00:00",
+  "stage": "10B",
+  "comparison_rows": [
+    {
+      "horizon": "1h",
+      "split": "validation",
+      "metric": "pr_auc",
+      "catboost": 0.17573492175064576,
+      "lightgbm": 0.17063812110934767
+    },
+    {
+      "horizon": "1h",
+      "split": "validation",
+      "metric": "roc_auc",
+      "catboost": 0.653605077511258,
+      "lightgbm": 0.6538028245408951
+    },
+    {
+      "horizon": "1h",
+      "split": "validation",
+      "metric": "lift_at_top_10pct",
+      "catboost": 2.3466666666666667,
+      "lightgbm": 2.220229885057471
+    },
+    {
+      "horizon": "1h",
+      "split": "validation",
+      "metric": "brier_score",
+      "catboost": 0.0806786131073082,
+      "lightgbm": 0.0804085765691075
+    },
+    {
+      "horizon": "1h",
+      "split": "validation",
+      "metric": "expected_calibration_error_10_bins",
+      "catboost": 0.02400687808728328,
+      "lightgbm": 0.01274772998998298
+    },
+    {
+      "horizon": "1h",
+      "split": "test",
+      "metric": "pr_auc",
+      "catboost": 0.1580147210307248,
+      "lightgbm": 0.15572607683242357
+    },
+    {
+      "horizon": "1h",
+      "split": "test",
+      "metric": "roc_auc",
+      "catboost": 0.6369856315437737,
+      "lightgbm": 0.6364222172718497
+    },
+    {
+      "horizon": "1h",
+      "split": "test",
+      "metric": "lift_at_top_10pct",
+      "catboost": 2.1492537313432836,
+      "lightgbm": 2.1094527363184077
+    },
+    {
+      "horizon": "1h",
+      "split": "test",
+      "metric": "brier_score",
+      "catboost": 0.08179419371013219,
+      "lightgbm": 0.0815175889258916
+    },
+    {
+      "horizon": "1h",
+      "split": "test",
+      "metric": "expected_calibration_error_10_bins",
+      "catboost": 0.028884006175384763,
+      "lightgbm": 0.02001773484572122
+    },
+    {
+      "horizon": "1h",
+      "split": "resource",
+      "metric": "training_time_seconds",
+      "catboost": null,
+      "lightgbm": 2.6513667999824975
+    },
+    {
+      "horizon": "1h",
+      "split": "resource",
+      "metric": "prediction_time_validation_seconds",
+      "catboost": 0.17238020000513643,
+      "lightgbm": 0.047157300024991855
+    },
+    {
+      "horizon": "1h",
+      "split": "resource",
+      "metric": "prediction_time_test_seconds",
+      "catboost": 0.1763193000224419,
+      "lightgbm": 0.056506199995055795
+    },
+    {
+      "horizon": "1h",
+      "split": "resource",
+      "metric": "model_size_bytes",
+      "catboost": 267584,
+      "lightgbm": 1027869
+    },
+    {
+      "horizon": "24h",
+      "split": "validation",
+      "metric": "pr_auc",
+      "catboost": 0.2828499272698683,
+      "lightgbm": 0.28112094904592816
+    },
+    {
+      "horizon": "24h",
+      "split": "validation",
+      "metric": "roc_auc",
+      "catboost": 0.642696946501178,
+      "lightgbm": 0.6391503603581276
+    },
+    {
+      "horizon": "24h",
+      "split": "validation",
+      "metric": "lift_at_top_10pct",
+      "catboost": 2.1302074877423127,
+      "lightgbm": 2.1574828717082832
+    },
+    {
+      "horizon": "24h",
+      "split": "validation",
+      "metric": "brier_score",
+      "catboost": 0.1335436695221157,
+      "lightgbm": 0.13287133329692175
+    },
+    {
+      "horizon": "24h",
+      "split": "validation",
+      "metric": "expected_calibration_error_10_bins",
+      "catboost": 0.029847847470242626,
+      "lightgbm": 0.012915036615948573
+    },
+    {
+      "horizon": "24h",
+      "split": "test",
+      "metric": "pr_auc",
+      "catboost": 0.2556304458420362,
+      "lightgbm": 0.25678704867339697
+    },
+    {
+      "horizon": "24h",
+      "split": "test",
+      "metric": "roc_auc",
+      "catboost": 0.6119725037777589,
+      "lightgbm": 0.6089806681568611
+    },
+    {
+      "horizon": "24h",
+      "split": "test",
+      "metric": "lift_at_top_10pct",
+      "catboost": 1.9948709729123257,
+      "lightgbm": 2.0220120745846026
+    },
+    {
+      "horizon": "24h",
+      "split": "test",
+      "metric": "brier_score",
+      "catboost": 0.137846258527098,
+      "lightgbm": 0.13634503966015524
+    },
+    {
+      "horizon": "24h",
+      "split": "test",
+      "metric": "expected_calibration_error_10_bins",
+      "catboost": 0.04511661294828687,
+      "lightgbm": 0.031933966601505125
+    },
+    {
+      "horizon": "24h",
+      "split": "resource",
+      "metric": "training_time_seconds",
+      "catboost": null,
+      "lightgbm": 9.705948199989507
+    },
+    {
+      "horizon": "24h",
+      "split": "resource",
+      "metric": "prediction_time_validation_seconds",
+      "catboost": 2.2835303000174463,
+      "lightgbm": 0.18145410000579432
+    },
+    {
+      "horizon": "24h",
+      "split": "resource",
+      "metric": "prediction_time_test_seconds",
+      "catboost": 4.312374800007092,
+      "lightgbm": 0.3634946000238415
+    },
+    {
+      "horizon": "24h",
+      "split": "resource",
+      "metric": "model_size_bytes",
+      "catboost": 113272,
+      "lightgbm": 385471
+    }
+  ],
+  "winner_by_horizon": {
+    "1h": {
+      "winner": "CatBoost",
+      "test_pr_auc_and_lift_not_worse": false,
+      "test_calibration_not_worse": true,
+      "no_overfitting": true,
+      "validation_test_pr_auc_gap": 0.014912044276924108,
+      "catboost_validation_test_pr_auc_gap": 0.017720200719920948,
+      "reason_ru": "LightGBM отклонён: не все обязательные test-критерии победы выполнены."
+    },
+    "24h": {
+      "winner": "LightGBM",
+      "test_pr_auc_and_lift_not_worse": true,
+      "test_calibration_not_worse": true,
+      "no_overfitting": true,
+      "validation_test_pr_auc_gap": 0.024333900372531192,
+      "catboost_validation_test_pr_auc_gap": 0.027219481427832093,
+      "reason_ru": "LightGBM удовлетворяет всем обязательным тестовым критериям."
+    }
+  }
+}

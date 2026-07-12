@@ -1,0 +1,684 @@
+{
+  "generated_at_utc": "2026-07-12T07:29:46.345558+00:00",
+  "stage": "10B",
+  "horizon": "24h",
+  "isolation": "Independent experiment. Existing pipeline, Stage 7 assets, CatBoost, XGBoost Stage 10A, SHAP, recommendations, inference, API, and final models were not modified.",
+  "dataset": {
+    "split_source": "Stage 7B final dataset",
+    "paths": {
+      "train": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\processed\\stage7a\\training_dataset_24h_train.parquet",
+      "validation": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\processed\\stage7a\\training_dataset_24h_validation.parquet",
+      "test": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\processed\\stage7a\\training_dataset_24h_test.parquet"
+    }
+  },
+  "feature_contract": {
+    "feature_count": 77,
+    "feature_order": [
+      "road_lanes_num",
+      "road_maxspeed_kmh",
+      "road_length",
+      "segment_longitude",
+      "segment_latitude",
+      "poi_total_100m",
+      "poi_crossing_100m",
+      "poi_education_100m",
+      "poi_emergency_100m",
+      "poi_healthcare_100m",
+      "poi_other_100m",
+      "poi_traffic_signal_100m",
+      "poi_transit_stop_100m",
+      "poi_total_250m",
+      "poi_crossing_250m",
+      "poi_education_250m",
+      "poi_emergency_250m",
+      "poi_healthcare_250m",
+      "poi_other_250m",
+      "poi_traffic_signal_250m",
+      "poi_transit_stop_250m",
+      "poi_total_500m",
+      "poi_crossing_500m",
+      "poi_education_500m",
+      "poi_emergency_500m",
+      "poi_healthcare_500m",
+      "poi_other_500m",
+      "poi_traffic_signal_500m",
+      "poi_transit_stop_500m",
+      "weather_temperature_2m",
+      "weather_relative_humidity_2m",
+      "weather_precipitation",
+      "weather_rain",
+      "weather_snowfall",
+      "weather_cloud_cover",
+      "weather_wind_speed_10m",
+      "weather_wind_gusts_10m",
+      "segment_accidents_total_prior",
+      "segment_accidents_prev_24h",
+      "segment_accidents_prev_7d",
+      "segment_accidents_prev_30d",
+      "segment_hours_since_prev_accident",
+      "city_accidents_total_prior",
+      "city_accidents_prev_24h",
+      "city_accidents_prev_7d",
+      "city_accidents_prev_30d",
+      "segment_accidents_same_month_prior",
+      "segment_accidents_same_hour_weekday_prior",
+      "segment_accidents_same_month_hour_weekday_prior",
+      "segment_accidents_holiday_prior",
+      "segment_accidents_new_year_period_prior",
+      "road_highway",
+      "road_oneway",
+      "road_lanes_missing",
+      "road_maxspeed_missing",
+      "road_name_missing",
+      "calendar_year",
+      "calendar_month",
+      "calendar_day",
+      "calendar_hour",
+      "calendar_weekday",
+      "calendar_is_weekend",
+      "calendar_is_holiday",
+      "calendar_holiday_name",
+      "calendar_is_day_before_holiday",
+      "calendar_is_day_after_holiday",
+      "calendar_is_rush_hour",
+      "calendar_season",
+      "calendar_is_school_year",
+      "calendar_is_school_summer_break",
+      "calendar_is_school_winter_break",
+      "calendar_is_school_spring_break",
+      "calendar_is_school_autumn_break",
+      "calendar_is_school_break",
+      "calendar_is_new_year_period",
+      "weather_weather_code",
+      "segment_has_history"
+    ],
+    "categorical_encoding": "Train-only ordinal mapping; unseen validation/test categories map to -1. No feature is added, removed, or reordered."
+  },
+  "parameters": {
+    "objective": "binary",
+    "metric": "average_precision",
+    "n_estimators": 1500,
+    "learning_rate": 0.05,
+    "num_leaves": 63,
+    "max_depth": 7,
+    "feature_fraction": 0.8,
+    "bagging_fraction": 0.8,
+    "bagging_freq": 1,
+    "min_child_samples": 50,
+    "lambda_l2": 5.0,
+    "random_state": 20260711,
+    "n_jobs": -1,
+    "verbosity": -1
+  },
+  "early_stopping": {
+    "split": "validation",
+    "rounds": 100,
+    "best_iteration": 55
+  },
+  "threshold": {
+    "rule": "maximum validation F1",
+    "value": 0.18130781139812882
+  },
+  "metrics": {
+    "validation": {
+      "rows": 307968,
+      "positive_rows": 51328,
+      "positive_rate": 0.16666666666666666,
+      "pr_auc": 0.28112094904592816,
+      "roc_auc": 0.6391503603581276,
+      "precision": 0.26573075434393734,
+      "recall": 0.49489557356608477,
+      "f1": 0.34579127558347683,
+      "lift_at_top_10pct": 2.1574828717082832,
+      "brier_score": 0.13287133329692175,
+      "expected_calibration_error_10_bins": 0.012915036615948573,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 68129,
+          "mean_prediction": 0.08023613068843176,
+          "observed_rate": 0.10759001306345316
+        },
+        {
+          "bin": 1,
+          "rows": 162260,
+          "mean_prediction": 0.14132577059847562,
+          "observed_rate": 0.13652163194872427
+        },
+        {
+          "bin": 2,
+          "rows": 44578,
+          "mean_prediction": 0.24073656948913974,
+          "observed_rate": 0.22719727219704788
+        },
+        {
+          "bin": 3,
+          "rows": 22915,
+          "mean_prediction": 0.346074895529362,
+          "observed_rate": 0.32480907702378353
+        },
+        {
+          "bin": 4,
+          "rows": 8902,
+          "mean_prediction": 0.4371438208088521,
+          "observed_rate": 0.4122669063131881
+        },
+        {
+          "bin": 5,
+          "rows": 1183,
+          "mean_prediction": 0.5294842929637812,
+          "observed_rate": 0.5114116652578191
+        },
+        {
+          "bin": 6,
+          "rows": 1,
+          "mean_prediction": 0.6105697452074479,
+          "observed_rate": 0.0
+        }
+      ],
+      "confusion_matrix": {
+        "tn": 186449,
+        "fp": 70191,
+        "fn": 25926,
+        "tp": 25402
+      }
+    },
+    "test": {
+      "rows": 561510,
+      "positive_rows": 93585,
+      "positive_rate": 0.16666666666666666,
+      "pr_auc": 0.25678704867339697,
+      "roc_auc": 0.6089806681568611,
+      "precision": 0.22715061234320863,
+      "recall": 0.524015600790725,
+      "f1": 0.3169217744775864,
+      "lift_at_top_10pct": 2.0220120745846026,
+      "brier_score": 0.13634503966015524,
+      "expected_calibration_error_10_bins": 0.031933966601505125,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 104004,
+          "mean_prediction": 0.08115375220772508,
+          "observed_rate": 0.12323564478289296
+        },
+        {
+          "bin": 1,
+          "rows": 277628,
+          "mean_prediction": 0.1439674590041479,
+          "observed_rate": 0.13587606437391042
+        },
+        {
+          "bin": 2,
+          "rows": 100336,
+          "mean_prediction": 0.24167804890474298,
+          "observed_rate": 0.18121113060118005
+        },
+        {
+          "bin": 3,
+          "rows": 53902,
+          "mean_prediction": 0.34565768937044705,
+          "observed_rate": 0.27880227078772585
+        },
+        {
+          "bin": 4,
+          "rows": 23163,
+          "mean_prediction": 0.4392995900049516,
+          "observed_rate": 0.37840521521391873
+        },
+        {
+          "bin": 5,
+          "rows": 2475,
+          "mean_prediction": 0.5235494405884674,
+          "observed_rate": 0.43232323232323233
+        },
+        {
+          "bin": 6,
+          "rows": 2,
+          "mean_prediction": 0.6139832632665085,
+          "observed_rate": 0.0
+        }
+      ],
+      "confusion_matrix": {
+        "tn": 301073,
+        "fp": 166852,
+        "fn": 44545,
+        "tp": 49040
+      }
+    }
+  },
+  "timing_seconds": {
+    "training": 9.705948199989507,
+    "prediction": {
+      "validation": 0.18145410000579432,
+      "test": 0.3634946000238415
+    }
+  },
+  "model": {
+    "path": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\models\\stage10_experiments\\lightgbm_24h.txt",
+    "size_bytes": 385471
+  },
+  "feature_importance": [
+    {
+      "feature": "segment_accidents_total_prior",
+      "importance_gain": 257028.26473999023,
+      "importance_split": 135
+    },
+    {
+      "feature": "calendar_day",
+      "importance_gain": 119801.5714378357,
+      "importance_split": 688
+    },
+    {
+      "feature": "segment_hours_since_prev_accident",
+      "importance_gain": 118399.0107421875,
+      "importance_split": 167
+    },
+    {
+      "feature": "road_length",
+      "importance_gain": 95573.2897644043,
+      "importance_split": 246
+    },
+    {
+      "feature": "segment_latitude",
+      "importance_gain": 75437.5913696289,
+      "importance_split": 205
+    },
+    {
+      "feature": "city_accidents_total_prior",
+      "importance_gain": 66367.79092407227,
+      "importance_split": 199
+    },
+    {
+      "feature": "segment_longitude",
+      "importance_gain": 57881.234073638916,
+      "importance_split": 229
+    },
+    {
+      "feature": "road_highway",
+      "importance_gain": 45034.36011505127,
+      "importance_split": 182
+    },
+    {
+      "feature": "calendar_month",
+      "importance_gain": 37409.46055984497,
+      "importance_split": 258
+    },
+    {
+      "feature": "calendar_year",
+      "importance_gain": 37095.54853057861,
+      "importance_split": 209
+    },
+    {
+      "feature": "poi_total_500m",
+      "importance_gain": 18761.103370666504,
+      "importance_split": 79
+    },
+    {
+      "feature": "poi_transit_stop_500m",
+      "importance_gain": 17987.85248565674,
+      "importance_split": 87
+    },
+    {
+      "feature": "poi_total_100m",
+      "importance_gain": 10569.556510925293,
+      "importance_split": 54
+    },
+    {
+      "feature": "poi_crossing_500m",
+      "importance_gain": 9948.461456298828,
+      "importance_split": 54
+    },
+    {
+      "feature": "calendar_holiday_name",
+      "importance_gain": 9427.061073303223,
+      "importance_split": 67
+    },
+    {
+      "feature": "poi_traffic_signal_500m",
+      "importance_gain": 9236.753784179688,
+      "importance_split": 50
+    },
+    {
+      "feature": "segment_accidents_prev_30d",
+      "importance_gain": 8408.826072692871,
+      "importance_split": 26
+    },
+    {
+      "feature": "segment_has_history",
+      "importance_gain": 7245.618026733398,
+      "importance_split": 3
+    },
+    {
+      "feature": "road_lanes_num",
+      "importance_gain": 6932.885322570801,
+      "importance_split": 34
+    },
+    {
+      "feature": "poi_total_250m",
+      "importance_gain": 6168.455093383789,
+      "importance_split": 37
+    },
+    {
+      "feature": "poi_healthcare_500m",
+      "importance_gain": 5961.394554138184,
+      "importance_split": 26
+    },
+    {
+      "feature": "poi_traffic_signal_100m",
+      "importance_gain": 5792.242828369141,
+      "importance_split": 27
+    },
+    {
+      "feature": "poi_transit_stop_250m",
+      "importance_gain": 5744.490104675293,
+      "importance_split": 34
+    },
+    {
+      "feature": "poi_traffic_signal_250m",
+      "importance_gain": 5622.74201965332,
+      "importance_split": 27
+    },
+    {
+      "feature": "poi_emergency_500m",
+      "importance_gain": 4987.448783874512,
+      "importance_split": 28
+    },
+    {
+      "feature": "poi_transit_stop_100m",
+      "importance_gain": 4151.183174133301,
+      "importance_split": 27
+    },
+    {
+      "feature": "poi_crossing_250m",
+      "importance_gain": 3908.8815002441406,
+      "importance_split": 26
+    },
+    {
+      "feature": "poi_education_500m",
+      "importance_gain": 3865.7029724121094,
+      "importance_split": 21
+    },
+    {
+      "feature": "poi_crossing_100m",
+      "importance_gain": 3616.044101715088,
+      "importance_split": 19
+    },
+    {
+      "feature": "road_oneway",
+      "importance_gain": 3219.462043762207,
+      "importance_split": 14
+    },
+    {
+      "feature": "city_accidents_prev_30d",
+      "importance_gain": 2864.3556060791016,
+      "importance_split": 22
+    },
+    {
+      "feature": "road_maxspeed_kmh",
+      "importance_gain": 2383.340129852295,
+      "importance_split": 15
+    },
+    {
+      "feature": "city_accidents_prev_7d",
+      "importance_gain": 2272.1709213256836,
+      "importance_split": 16
+    },
+    {
+      "feature": "road_name_missing",
+      "importance_gain": 2213.009017944336,
+      "importance_split": 8
+    },
+    {
+      "feature": "poi_other_500m",
+      "importance_gain": 1823.1655044555664,
+      "importance_split": 11
+    },
+    {
+      "feature": "segment_accidents_same_month_prior",
+      "importance_gain": 1497.1809921264648,
+      "importance_split": 5
+    },
+    {
+      "feature": "poi_healthcare_250m",
+      "importance_gain": 1481.973289489746,
+      "importance_split": 9
+    },
+    {
+      "feature": "segment_accidents_holiday_prior",
+      "importance_gain": 1417.6540908813477,
+      "importance_split": 5
+    },
+    {
+      "feature": "calendar_weekday",
+      "importance_gain": 1355.4051818847656,
+      "importance_split": 12
+    },
+    {
+      "feature": "poi_healthcare_100m",
+      "importance_gain": 1348.8313064575195,
+      "importance_split": 7
+    },
+    {
+      "feature": "poi_education_250m",
+      "importance_gain": 1208.8202743530273,
+      "importance_split": 9
+    },
+    {
+      "feature": "segment_accidents_prev_7d",
+      "importance_gain": 1018.875,
+      "importance_split": 6
+    },
+    {
+      "feature": "segment_accidents_new_year_period_prior",
+      "importance_gain": 656.3059997558594,
+      "importance_split": 4
+    },
+    {
+      "feature": "weather_temperature_2m",
+      "importance_gain": 586.0656051635742,
+      "importance_split": 5
+    },
+    {
+      "feature": "poi_education_100m",
+      "importance_gain": 506.1990051269531,
+      "importance_split": 2
+    },
+    {
+      "feature": "weather_wind_speed_10m",
+      "importance_gain": 347.1904067993164,
+      "importance_split": 3
+    },
+    {
+      "feature": "calendar_season",
+      "importance_gain": 299.7449951171875,
+      "importance_split": 2
+    },
+    {
+      "feature": "weather_relative_humidity_2m",
+      "importance_gain": 240.64449310302734,
+      "importance_split": 2
+    },
+    {
+      "feature": "poi_emergency_250m",
+      "importance_gain": 204.10600662231445,
+      "importance_split": 3
+    },
+    {
+      "feature": "calendar_is_school_autumn_break",
+      "importance_gain": 191.81179809570312,
+      "importance_split": 2
+    },
+    {
+      "feature": "poi_other_100m",
+      "importance_gain": 108.30500030517578,
+      "importance_split": 1
+    },
+    {
+      "feature": "weather_cloud_cover",
+      "importance_gain": 98.80819702148438,
+      "importance_split": 1
+    },
+    {
+      "feature": "calendar_is_school_break",
+      "importance_gain": 95.5342025756836,
+      "importance_split": 1
+    },
+    {
+      "feature": "poi_other_250m",
+      "importance_gain": 77.2645034790039,
+      "importance_split": 1
+    },
+    {
+      "feature": "poi_emergency_100m",
+      "importance_gain": 0.0,
+      "importance_split": 0
+    },
+    {
+      "feature": "weather_precipitation",
+      "importance_gain": 0.0,
+      "importance_split": 0
+    },
+    {
+      "feature": "weather_rain",
+      "importance_gain": 0.0,
+      "importance_split": 0
+    },
+    {
+      "feature": "weather_snowfall",
+      "importance_gain": 0.0,
+      "importance_split": 0
+    },
+    {
+      "feature": "weather_wind_gusts_10m",
+      "importance_gain": 0.0,
+      "importance_split": 0
+    },
+    {
+      "feature": "segment_accidents_prev_24h",
+      "importance_gain": 0.0,
+      "importance_split": 0
+    },
+    {
+      "feature": "city_accidents_prev_24h",
+      "importance_gain": 0.0,
+      "importance_split": 0
+    },
+    {
+      "feature": "segment_accidents_same_hour_weekday_prior",
+      "importance_gain": 0.0,
+      "importance_split": 0
+    },
+    {
+      "feature": "segment_accidents_same_month_hour_weekday_prior",
+      "importance_gain": 0.0,
+      "importance_split": 0
+    },
+    {
+      "feature": "road_lanes_missing",
+      "importance_gain": 0.0,
+      "importance_split": 0
+    },
+    {
+      "feature": "road_maxspeed_missing",
+      "importance_gain": 0.0,
+      "importance_split": 0
+    },
+    {
+      "feature": "calendar_hour",
+      "importance_gain": 0.0,
+      "importance_split": 0
+    },
+    {
+      "feature": "calendar_is_weekend",
+      "importance_gain": 0.0,
+      "importance_split": 0
+    },
+    {
+      "feature": "calendar_is_holiday",
+      "importance_gain": 0.0,
+      "importance_split": 0
+    },
+    {
+      "feature": "calendar_is_day_before_holiday",
+      "importance_gain": 0.0,
+      "importance_split": 0
+    },
+    {
+      "feature": "calendar_is_day_after_holiday",
+      "importance_gain": 0.0,
+      "importance_split": 0
+    },
+    {
+      "feature": "calendar_is_rush_hour",
+      "importance_gain": 0.0,
+      "importance_split": 0
+    },
+    {
+      "feature": "calendar_is_school_year",
+      "importance_gain": 0.0,
+      "importance_split": 0
+    },
+    {
+      "feature": "calendar_is_school_summer_break",
+      "importance_gain": 0.0,
+      "importance_split": 0
+    },
+    {
+      "feature": "calendar_is_school_winter_break",
+      "importance_gain": 0.0,
+      "importance_split": 0
+    },
+    {
+      "feature": "calendar_is_school_spring_break",
+      "importance_gain": 0.0,
+      "importance_split": 0
+    },
+    {
+      "feature": "calendar_is_new_year_period",
+      "importance_gain": 0.0,
+      "importance_split": 0
+    },
+    {
+      "feature": "weather_weather_code",
+      "importance_gain": 0.0,
+      "importance_split": 0
+    }
+  ],
+  "catboost_baseline": {
+    "name": "Stage 7B CatBoost (final 24h model)",
+    "model_path": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\models\\stage7b\\catboost_24h.cbm",
+    "metrics": {
+      "validation": {
+        "pr_auc": 0.2828499272698683,
+        "roc_auc": 0.642696946501178,
+        "lift_at_top_10pct": 2.1302074877423127,
+        "brier_score": 0.1335436695221157,
+        "expected_calibration_error_10_bins": 0.029847847470242626
+      },
+      "test": {
+        "pr_auc": 0.2556304458420362,
+        "roc_auc": 0.6119725037777589,
+        "lift_at_top_10pct": 1.9948709729123257,
+        "brier_score": 0.137846258527098,
+        "expected_calibration_error_10_bins": 0.04511661294828687
+      }
+    },
+    "resources": {
+      "training_time_seconds": null,
+      "training_time_note": "Not recorded in frozen Stage 7 report; retraining is intentionally prohibited for this isolated experiment.",
+      "prediction_validation_seconds": 2.2835303000174463,
+      "prediction_test_seconds": 4.312374800007092,
+      "model_size_bytes": 113272
+    }
+  },
+  "decision": {
+    "winner": "LightGBM",
+    "test_pr_auc_and_lift_not_worse": true,
+    "test_calibration_not_worse": true,
+    "no_overfitting": true,
+    "validation_test_pr_auc_gap": 0.024333900372531192,
+    "catboost_validation_test_pr_auc_gap": 0.027219481427832093,
+    "reason_ru": "LightGBM удовлетворяет всем обязательным тестовым критериям."
+  }
+}
