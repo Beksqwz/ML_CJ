@@ -38,6 +38,16 @@ Sunrise/sunset fields are converted with the API's timezone offset. Missing opti
 
 Open-Meteo belongs in `providers/weather/`; TomTom in `providers/traffic/`; gov.kz repairs in `providers/repairs/`; CTS in `providers/transit/`; Ticketon, stadium, and other public events in `providers/events/`. Implement the base contract, return a `ProviderResult`, namespace features, and register a factory. None of these providers may become a frozen model input without a separately versioned retraining and production-approval process.
 
+## Ticketon events
+
+`ticketon_events` is registered as a public, `context_only` Astana event source. It applies the relevant `robots.txt` user-agent group, discovers public event detail links from the listing, then reads their public JSON-LD event metadata. It keeps only Astana events overlapping the next 24-hour window and returns the title, category, venue, address, event window, source URL, derived stable ID, city, type, and intensity score. Detail requests are bounded and delayed; unavailable metadata is reported as an explicit degraded result.
+
+A small auditable local directory supplies coordinates and capacity for Astana Arena, Barys Arena, EXPO, and the Congress Centre. Unknown venues are explicitly marked `not_geocoded`: OSM fallback and road-segment matching are intentionally deferred to the dedicated geocoding and matching stages. The provider emits city-level `event_*` candidates only and never changes the frozen Stage 7B matrix.
+
+```powershell
+python scripts/collect_future_intelligence.py --providers ticketon_events --prediction-datetime "2026-07-14T00:00:00+05:00" --horizon-hours 24
+```
+
 ## gov.kz Astana road events
 
 `gov_kz_repairs` is a public, API-key-free provider registered beside OpenWeather. Its default `official-filtered` discovery renders the official Astana Akimat news listing at `https://www.gov.kz/memleket/entities/astana/press/news/{page}?lang={language}`, extracts visible card title/snippet/date, and prefilters likely repair or restriction cards before rendering any detail page. It follows only official article links matching `/memleket/entities/astana/press/news/details/<ID>`. It checks `https://www.gov.kz/robots.txt`, sends a descriptive User-Agent, uses a timeout, retry backoff, a delay between requests, and defaults to three pages and ten articles.

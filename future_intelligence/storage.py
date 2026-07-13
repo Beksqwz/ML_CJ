@@ -33,7 +33,8 @@ def save_result(
     normalized = pd.DataFrame(
         [record.to_dict() for record in result.normalized_records]
     )
-    points_path = output_dir / "processed" / "openweather_forecast_points.parquet"
+    provider = result.metadata.provider_name
+    points_path = output_dir / "processed" / f"{provider}_records.parquet"
     points_path.parent.mkdir(parents=True, exist_ok=True)
     normalized.to_parquet(points_path, index=False)
     feature_row = {
@@ -42,7 +43,7 @@ def save_result(
         "provider": result.metadata.provider_name,
         **result.features,
     }
-    feature_path = output_dir / "processed" / "openweather_24h_features.parquet"
+    feature_path = output_dir / "processed" / f"{provider}_24h_features.parquet"
     pd.DataFrame([feature_row]).to_parquet(feature_path, index=False)
     universal_path = output_dir / "processed" / "future_intelligence_features.parquet"
     pd.DataFrame([feature_row]).to_parquet(universal_path, index=False)

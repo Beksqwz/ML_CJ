@@ -9,6 +9,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+except (AttributeError, OSError):
+    pass
 from future_intelligence.pipeline import FutureIntelligencePipeline  # noqa: E402
 from future_intelligence.storage import save_result  # noqa: E402
 
