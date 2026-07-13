@@ -1,0 +1,113 @@
+{
+  "stage": "15_final_pre_commit_audit",
+  "status": "ready",
+  "scope": [
+    "future intelligence layer",
+    "openweather 24h provider",
+    "gov.kz official-filtered listing provider",
+    "playwright listing/detail acquisition",
+    "storage, registry, CLI, tests and repository hygiene"
+  ],
+  "audit_modifications": [
+    "mechanically formatted Stage 15 Python files with Ruff",
+    "removed unused local variables in future_intelligence/storage.py",
+    "added targeted Ruff E402 allowances for scripts that intentionally bootstrap the repository path before imports",
+    "added optional playwright==1.61.0 dependency declaration",
+    "updated Future Intelligence documentation for official-filtered discovery",
+    "ignored generated Future Intelligence processed data and gov.kz debug artifacts"
+  ],
+  "static_quality": {
+    "compileall": "passed",
+    "ruff_format_check": "passed",
+    "ruff_check": "passed",
+    "pyright_pylance_cli": "not_available; Python parser, import validation and Ruff were used",
+    "discovery_py_structural_errors": false
+  },
+  "tests": {
+    "run": 36,
+    "passed": 36,
+    "failed": 0,
+    "skipped": 0,
+    "wall_seconds": 1.259,
+    "openweather_mock_tests": 3
+  },
+  "openweather": {
+    "endpoint": "https://api.openweathermap.org/data/2.5/forecast",
+    "api_key_source": "OPENWEATHER_API_KEY environment variable only",
+    "api_key_configured_during_audit": false,
+    "mock_collection": "passed",
+    "candidate_feature_count": 59,
+    "window": "[prediction_datetime, prediction_datetime + 24h)",
+    "frozen_model_input": "unchanged; candidate features remain separate"
+  },
+  "gov_kz": {
+    "metadata": {
+      "provider_name": "gov_kz_repairs",
+      "source_type": "repairs",
+      "supported_horizons": [24],
+      "spatial_scope": "Astana",
+      "default_discovery_method": "official-filtered"
+    },
+    "live_dry_run": {
+      "pages_scanned": 1,
+      "listing_cards_seen": 10,
+      "listing_cards_selected": 1,
+      "detail_pages_rendered": 1,
+      "rendered_title_nonempty": true,
+      "requests_shell_text_length": 181,
+      "rendered_text_length": 2152,
+      "relevance_score": 5,
+      "unhandled_exception": false
+    },
+    "validated_five_page_collection": {
+      "listing_cards_seen": 50,
+      "selected_candidates": 4,
+      "relevant_events": 4,
+      "prefilter_precision": 1.0,
+      "unique_source_item_ids": 4,
+      "duplicates": 0,
+      "force_refresh_changes": {"new": 0, "updated": 0, "unchanged": 4}
+    },
+    "browser_lifecycle": "one reusable browser/context per collection; no Chromium process per detail page"
+  },
+  "storage": {
+    "gov_kz_parquet_opens": true,
+    "gov_kz_json_parses": true,
+    "gov_kz_rows": 4,
+    "source_item_id_unique": true,
+    "content_hash_complete": true,
+    "coordinates_fabricated": false,
+    "timezone_aware_timestamps": true,
+    "generated_outputs_ignored": true,
+    "debug_artifacts_ignored": true
+  },
+  "production_freeze": {
+    "registry_version": "final-model-registry-v1",
+    "stage_24h": "Stage 7B",
+    "model_sha256": "0c8e1b88b1cfaf95fb39e395e2fdc54f1b7abda22d8ac00e1d6f561ab9110a0c",
+    "model_sha256_matches_expected": true,
+    "feature_count": 77,
+    "ordered_feature_sha256": "bf0ce06aface9fc3539a95df2557728e57d987a9e0c0e5ac4a195a53b47f6d96",
+    "feature_order_matches_expected": true,
+    "legacy_probability_checksum": "29c7b5af0e44cd4a0749947b9efec62f8d40375598d02bfedacd98823f4f7f68",
+    "frozen_probability_unchanged": true,
+    "shap_and_recommendation_regressions": "covered by passing existing tests",
+    "one_hour_model_or_files_modified_by_stage15": false
+  },
+  "security": {
+    "env_ignored": true,
+    "example_contains_placeholders_only": true,
+    "committed_secret_scan": "no configured OPENWEATHER_API_KEY, TOMTOM_API_KEY, Authorization or Bearer values found",
+    "personal_windows_paths_in_production_code_or_docs": false,
+    "captcha_or_proxy_bypass": false,
+    "robots_result_recorded": true
+  },
+  "documentation": {
+    "future_intelligence_md": "updated and verified for architecture, OpenWeather, Playwright, official-filtered collection, fallback, storage, frozen model boundary and future extensions"
+  },
+  "known_limitations": [
+    "OpenWeather real request was intentionally skipped because OPENWEATHER_API_KEY is not configured.",
+    "gov.kz records have no coordinates or road-segment matching until a later geocoding stage.",
+    "Rendered debug HTML and screenshots are local diagnostics and should not be committed."
+  ]
+}

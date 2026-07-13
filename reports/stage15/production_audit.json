@@ -1,0 +1,168 @@
+{
+  "stage": "15.0",
+  "audit_type": "read_only_production_audit",
+  "audited_at": "2026-07-13T15:05:24+05:00",
+  "branch": "ml-pipeline-stage-6-pokahz",
+  "commit": "9ccdb242406f4883f8b77c172220eb1a29823d8f",
+  "production_status": "READY FOR OPENWEATHER INTEGRATION",
+  "critical_issues": [],
+  "warnings": [
+    "The working tree was already dirty before this audit, with uncommitted live-weather/live-traffic integration files. No audit action changed production logic.",
+    "ruff is not installed in the active Python environment; automated unused-import linting could not be run.",
+    "Training artifacts contain a small number of duplicate full rows: Stage 7A 1h=3, Stage 7A 24h=42, Stage 7D 1h=3. These files are not used by Stage 8C inference.",
+    "road_lanes_num and road_maxspeed_kmh are null for 2,490 and 2,660 of 3,968 runtime rows. Their explicit missingness indicator features are present; no required feature is entirely null."
+  ],
+  "repository_structure": {
+    "required_folders_present": [
+      "ml_service/inference", "models/production", "models/experiments", "data/raw", "data/roads", "config", "recommendations", "reports/stage8c", "reports/stage10", "reports/stage11", "reports/stage12", "reports/stage13", "reports/stage14", "tests", "scripts"
+    ],
+    "missing_folders": [],
+    "registered_production_model_paths": [
+      "models/production/catboost_1h_weather_experiment.cbm",
+      "models/production/catboost_24h.cbm"
+    ],
+    "duplicate_runtime_files": [],
+    "note": "Duplicate basenames outside runtime modules are not treated as duplicate files; each repository path is unique."
+  },
+  "model_registry": {
+    "version": "final-model-registry-v1",
+    "consistent": true,
+    "models": {
+      "1h": {
+        "stage": "Stage 7D",
+        "model_version": "stage7d-final-v1",
+        "path": "models/production/catboost_1h_weather_experiment.cbm",
+        "registered_feature_count": 97,
+        "loaded_feature_count": 97,
+        "path_exists": true,
+        "load_seconds": 0.535336,
+        "file_size_bytes": 267584,
+        "sha256": "b400ee46e853c5ee0637b1cac55ecb79d1d2f0f9d99405c9780223fb7ab69cdb"
+      },
+      "24h": {
+        "stage": "Stage 7B",
+        "model_version": "stage7b-final-v1",
+        "path": "models/production/catboost_24h.cbm",
+        "registered_feature_count": 77,
+        "loaded_feature_count": 77,
+        "path_exists": true,
+        "load_seconds": 0.501011,
+        "file_size_bytes": 113272,
+        "sha256": "0c8e1b88b1cfaf95fb39e395e2fdc54f1b7abda22d8ac00e1d6f561ab9110a0c"
+      }
+    }
+  },
+  "feature_builder": {
+    "historical_audit_hour": "2022-09-08 15:00:00",
+    "1h": {
+      "rows": 3968,
+      "data_columns": 100,
+      "feature_count": 97,
+      "model_feature_order_matches_config": true,
+      "missing_required_columns": [],
+      "duplicate_columns": [],
+      "unexpected_feature_columns": [],
+      "all_null_features": [],
+      "partially_null_features": {"road_lanes_num": 2490, "road_maxspeed_kmh": 2660},
+      "categorical_dtype_contract_valid": true,
+      "build_seconds": 0.548446,
+      "peak_python_allocation_bytes": 41885667
+    },
+    "24h": {
+      "rows": 3968,
+      "data_columns": 80,
+      "feature_count": 77,
+      "model_feature_order_matches_config": true,
+      "missing_required_columns": [],
+      "duplicate_columns": [],
+      "unexpected_feature_columns": [],
+      "all_null_features": [],
+      "partially_null_features": {"road_lanes_num": 2490, "road_maxspeed_kmh": 2660},
+      "categorical_dtype_contract_valid": true,
+      "build_seconds": 0.511192,
+      "peak_python_allocation_bytes": 40583149
+    }
+  },
+  "inference": {
+    "entry_point": "ml_service.inference.predict.run",
+    "historical_audit_hour": "2022-09-08 15:00:00",
+    "complete_run_seconds": 12.14,
+    "peak_python_allocation_bytes": 114069463,
+    "memory_measurement_note": "Measured with tracemalloc during a separate complete Stage 8C run; this is Python allocation peak, not process RSS.",
+    "json_and_geojson_generated": true,
+    "1h": {
+      "predictions": 3968,
+      "geojson_features": 3968,
+      "probability_range": [0.04321510239925083, 0.39156814499880804],
+      "risk_level_counts": {"LOW": 2553, "MEDIUM": 1243, "HIGH": 166, "CRITICAL": 6},
+      "stage_seconds": 6.002,
+      "json_bytes": 11379564,
+      "geojson_bytes": 10567811,
+      "schema_valid": true
+    },
+    "24h": {
+      "predictions": 3968,
+      "geojson_features": 3968,
+      "probability_range": [0.06211281756608042, 0.5429816965472706],
+      "risk_level_counts": {"LOW": 220, "MEDIUM": 2762, "HIGH": 825, "CRITICAL": 161},
+      "stage_seconds": 5.063,
+      "json_bytes": 9585973,
+      "geojson_bytes": 8771441,
+      "schema_valid": true
+    }
+  },
+  "recommendations_and_shap": {
+    "rules_file": "recommendations/rules.yaml",
+    "rules_load_and_execute": true,
+    "structural_rule_tests_pass": true,
+    "shap": {
+      "1h_shape": [3968, 98],
+      "1h_expected_shape": [3968, 98],
+      "24h_shape": [3968, 78],
+      "24h_expected_shape": [3968, 78],
+      "all_values_finite": true,
+      "base_values_present": true
+    }
+  },
+  "tests": {
+    "command": "python -m unittest discover tests -v",
+    "total": 10,
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0,
+    "test_runner_seconds": 1.700923
+  },
+  "healthcheck": {
+    "status": "ok",
+    "loaded_models": {"1h": "Stage 7D", "24h": "Stage 7B"},
+    "versions": {"1h": "stage7d-final-v1", "24h": "stage7b-final-v1"},
+    "feature_counts": {"1h": 97, "24h": 77}
+  },
+  "dataset_integrity": {
+    "calendar": {"rows": 127176, "columns": 20, "duplicate_rows": 0, "missing_datetime_hour": 0, "nan_rate": 0.0},
+    "weather": {"rows": 127176, "columns": 13, "duplicate_rows": 0, "missing_datetime_hour": 0, "nan_rate": 0.0},
+    "ml_ready": {"rows": 12449, "columns": 43, "duplicate_rows": 0, "unique_road_segment_ids": 3968, "missing_road_segment_id": 0, "missing_accident_datetime": 0, "nan_rate": 0.185015},
+    "poi_features": {"rows": 3968, "columns": 27, "duplicate_rows": 0, "duplicate_road_segment_ids": 0, "missing_road_segment_id": 0, "nan_rate": 0.0},
+    "stage7a_1h_train": {"rows": 92939, "columns": 73, "duplicate_rows": 3, "nan_rate": 0.014701},
+    "stage7a_24h_train": {"rows": 916398, "columns": 79, "duplicate_rows": 42, "nan_rate": 0.013482},
+    "stage7d_1h_train": {"rows": 92939, "columns": 99, "duplicate_rows": 3, "nan_rate": 0.01084}
+  },
+  "road_matching": {
+    "edge_rows": 21361,
+    "unique_segment_ids": 21361,
+    "duplicate_segment_ids": 0,
+    "missing_geometry": 0,
+    "invalid_geometry": 0,
+    "ml_ready_unique_segments": 3968,
+    "ml_ready_broken_road_references": 0
+  },
+  "dependencies_and_configuration": {
+    "pip_check": "No broken requirements found.",
+    "all_runtime_module_imports": "passed",
+    "compile_check": "passed",
+    "unused_import_linter": "not_run: ruff is not installed",
+    "env_example_present": true,
+    "risk_threshold_config": "config/risk_thresholds.json",
+    "risk_threshold_config_valid": true
+  }
+}

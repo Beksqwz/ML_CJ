@@ -1,0 +1,12 @@
+{
+  "stage": "15A",
+  "status": "ready",
+  "scope": "future 24-hour context only; no frozen model inputs were changed",
+  "package": "future_intelligence",
+  "provider_registry": {"registered": ["openweather"], "reserved_extension_namespaces": ["weather", "traffic", "repairs", "transit", "events"]},
+  "openweather": {"endpoint": "https://api.openweathermap.org/data/2.5/forecast", "official_product": "OpenWeather 5 day / 3 hour forecast", "api_key_environment_variable": "OPENWEATHER_API_KEY", "supported_horizons": [24], "timezone_handling": "API timezone offset, with Asia/Almaty used for naive prediction datetimes"},
+  "fallback_policy": {"network_exceptions_exposed": false, "degraded_status": true, "fallback_used": true, "fabricated_forecast": false, "out_of_window_points_included": false},
+  "storage": {"raw": "data/future_intelligence/raw/openweather/", "normalized_points": "data/future_intelligence/processed/openweather_forecast_points.parquet", "provider_features": "data/future_intelligence/processed/openweather_24h_features.parquet", "universal_features": "data/future_intelligence/processed/future_intelligence_features.parquet", "secrets_excluded": true},
+  "frozen_24h_verification": {"stage": "Stage 7B", "feature_count": 77, "feature_list_sha256": "bf0ce06aface9fc3539a95df2557728e57d987a9e0c0e5ac4a195a53b47f6d96", "model_sha256": "0c8e1b88b1cfaf95fb39e395e2fdc54f1b7abda22d8ac00e1d6f561ab9110a0c", "legacy_probability_checksum": "29c7b5af0e44cd4a0749947b9efec62f8d40375598d02bfedacd98823f4f7f68", "post_change_probability_checksum": "29c7b5af0e44cd4a0749947b9efec62f8d40375598d02bfedacd98823f4f7f68", "unchanged": true},
+  "known_limitations": ["The standard OpenWeather forecast endpoint supplies points at approximately three-hour intervals, not hourly observations.", "No live collection was attempted because OPENWEATHER_API_KEY is not configured in this workspace.", "Weather scores are transparent future-retraining candidates and do not affect frozen CatBoost probabilities."]
+}

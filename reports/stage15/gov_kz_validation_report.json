@@ -1,0 +1,11 @@
+{
+  "compile_check": "passed",
+  "unit_tests": {"total": 29, "passed": 29, "failed": 0, "skipped": 0},
+  "provider_healthcheck": {"status": "ok", "provider": "gov_kz_repairs", "supported_horizons": [24]},
+  "registry": ["gov_kz_repairs", "openweather"],
+  "mock_parser": {"listing_parsing": true, "road_repair_from_to": true, "full_closure": true, "partial_lane_restriction": true, "intersection_closure": true, "bridge_repair": true, "open_end": true, "exact_hour": true, "irrelevant_news_rejected": true, "kazakh_keyword_support": true, "update_hash_changes": true, "schema_validation": true, "deterministic_features": true},
+  "storage_idempotency": {"first_run": {"new": 1, "updated": 0, "unchanged": 0}, "second_run": {"new": 0, "updated": 0, "unchanged": 1}, "json_and_parquet_written": true},
+  "production_freeze": {"24h_model_hash": "0c8e1b88b1cfaf95fb39e395e2fdc54f1b7abda22d8ac00e1d6f561ab9110a0c", "24h_feature_hash": "bf0ce06aface9fc3539a95df2557728e57d987a9e0c0e5ac4a195a53b47f6d96", "24h_feature_count": 77, "legacy_probability_checksum": "29c7b5af0e44cd4a0749947b9efec62f8d40375598d02bfedacd98823f4f7f68", "unchanged": true, "one_hour_files_modified_by_stage15b": false},
+  "openweather_regression": "registry still loads OpenWeather; its existing tests pass",
+  "discovery_chain": "json_api -> sitemap_or_feed -> playwright -> legacy_html; no live adapter returned an article URL in this environment"
+}

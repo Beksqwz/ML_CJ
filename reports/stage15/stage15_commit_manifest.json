@@ -1,0 +1,63 @@
+{
+  "must_commit": [
+    ".env.example",
+    ".gitignore",
+    "requirements.txt",
+    "docs/FUTURE_INTELLIGENCE.md",
+    "future_intelligence/",
+    "ml_service/__init__.py",
+    "ml_service/weather.py",
+    "ml_service/traffic.py",
+    "ml_service/predictor.py",
+    "ml_service/schemas.py",
+    "ml_service/inference/feature_builder.py",
+    "scripts/check_live_weather.py",
+    "scripts/check_live_traffic.py",
+    "scripts/collect_future_intelligence.py",
+    "scripts/collect_openweather_forecast.py",
+    "scripts/collect_gov_kz_road_events.py",
+    "scripts/collect_tomtom_live_traffic.py",
+    "tests/fixtures/gov_kz_listing.html",
+    "tests/fixtures/gov_kz_listing_cards.html",
+    "tests/fixtures/gov_kz_repair.html",
+    "tests/test_future_intelligence_pipeline.py",
+    "tests/test_future_intelligence_schemas.py",
+    "tests/test_openweather_forecast_provider.py",
+    "tests/test_gov_kz_discovery.py",
+    "tests/test_gov_kz_official_filtered_listing.py",
+    "tests/test_gov_kz_road_events.py",
+    "tests/test_weather.py",
+    "tests/test_traffic.py",
+    "reports/stage15/stage15_final_audit.json",
+    "reports/stage15/stage15_final_audit.md",
+    "reports/stage15/stage15_commit_manifest.json"
+  ],
+  "optional_commit": [
+    "reports/stage15/production_audit.json",
+    "reports/stage15/production_audit.md",
+    "reports/stage15/production_fingerprint.json",
+    "reports/stage15/future_intelligence_audit.json",
+    "reports/stage15/future_intelligence_validation_report.json",
+    "reports/stage15/gov_kz_discovery_audit.json",
+    "reports/stage15/gov_kz_parser_audit.md",
+    "reports/stage15/openweather_collection_report.json"
+  ],
+  "must_not_commit": [
+    ".env",
+    "data/future_intelligence/raw/",
+    "data/future_intelligence/processed/gov_kz_repair_features.parquet",
+    "data/future_intelligence/processed/gov_kz_road_events.json",
+    "data/future_intelligence/processed/gov_kz_road_events.parquet",
+    "reports/stage15/gov_kz_debug/",
+    "reports/stage15/gov_kz_collection_report.json",
+    "reports/stage15/gov_kz_validation_report.json"
+  ],
+  "unrelated_changes": [],
+  "recommended_commit_message": "feat(stage15): add future intelligence weather and gov.kz context providers",
+  "recommended_git_add_commands": [
+    "git add .env.example .gitignore requirements.txt docs/FUTURE_INTELLIGENCE.md future_intelligence",
+    "git add ml_service/__init__.py ml_service/weather.py ml_service/traffic.py ml_service/predictor.py ml_service/schemas.py ml_service/inference/feature_builder.py",
+    "git add scripts/check_live_weather.py scripts/check_live_traffic.py scripts/collect_future_intelligence.py scripts/collect_openweather_forecast.py scripts/collect_gov_kz_road_events.py scripts/collect_tomtom_live_traffic.py",
+    "git add tests/fixtures tests/test_future_intelligence_pipeline.py tests/test_future_intelligence_schemas.py tests/test_openweather_forecast_provider.py tests/test_gov_kz_discovery.py tests/test_gov_kz_official_filtered_listing.py tests/test_gov_kz_road_events.py tests/test_weather.py tests/test_traffic.py"
+  ]
+}

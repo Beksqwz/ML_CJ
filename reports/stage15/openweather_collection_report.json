@@ -1,0 +1,12 @@
+{
+  "collection_type": "mocked_openweather_forecast",
+  "prediction_datetime": "2026-07-14T00:00:00+05:00",
+  "horizon_hours": 24,
+  "provider_status": "ok",
+  "forecast_points_in_window": 3,
+  "excluded_points": {"before_prediction_datetime": 1, "at_window_end": 1},
+  "storage_smoke_test": {"raw_saved": true, "normalized_points_saved": true, "provider_features_saved": true, "universal_features_saved": true},
+  "feature_count": 59,
+  "engineered_features": ["weather_temperature_mean", "weather_temperature_min", "weather_temperature_max", "weather_temperature_std", "weather_humidity_mean", "weather_humidity_min", "weather_humidity_max", "weather_humidity_std", "weather_pressure_mean", "weather_pressure_min", "weather_pressure_max", "weather_pressure_std", "weather_wind_speed_mean", "weather_wind_speed_min", "weather_wind_speed_max", "weather_wind_speed_std", "weather_visibility_mean", "weather_visibility_min", "weather_visibility_max", "weather_visibility_std", "weather_clouds_mean", "weather_clouds_min", "weather_clouds_max", "weather_clouds_std", "weather_precipitation_probability_mean", "weather_precipitation_probability_min", "weather_precipitation_probability_max", "weather_precipitation_probability_std", "weather_temperature_range", "weather_wind_gust_max", "weather_rain_sum", "weather_snow_sum", "weather_rain_hours", "weather_snow_hours", "weather_fog_hours", "weather_heavy_rain_hours", "weather_strong_wind_hours", "weather_freezing_hours", "weather_storm_hours", "weather_change_count", "weather_rapid_temperature_drop", "weather_freeze_thaw_transition", "weather_is_rain_expected", "weather_is_snow_expected", "weather_is_fog_expected", "weather_is_freezing_expected", "weather_is_strong_wind_expected", "weather_is_storm_expected", "weather_instability_score", "weather_bad_weather_score", "weather_road_surface_risk_score", "weather_visibility_risk_score", "weather_winter_risk_score", "weather_driving_conditions_score", "weather_severity_score", "weather_day_length_hours", "weather_dark_hours", "weather_hours_until_sunrise", "weather_hours_until_sunset"],
+  "fallback_examples": ["openweather_api_key_not_configured", "openweather_request_failed", "openweather_rate_limited", "openweather_invalid_response"]
+}

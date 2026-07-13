@@ -4,6 +4,15 @@ from __future__ import annotations
 from typing import Any, TypedDict
 
 
+class LiveTrafficRecord(TypedDict):
+    road_segment_id: str
+    available: bool
+    current_speed: float | None
+    free_flow_speed: float | None
+    congestion_ratio: float | None
+    confidence: float | None
+
+
 class PredictionRecord(TypedDict):
     road_segment_id: str
     road_name: str

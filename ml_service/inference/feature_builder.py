@@ -144,8 +144,72 @@ def _history(frame: pd.DataFrame, when: pd.Timestamp, horizon: str) -> pd.DataFr
     return frame
 
 
+def _live_calendar(when: pd.Timestamp) -> pd.Series:
+    """Build deterministic calendar fields when a live hour is outside the archive."""
+    month, day, hour, weekday = when.month, when.day, when.hour, when.weekday()
+    calendar = pd.Series(
+        {
+            "year": when.year,
+            "month": month,
+            "day": day,
+            "hour": hour,
+            "weekday": weekday,
+            "is_weekend": weekday >= 5,
+            "is_holiday": False,
+            "holiday_name": "",
+            "is_day_before_holiday": False,
+            "is_day_after_holiday": False,
+            "is_rush_hour": hour in (7, 8, 9, 17, 18, 19),
+            "season": {
+                12: "winter", 1: "winter", 2: "winter", 3: "spring",
+                4: "spring", 5: "spring", 6: "summer", 7: "summer",
+                8: "summer", 9: "autumn", 10: "autumn", 11: "autumn",
+            }[month],
+            "is_school_year": month in (9, 10, 11, 12, 1, 2, 3, 4, 5),
+            "is_school_summer_break": month in (6, 7, 8),
+            "is_school_winter_break": (month == 12 and day >= 29)
+            or (month == 1 and day <= 8),
+            "is_school_spring_break": month == 3 and 21 <= day <= 31,
+            "is_school_autumn_break": month == 10 and day >= 28,
+        }
+    )
+    calendar["is_school_break"] = any(
+        calendar[name]
+        for name in (
+            "is_school_summer_break", "is_school_winter_break",
+            "is_school_spring_break", "is_school_autumn_break",
+        )
+    )
+    return calendar
+
+
+def _live_weather(weather_override: dict) -> pd.Series:
+    """Normalize a current observation without fabricating unavailable history."""
+    weather = pd.Series(weather_override).copy()
+    weather["weather_risk_precip_now"] = int(float(weather.get("precipitation", 0)) > 0)
+    weather["weather_risk_snow_now"] = int(float(weather.get("snowfall", 0)) > 0)
+    weather["weather_risk_freezing_now"] = int(float(weather["temperature_2m"]) <= 0)
+    weather["weather_risk_high_wind_now"] = int(
+        float(weather.get("wind_speed_10m", 0)) >= 10
+        or float(weather.get("wind_gusts_10m", 0)) >= 15
+    )
+    weather["weather_risk_adverse_now"] = int(
+        any(
+            weather[name]
+            for name in (
+                "weather_risk_precip_now", "weather_risk_snow_now",
+                "weather_risk_freezing_now", "weather_risk_high_wind_now",
+            )
+        )
+    )
+    return weather
+
+
 def build_features(
-    datetime_hour: str | pd.Timestamp, horizon: str
+    datetime_hour: str | pd.Timestamp,
+    horizon: str,
+    *,
+    weather_override: dict | None = None,
 ) -> tuple[pd.DataFrame, dict]:
     """Return ordered model features and segment metadata available at the requested hour."""
     when = pd.Timestamp(datetime_hour).floor("h")
@@ -179,7 +243,13 @@ def build_features(
     cal = pd.read_parquet(
         ROOT / "data" / "external" / "calendar_features_hourly.parquet"
     )
-    c = cal.loc[cal.datetime_hour.eq(when)].iloc[0]
+    selected_calendar = cal.loc[cal.datetime_hour.eq(when)]
+    if selected_calendar.empty:
+        if weather_override is None:
+            raise IndexError(f"No archived calendar row for {when}")
+        c = _live_calendar(when)
+    else:
+        c = selected_calendar.iloc[0]
     mapping = {
         "calendar_year": "year",
         "calendar_month": "month",
@@ -206,7 +276,10 @@ def build_features(
         data["calendar_is_new_year_period"] = bool(
             (when.month == 12 and when.day >= 25) or (when.month == 1 and when.day <= 7)
         )
-    w = _weather_enriched().loc[lambda x: x.datetime_hour.eq(when)].iloc[0]
+    if weather_override is None:
+        w = _weather_enriched().loc[lambda x: x.datetime_hour.eq(when)].iloc[0]
+    else:
+        w = _live_weather(weather_override)
     weather_map = {
         "weather_temperature_2m": "temperature_2m",
         "weather_relative_humidity_2m": "relative_humidity_2m",
@@ -223,6 +296,10 @@ def build_features(
     for f in features:
         if f.startswith("weather_") and f in w.index:
             data[f] = w[f]
+        elif weather_override is not None and f.startswith("weather_"):
+            # A current observation has no honest previous-hour history.
+            # CatBoost accepts these numerical values as missing.
+            data[f] = np.nan
     data = _history(data, when, horizon)
     if horizon == "1h":
         data["weather_interaction_adverse_rush_hour"] = (
@@ -266,8 +343,15 @@ def build_features(
     missing = [f for f in features if f not in data]
     if missing:
         raise ValueError(f"Feature builder missing: {missing}")
-    if data[features].isna().all(axis=0).any():
-        raise ValueError("A required feature is entirely missing")
+    entirely_missing = data[features].isna().all(axis=0)
+    unsupported_missing = [
+        feature
+        for feature in features
+        if entirely_missing[feature]
+        and not (weather_override is not None and feature.startswith("weather_"))
+    ]
+    if unsupported_missing:
+        raise ValueError(f"A required feature is entirely missing: {unsupported_missing}")
     return data, {
         "datetime_hour": str(when),
         "segments": len(data),

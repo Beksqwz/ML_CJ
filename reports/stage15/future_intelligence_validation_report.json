@@ -1,0 +1,9 @@
+{
+  "compile_check": "passed",
+  "unit_tests": {"total": 20, "passed": 20, "failed": 0, "skipped": 0},
+  "predictor_healthcheck": {"status": "ok", "models": {"1h": "Stage 7D", "24h": "Stage 7B"}, "features": {"1h": 97, "24h": 77}},
+  "backend_future_context_without_key": {"status": "degraded", "fallback_used": true, "warning": "openweather_api_key_not_configured"},
+  "stage8c_24h": {"ran_in_temporary_output": true, "seconds": 6.43026349999127, "prediction_checksum_unchanged": true},
+  "production_freeze": {"model_hash_unchanged": true, "feature_count_unchanged": true, "feature_order_unchanged": true, "recommendations_unchanged": true, "shap_pipeline_unchanged": true},
+  "real_openweather_call": {"attempted": false, "reason": "OPENWEATHER_API_KEY is not configured"}
+}

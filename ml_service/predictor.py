@@ -18,7 +18,9 @@ from .exceptions import (
     UnknownRoadSegmentError,
 )
 from .registry import ModelRegistry, ROOT
+from .traffic import TomTomTrafficService
 from .utils import parse_datetime, validate_bbox
+from .weather import OpenWeatherService
 
 
 class AccidentRiskPredictor:
@@ -58,9 +60,7 @@ class AccidentRiskPredictor:
                 "Required feature, calendar, weather, or threshold configuration is unavailable."
             ) from exc
         self.models: dict[str, CatBoostClassifier] = {}
-        self._cache: dict[
-            tuple[str, str], tuple[list[dict[str, Any]], pd.DataFrame]
-        ] = {}
+        self._cache: dict[tuple[str, str, bool], tuple[list[dict[str, Any]], pd.DataFrame]] = {}
         self._geometry = _geometry_map(ROOT / "data" / "roads" / "astana_edges.csv")
         for horizon in self.registry.info()["models"]:
             entry = self.registry.get(horizon)
@@ -74,15 +74,23 @@ class AccidentRiskPredictor:
             self.models[horizon] = model
 
     def _score_city(
-        self, datetime_hour: str, horizon: str
+        self,
+        datetime_hour: str,
+        horizon: str,
+        *,
+        weather_override: dict[str, Any] | None = None,
     ) -> tuple[list[dict[str, Any]], pd.DataFrame]:
-        when = parse_datetime(datetime_hour, self.datetime_min, self.datetime_max)
-        key = (str(when), horizon)
+        when = (
+            parse_datetime(datetime_hour)
+            if weather_override is not None
+            else parse_datetime(datetime_hour, self.datetime_min, self.datetime_max)
+        )
+        key = (str(when), horizon, weather_override is not None)
         if key in self._cache:
             return self._cache[key]
         entry = self.registry.get(horizon)
         try:
-            data, _ = build_features(when, horizon)
+            data, _ = build_features(when, horizon, weather_override=weather_override)
         except (FileNotFoundError, json.JSONDecodeError, KeyError, IndexError, TypeError) as exc:
             raise ConfigNotFoundError(
                 "Feature construction configuration is unavailable for this prediction."
@@ -238,6 +246,75 @@ class AccidentRiskPredictor:
     def get_model_info(self) -> dict[str, Any]:
         """Expose final model stages, feature counts, registry version, and display thresholds."""
         return self.registry.info() | {"risk_thresholds": self.thresholds}
+
+    def get_future_context(
+        self,
+        prediction_datetime: str,
+        horizon: str = "24h",
+        providers: tuple[str, ...] = ("openweather",),
+    ) -> dict[str, Any]:
+        """Return independent future context; never pass it to frozen CatBoost models."""
+        if horizon != "24h":
+            return {
+                "status": "degraded",
+                "prediction_datetime": prediction_datetime,
+                "horizon_hours": 0,
+                "providers": [],
+                "features": {},
+                "coverage": {},
+                "warnings": ["future_intelligence_supports_24h_only"],
+                "fallback_used": True,
+            }
+        from future_intelligence.pipeline import FutureIntelligencePipeline
+
+        return FutureIntelligencePipeline().collect(
+            prediction_datetime, horizon_hours=24, providers=providers
+        )
+
+    def predict_segment_with_live_traffic(
+        self,
+        road_segment_id: str,
+        datetime_hour: str,
+        horizon: str,
+        traffic: TomTomTrafficService | None = None,
+    ) -> dict[str, Any]:
+        """Return frozen model risk plus a separate, non-feature traffic reading."""
+        response = self.predict_segment(road_segment_id, datetime_hour, horizon)
+        response["live_traffic"] = (traffic or TomTomTrafficService()).get_segment(
+            road_segment_id
+        )
+        return response
+
+    def get_live_weather(
+        self, weather: OpenWeatherService | None = None
+    ) -> dict[str, Any]:
+        """Return normalized current weather without exposing credentials."""
+        return (weather or OpenWeatherService()).get_current()
+
+    def predict_current_city(
+        self, horizon: str, weather: OpenWeatherService | None = None
+    ) -> dict[str, Any]:
+        """Score the current Astana hour through the production feature builder."""
+        live_weather = self.get_live_weather(weather)
+        if not live_weather.get("available"):
+            return {
+                "live_weather": live_weather,
+                "predictions": [],
+                "summary": {"segments": 0},
+            }
+        from datetime import datetime
+        from zoneinfo import ZoneInfo
+
+        now = datetime.now(ZoneInfo("Asia/Almaty")).replace(
+            minute=0, second=0, microsecond=0, tzinfo=None
+        )
+        records, frame = self._score_city(
+            str(now), horizon, weather_override=live_weather
+        )
+        response = self._response(records, frame, str(now), horizon)
+        response["live_weather"] = live_weather
+        response["weather_mode"] = "openweather_current"
+        return response
 
     def healthcheck(self) -> dict[str, Any]:
         """Report readiness after the constructor has loaded every final model once."""

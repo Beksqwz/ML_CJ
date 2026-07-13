@@ -1,0 +1,18 @@
+{
+  "official_listing_url": "https://www.gov.kz/memleket/entities/astana/press/news/1?lang=ru",
+  "official_robots_url": "https://www.gov.kz/robots.txt",
+  "official_sitemap_url": "https://www.gov.kz/sitemap.xml",
+  "run": {"mode": "real_dry_run", "max_pages": 1, "max_articles": 5, "language": "ru", "browser_timeout_ms": 5000},
+  "robots": {"fetched": true, "automated_access_stopped_by_rule": false},
+  "xhr_inspection": {"in_app_browser_available": false, "verified_public_endpoint": null, "reason": "No real browser binding was available; no endpoint was inferred or invented."},
+  "discovery_chain": [
+    {"method_name": "json_api", "status": "skipped", "article_urls": 0, "warning": "no_verified_public_gov_kz_xhr_endpoint_discovered"},
+    {"method_name": "sitemap_or_feed", "status": "empty", "article_urls": 0, "pages_scanned": 1, "warning": "sitemap_contains_no_astana_detail_article_urls"},
+    {"method_name": "search_discovery", "status": "empty", "article_urls": 0, "pages_scanned": 4, "warning": "public_search_result_pages_did_not_expose_direct_detail_urls_to_requests"},
+    {"method_name": "playwright", "status": "unavailable", "article_urls": 0, "warning": "playwright_not_installed"}
+  ],
+  "selected_method": null,
+  "requests_made": {"robots": 1, "sitemap": 1, "listing": 1, "detail_articles": 0},
+  "outcome": "not_ready_no_official_article_url_discovered",
+  "secrets_logged": false
+}

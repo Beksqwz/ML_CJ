@@ -15,6 +15,15 @@ Thumbs.db
 .vscode/
 cache/
 
+# Credentials and locally collected real-time traffic snapshots
+.env
+data/live_traffic/
+data/future_intelligence/raw/**
+!data/future_intelligence/raw/.gitkeep
+data/future_intelligence/processed/**
+!data/future_intelligence/processed/.gitkeep
+reports/stage15/gov_kz_debug/
+
 # Keep Parquet as the canonical data format; CSV exports are reproducible.
 data/processed/*.csv
 data/external/*.csv

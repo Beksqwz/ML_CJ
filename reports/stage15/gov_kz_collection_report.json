@@ -1,0 +1,333 @@
+{
+  "provider": {
+    "provider": {
+      "provider_name": "gov_kz_repairs",
+      "provider_version": "1.0",
+      "source_type": "repairs",
+      "supported_horizons": [
+        24
+      ],
+      "requires_api_key": false,
+      "update_frequency": "daily",
+      "spatial_scope": "Astana"
+    },
+    "status": "ok",
+    "features": {
+      "repair_events_next_24h": 0,
+      "repair_full_closures_next_24h": 0,
+      "repair_partial_closures_next_24h": 0,
+      "repair_lane_closures_next_24h": 0,
+      "repair_intersection_closures_next_24h": 0,
+      "repair_bridge_events_next_24h": 0,
+      "repair_high_severity_events_next_24h": 0,
+      "repair_active_event_count": 0,
+      "repair_open_end_event_count": 0,
+      "repair_disruption_score": 0
+    },
+    "coverage": {
+      "city": "Astana",
+      "records": 1
+    },
+    "warnings": [],
+    "fallback_used": false,
+    "records": [
+      {
+        "source": "gov.kz Astana Akimat",
+        "source_type": "repairs",
+        "source_version": "1.0",
+        "source_item_id": "1257347",
+        "source_url": "https://www.gov.kz/memleket/entities/astana/press/news/details/1257347?lang=ru",
+        "collected_at": "2026-07-13T12:56:43.401214+00:00",
+        "published_at": "2026-07-13T00:00:00+05:00",
+        "valid_from": "2026-07-17T00:00:00+05:00",
+        "valid_to": "2026-09-30T00:00:00+05:00",
+        "prediction_datetime": "2026-07-13T17:56:18.143939+05:00",
+        "horizon_hours": 24,
+        "latitude": null,
+        "longitude": null,
+        "geometry": null,
+        "affected_road_segment_ids": [],
+        "event_type": "road_construction",
+        "severity": "unknown",
+        "confidence": 0.95,
+        "is_forecast": true,
+        "is_realtime": false,
+        "is_historical": false,
+        "payload": {
+          "title": "Участок улицы Кордай временно закроют в связи с проведением ремонтных работ",
+          "description": "",
+          "restriction_type": "no_restriction",
+          "language": "ru",
+          "location": {
+            "road_name": "улицы Кордай временно закроют в связи с проведением р",
+            "from_street": "пр. Бауыржана Момышулы",
+            "to_street": "ул",
+            "intersection_streets": null,
+            "address": null,
+            "district": null,
+            "original_location_phrases": [
+              "улицы Кордай временно закроют в связи с проведением р",
+              "Пресс-центр Контакты iKOMEK109 Оповещения Главная стр",
+              "Пресс-центр",
+              "улицы Кордай временно закроют в связи с проведением р",
+              "улицы Кордай временно закроют в связи с проведением р",
+              "просмотров",
+              "проведение работ по строительству инженерных сетей по",
+              "ул. Кордай на участке от пр. Бауыржана Момышулы до ул",
+              "шеуказанном участке будет закрыто. Водителей и пешех",
+              "просят заранее планировать свои маршруты и учитывать",
+              "правления деятельности Транспорт и автодороги Читайте",
+              "прошёл Trend Up Fest 13 июля 2026 Около 400 спортсмен",
+              "провели в Астане 13 июля 2026 Creative Aimaq",
+              "представили в Астане 13 июля 2026 Одна минута без при",
+              "Президента РК Государственные символы РК Сайт Президе",
+              "Премьер-Министра РК Служба центральных коммуникаций п",
+              "Президенте РК Жизненные ситуации Концепция цифровой т",
+              "Правила размещения информации на интернет-портале отк",
+              "права защищены. Разработано в АО"
+            ]
+          },
+          "relevance_score": 5,
+          "content_hash": "4d8bbd092d35b8a7f7daf8214cedaef4cdc2b0cc160efd9e0054e841c36dbb06",
+          "open_end": false,
+          "text": "Участок улицы Кордай временно закроют в связи с проведением ремонтных работ You need to enable JavaScript to run this app. Перейти на основной контент Государственные органы RU Авторизация Акимат города Астаны Аппарат акима Деятельность Документы Пресс-центр Контакты iKOMEK109 Оповещения Главная страница / Акимат города Астаны / Пресс-центр / Новости Участок улицы Кордай временно закроют в связи с проведением ремонтных работ 1 / 1. Участок улицы Кордай временно закроют в связи с проведением ремонтных работ 1 / 1 13 июля 2026 17:29 Количество просмотров: 16 В Астане планируется проведение работ по строительству инженерных сетей по ул. Кордай на участке от пр. Бауыржана Момышулы до ул. Обаган, передает официальный сайт столичного акимата. В связи с этим с 17 июля по 30 сентября текущего года движение автотранспортных средств на вышеуказанном участке будет закрыто. Водителей и пешеходов просят заранее планировать свои маршруты и учитывать возможные изменения в организации дорожного движения. Направления деятельности Транспорт и автодороги Читайте также 13 июля 2026 В Астане в рамках фестиваля «Отбасы Time» прошёл Trend Up Fest 13 июля 2026 Около 400 спортсменов со всей страны собрал баскетбольный турнир «Astana Open 3x3» в столице 13 июля 2026 Антинаркотическую акцию в формате «открытого микрофона» провели в Астане 13 июля 2026 Creative Aimaq: креативный потенциал Костанайской области представили в Астане 13 июля 2026 Одна минута без присмотра может стоить жизни: столичный врач обратился к родителям Все новости Социальные сети Единая платформа интернет-ресурсов государственных органов Конституция Республики Казахстан Послания Президента РК Государственные символы РК Сайт Президента РК Сайт Премьер-Министра РК Служба центральных коммуникаций при Президенте РК Жизненные ситуации Концепция цифровой трансформации Концепция развития искусственного интеллекта на 2024 – 2029 годы Закон \"О доступе к информации\" Правила размещения информации на интернет-портале открытых данных Политика конфиденциальности Термины и обозначения Экранный диктор 2026 © Все права защищены. Разработано в АО «Национальные информационные технологии» .",
+          "warnings": []
+        },
+        "warnings": []
+      }
+    ]
+  },
+  "collection": {
+    "robots": "fetched",
+    "robots_allows_listing": true,
+    "pages_requested": 1,
+    "selected_method": "official_filtered_listing",
+    "discovery_chain": [
+      {
+        "method_name": "official_filtered_listing",
+        "status": "ok",
+        "article_urls": [
+          "https://www.gov.kz/memleket/entities/astana/press/news/details/1257347?lang=ru"
+        ],
+        "pages_scanned": 1,
+        "warnings": [],
+        "errors": []
+      }
+    ],
+    "pages_scanned": 1,
+    "listing_cards_seen": 10,
+    "listing_cards_selected": 1,
+    "duplicate_urls_removed": 0,
+    "listing_card_diagnostics": [
+      {
+        "page_number": 1,
+        "source_item_id": "1257347",
+        "source_url": "https://www.gov.kz/memleket/entities/astana/press/news/details/1257347?lang=ru",
+        "card_title": "Участок улицы Кордай временно закроют в связи с проведением ремонтных работ",
+        "card_snippet": "Транспорт и автодороги/\n\n13 июля 2026",
+        "visible_published_at": "13 июля 2026",
+        "prefilter_matched_keywords": {
+          "strong": [],
+          "weak": [
+            "ремонт"
+          ],
+          "road_context": [
+            "транспорт"
+          ]
+        },
+        "prefilter_score": 2,
+        "candidate_selected": true,
+        "rejection_reason": null
+      },
+      {
+        "page_number": 1,
+        "source_item_id": "1257223",
+        "source_url": "https://www.gov.kz/memleket/entities/astana/press/news/details/1257223?lang=ru",
+        "card_title": "В Астане в рамках фестиваля «Отбасы Time» прошёл Trend Up Fest",
+        "card_snippet": "13 июля 2026",
+        "visible_published_at": "13 июля 2026",
+        "prefilter_matched_keywords": {
+          "strong": [],
+          "weak": [],
+          "road_context": []
+        },
+        "prefilter_score": 0,
+        "candidate_selected": false,
+        "rejection_reason": "no_strong_road_event_term_or_weak_term_with_road_context"
+      },
+      {
+        "page_number": 1,
+        "source_item_id": "1257219",
+        "source_url": "https://www.gov.kz/memleket/entities/astana/press/news/details/1257219?lang=ru",
+        "card_title": "Около 400 спортсменов со всей страны собрал баскетбольный турнир «Astana Open 3x3» в столице",
+        "card_snippet": "Спорт/\n\n13 июля 2026",
+        "visible_published_at": "13 июля 2026",
+        "prefilter_matched_keywords": {
+          "strong": [],
+          "weak": [],
+          "road_context": []
+        },
+        "prefilter_score": 0,
+        "candidate_selected": false,
+        "rejection_reason": "no_strong_road_event_term_or_weak_term_with_road_context"
+      },
+      {
+        "page_number": 1,
+        "source_item_id": "1257203",
+        "source_url": "https://www.gov.kz/memleket/entities/astana/press/news/details/1257203?lang=ru",
+        "card_title": "Антинаркотическую акцию в формате «открытого микрофона» провели в Астане",
+        "card_snippet": "13 июля 2026",
+        "visible_published_at": "13 июля 2026",
+        "prefilter_matched_keywords": {
+          "strong": [],
+          "weak": [],
+          "road_context": []
+        },
+        "prefilter_score": 0,
+        "candidate_selected": false,
+        "rejection_reason": "no_strong_road_event_term_or_weak_term_with_road_context"
+      },
+      {
+        "page_number": 1,
+        "source_item_id": "1257014",
+        "source_url": "https://www.gov.kz/memleket/entities/astana/press/news/details/1257014?lang=ru",
+        "card_title": "Creative Aimaq: креативный потенциал Костанайской области представили в Астане",
+        "card_snippet": "13 июля 2026",
+        "visible_published_at": "13 июля 2026",
+        "prefilter_matched_keywords": {
+          "strong": [],
+          "weak": [],
+          "road_context": []
+        },
+        "prefilter_score": 0,
+        "candidate_selected": false,
+        "rejection_reason": "no_strong_road_event_term_or_weak_term_with_road_context"
+      },
+      {
+        "page_number": 1,
+        "source_item_id": "1256912",
+        "source_url": "https://www.gov.kz/memleket/entities/astana/press/news/details/1256912?lang=ru",
+        "card_title": "Одна минута без присмотра может стоить жизни: столичный врач обратился к родителям",
+        "card_snippet": "13 июля 2026",
+        "visible_published_at": "13 июля 2026",
+        "prefilter_matched_keywords": {
+          "strong": [],
+          "weak": [],
+          "road_context": []
+        },
+        "prefilter_score": 0,
+        "candidate_selected": false,
+        "rejection_reason": "no_strong_road_event_term_or_weak_term_with_road_context"
+      },
+      {
+        "page_number": 1,
+        "source_item_id": "1256911",
+        "source_url": "https://www.gov.kz/memleket/entities/astana/press/news/details/1256911?lang=ru",
+        "card_title": "Столичные спасатели напомнили о мерах по предотвращению выпадения детей из окон",
+        "card_snippet": "13 июля 2026",
+        "visible_published_at": "13 июля 2026",
+        "prefilter_matched_keywords": {
+          "strong": [],
+          "weak": [],
+          "road_context": []
+        },
+        "prefilter_score": 0,
+        "candidate_selected": false,
+        "rejection_reason": "no_strong_road_event_term_or_weak_term_with_road_context"
+      },
+      {
+        "page_number": 1,
+        "source_item_id": "1256900",
+        "source_url": "https://www.gov.kz/memleket/entities/astana/press/news/details/1256900?lang=ru",
+        "card_title": "56 тонн кумыса, более 70 тысяч гостей: в Астане определили лучших на международном фестивале «BaiQymyz-2026»",
+        "card_snippet": "12 июля 2026",
+        "visible_published_at": "12 июля 2026",
+        "prefilter_matched_keywords": {
+          "strong": [],
+          "weak": [],
+          "road_context": []
+        },
+        "prefilter_score": 0,
+        "candidate_selected": false,
+        "rejection_reason": "no_strong_road_event_term_or_weak_term_with_road_context"
+      },
+      {
+        "page_number": 1,
+        "source_item_id": "1256885",
+        "source_url": "https://www.gov.kz/memleket/entities/astana/press/news/details/1256885?lang=ru",
+        "card_title": "На международном гастрофестивале BaiQymyz-2026 прошла акция «Закон и порядок»",
+        "card_snippet": "12 июля 2026",
+        "visible_published_at": "12 июля 2026",
+        "prefilter_matched_keywords": {
+          "strong": [],
+          "weak": [],
+          "road_context": []
+        },
+        "prefilter_score": 0,
+        "candidate_selected": false,
+        "rejection_reason": "no_strong_road_event_term_or_weak_term_with_road_context"
+      },
+      {
+        "page_number": 1,
+        "source_item_id": "1256884",
+        "source_url": "https://www.gov.kz/memleket/entities/astana/press/news/details/1256884?lang=ru",
+        "card_title": "Около 40 тысяч человек посетили первый день гастрофестиваля BaiQymyz-2026 в Астане",
+        "card_snippet": "12 июля 2026",
+        "visible_published_at": "12 июля 2026",
+        "prefilter_matched_keywords": {
+          "strong": [],
+          "weak": [],
+          "road_context": []
+        },
+        "prefilter_score": 0,
+        "candidate_selected": false,
+        "rejection_reason": "no_strong_road_event_term_or_weak_term_with_road_context"
+      }
+    ],
+    "already_known_articles_skipped": 0,
+    "article_links_found": 1,
+    "articles_downloaded": 1,
+    "detail_pages_rendered": 1,
+    "rendered_successfully": 1,
+    "relevant_articles": 1,
+    "rejected_articles": 0,
+    "prefilter_precision": 1.0,
+    "rejection_reasons": {},
+    "language": "ru",
+    "article_diagnostics": [
+      {
+        "source_item_id": "1257347",
+        "source_url": "https://www.gov.kz/memleket/entities/astana/press/news/details/1257347?lang=ru",
+        "acquisition_method": "playwright_fallback",
+        "requests_html_length": 836,
+        "requests_extracted_text_length": 181,
+        "shell_detected": true,
+        "playwright_used": true,
+        "rendered_html_length": 137836,
+        "rendered_title": "Участок улицы Кордай временно закроют в связи с проведением ремонтных работ",
+        "rendered_text_length": 2152,
+        "title": "Участок улицы Кордай временно закроют в связи с проведением ремонтных работ",
+        "extracted_text_length": 2152,
+        "matched_keywords": {
+          "repair": [
+            "ремонт",
+            "строительств"
+          ],
+          "restriction": [
+            "закрыт"
+          ],
+          "infra": [
+            "улиц",
+            "дорог"
+          ]
+        },
+        "relevance_score": 5,
+        "relevant": true,
+        "rejection_reason": null,
+        "acquisition_warnings": []
+      }
+    ]
+  },
+  "debug_network": "disabled",
+  "save_rendered_html": false
+}
