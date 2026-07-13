@@ -10,6 +10,7 @@ from typing import Any, Callable
 import requests
 import pandas as pd
 from future_intelligence.providers.repairs.base import RepairsProvider
+from future_intelligence.geocoding import AstanaGeocoder, RoadGeometryResolver, apply_geocode
 from future_intelligence.schemas import FutureRecord, ProviderMetadata, ProviderResult
 from future_intelligence.utils import ASTANA_TIMEZONE, parse_prediction_datetime
 from future_intelligence.providers.repairs.discovery import (
@@ -231,13 +232,17 @@ def classify(text: str) -> tuple[int, str, str, str]:
 
 
 def locations(text: str) -> dict[str, Any]:
-    original = []
-    for match in re.finditer(
-        r"(?:ул\.?|улиц[аые]|пр\.?|пр-т|проспект|ш\.?|шоссе)\s*([А-ЯA-ZӘәҒғҚқҢңӨөҰұҮүҺһІі][\w.\- ]{1,50})",
-        text,
+    # Capture the street name, not the following prose ("частично перекроют").
+    street_pattern = re.compile(
+        r"(?P<prefix>ул\.?|улиц[ауыые]?|пр\.?|пр-т|проспект[а-еом]?|ш\.?|шоссе)\s+"
+        r"(?P<name>[А-ЯA-ZӘәҒғҚқҢңӨөҰұҮүҺһІі][\w.\-]*(?:\s+[А-ЯA-ZӘәҒғҚқҢңӨөҰұҮүҺһІі][\w.\-]*){0,2})",
         re.I,
-    ):
-        original.append(match.group(0).strip(" ,.;"))
+    )
+    original = []
+    for match in street_pattern.finditer(text):
+        value = match.group(0).strip(" ,.;")
+        value = re.split(r"\s+(?:частично|полностью|перекро\w*|закро\w*|огранич\w*|ремонт\w*|от|до|с|по|на|в)\b", value, maxsplit=1, flags=re.I)[0]
+        original.append(value.strip(" ,.;"))
     section = re.search(r"от\s+(.{2,60}?)\s+до\s+(.{2,60}?)(?:[,.]|$)", text, re.I)
     intersection = re.search(
         r"(?:пересечени[ие][\w ]*|қиылысында)\s+(.{2,70}?)(?:[,.]|$)", text, re.I
@@ -262,6 +267,8 @@ class GovKzRoadEventsProvider(RepairsProvider):
         self,
         *,
         session: requests.Session | None = None,
+        geocoder: AstanaGeocoder | None = None,
+        road_geometry: RoadGeometryResolver | None = None,
         timeout_seconds: float = 10,
         max_pages: int = 3,
         max_articles: int = 10,
@@ -273,6 +280,8 @@ class GovKzRoadEventsProvider(RepairsProvider):
         headless: bool = True,
     ):
         self.session = session or requests.Session()
+        self.geocoder = geocoder or AstanaGeocoder(session=self.session, sleep=sleep)
+        self.road_geometry = road_geometry or RoadGeometryResolver()
         self.timeout_seconds = timeout_seconds
         self.max_pages = max_pages
         self.max_articles = max_articles
@@ -813,6 +822,14 @@ class GovKzRoadEventsProvider(RepairsProvider):
             for item in parsed
             for record in self.normalize({"parsed": item}, when, horizon_hours)
         ]
+        for record in records:
+            apply_geocode(record, self.geocoder.repair(record.payload["location"]))
+            geometry = self.road_geometry.repair(record.payload["location"])
+            record.payload.update({"repair_geometry_quality": geometry.quality})
+            record.warnings.extend(geometry.warnings)
+            if geometry.geometry is not None:
+                record.geometry = geometry.geometry
+                record.confidence = max(record.confidence or 0, geometry.confidence)
         features = self.build_features(records, when, horizon_hours)
         rejection_reasons = {}
         for item in diagnostics:

@@ -15,6 +15,7 @@ class TicketonEventsTests(unittest.TestCase):
         when = datetime(2026, 7, 14, tzinfo=ASTANA_TIMEZONE); records = self.provider.normalize({"events": parsed}, when, 24)
         features = self.provider.build_features(records, when, 24)
         self.assertEqual((features["event_major_count_next_24h"], features["event_stadium_count_next_24h"]), (1, 1))
+        self.assertEqual(features["event_intensity_score"], 7.5)
     def test_only_events_overlapping_window_are_retained(self):
         self.assertEqual(self.provider.normalize({"events": self.provider.parse_listing(HTML)}, datetime(2026, 7, 15, tzinfo=ASTANA_TIMEZONE), 24), [])
     def test_collection_is_safe_on_empty_listing(self):

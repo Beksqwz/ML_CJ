@@ -43,6 +43,7 @@ class GovKzRoadEventTests(unittest.TestCase):
         self.assertIsNotNone(parsed["valid_from"])
         self.assertIsNotNone(parsed["valid_to"])
         self.assertIsNotNone(parsed["location"]["from_street"])
+        self.assertIn("Сыганак", parsed["location"]["road_name"])
 
     def test_full_closure_intersection_bridge_and_lane(self):
         full = self.parse(
