@@ -1,0 +1,11 @@
+{
+  "status": "partially_feasible",
+  "sources_evaluated": ["live Ticketon detail pages", "Ticketon robots/listing", "Wayback CDX", "Common Crawl current index", "current local venue directory"],
+  "actual_detail_url_structure": "/astana/event/<slug>",
+  "live_listing": {"http_status": 200, "html_length": 493582, "detail_links": 83, "jsonld_scripts": 1},
+  "wayback": {"bounded_rows": 50, "years_observed": [2023, 2024, 2025], "archive_pages_with_jsonld_in_stratified_sample": 3, "current_parser_archive_success": 0, "service_warning": "intermittent CDX HTTP 503"},
+  "common_crawl": {"index": "CC-MAIN-2026-25", "matched_detail_urls": 0},
+  "major_venue_directory": {"present": ["Astana Arena", "Barys Arena", "EXPO", "Congress Center"], "missing_or_not_reliably_aliased": ["Central Concert Hall Kazakhstan", "Palace of Peace and Reconciliation", "Palace of Independence"], "capacity_proxy_caveat": "proxy only, never attendance"},
+  "feasibility_metrics": {"unique_historical_urls": "not estimable from bounded sample", "usable_events_by_year": "not estimable", "exact_datetime_rate": "not estimable at corpus level", "archive_parser_malformed_or_incompatible_rate": "3/3 stratified samples incompatible with current Event parser", "duplicate_rate": "not estimable", "matchable_rate": "not estimable"},
+  "conclusion": "Wayback is a legal, technically plausible discovery source, but a separate archive normalizer and a more complete venue directory must be proven on a bounded pilot before full backfill."
+}

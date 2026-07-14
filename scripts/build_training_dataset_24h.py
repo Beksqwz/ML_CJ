@@ -16,8 +16,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from build_training_dataset_1h import (
-    ROAD_FEATURES,
+from scripts.build_training_dataset_1h import (
     TIMEZONE,
     prefix_columns,
     static_segment_features,

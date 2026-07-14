@@ -14,7 +14,12 @@ try:
 except (AttributeError, OSError):
     pass
 from future_intelligence.pipeline import FutureIntelligencePipeline  # noqa: E402
-from future_intelligence.storage import save_result  # noqa: E402
+from future_intelligence.storage import (  # noqa: E402
+    save_gov_kz_result,
+    save_result,
+    save_ticketon_result,
+    save_tomtom_result,
+)
 
 
 def main() -> int:
@@ -41,12 +46,17 @@ def main() -> int:
         strict=args.strict,
     )
     if not args.dry_run:
-        paths = [
-            save_result(
-                result, args.output_dir, args.prediction_datetime.replace(":", "-")
-            )
-            for result in pipeline.last_results
-        ]
+        paths = []
+        for result in pipeline.last_results:
+            if result.metadata.provider_name == "gov_kz_repairs":
+                saved, _ = save_gov_kz_result(result, args.output_dir)
+            elif result.metadata.provider_name == "ticketon_events":
+                saved, _ = save_ticketon_result(result, args.output_dir)
+            elif result.metadata.provider_name == "tomtom":
+                saved, _ = save_tomtom_result(result, args.output_dir)
+            else:
+                saved = save_result(result, args.output_dir, args.prediction_datetime)
+            paths.append(saved)
         context["storage"] = [
             {name: str(path) for name, path in saved.items()} for saved in paths
         ]

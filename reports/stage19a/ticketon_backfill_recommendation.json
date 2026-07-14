@@ -1,0 +1,8 @@
+{
+  "recommendation": "pilot_only_then_reassess",
+  "decision": "Ticketon historical backfill is partially feasible, not yet justified for a full production backfill.",
+  "best_acquisition_source": "Wayback CDX plus replayed public Ticketon detail URLs",
+  "why_not_full_now": ["bounded evidence only establishes 2023-2025 captures", "CDX availability was intermittently 503", "current parser extracts zero events from all three archived JSON-LD variants", "venue directory lacks several required major venues", "corpus-level date, venue, duplicate and matchability rates are unmeasured"],
+  "stage19b_scope": ["build an audit-only archive HTML normalizer separate from live parser", "sample 100 deduplicated Wayback URLs stratified across 2023-2025", "extend and validate major-venue aliases/coordinates", "apply transport-relevance audit labels without deleting raw records", "measure exact-date, Astana, venue, geocoding and road-match rates", "only then decide on historical training ingestion"],
+  "training_status_until_pilot_passes": "context_only"
+}

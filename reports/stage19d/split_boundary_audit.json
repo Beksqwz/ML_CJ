@@ -1,0 +1,57 @@
+{
+  "boundaries": {
+    "split_time_axis": "datetime_hour interpreted as Asia/Almaty local civil time",
+    "initial_train_validation_boundary": "2022-09-10 13:00:00",
+    "initial_validation_test_boundary": "2024-09-14 12:00:00",
+    "purge_horizon_hours": 24,
+    "train_end_exclusive": "2022-09-09 13:00:00",
+    "validation_start": "2022-09-10 13:00:00",
+    "validation_end_exclusive": "2024-09-13 12:00:00",
+    "test_start": "2024-09-14 12:00:00",
+    "purged_boundary_rows": 1194
+  },
+  "observed_sampled_distribution": {
+    "train": {
+      "rows": 916398,
+      "positive_rows": 152733,
+      "negative_rows": 763665,
+      "prevalence": 0.16666666666666666,
+      "unique_timestamps": 72367,
+      "unique_segments": 3965,
+      "rows_per_timestamp_min_max": [
+        6,
+        312
+      ],
+      "all_3968_segments_at_each_timestamp": false,
+      "distribution": "sampled_1_to_5_candidate_set"
+    },
+    "validation": {
+      "rows": 307968,
+      "positive_rows": 51328,
+      "negative_rows": 256640,
+      "prevalence": 0.16666666666666666,
+      "unique_timestamps": 15488,
+      "unique_segments": 3950,
+      "rows_per_timestamp_min_max": [
+        6,
+        186
+      ],
+      "all_3968_segments_at_each_timestamp": false,
+      "distribution": "sampled_1_to_5_candidate_set"
+    },
+    "test": {
+      "rows": 561510,
+      "positive_rows": 93585,
+      "negative_rows": 467925,
+      "prevalence": 0.16666666666666666,
+      "unique_timestamps": 15513,
+      "unique_segments": 3968,
+      "rows_per_timestamp_min_max": [
+        6,
+        120
+      ],
+      "all_3968_segments_at_each_timestamp": false,
+      "distribution": "sampled_1_to_5_candidate_set"
+    }
+  }
+}

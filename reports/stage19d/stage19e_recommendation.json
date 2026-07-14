@@ -1,0 +1,13 @@
+{
+  "stage19e_required": true,
+  "required_scope": [
+    "reconstruct bounded/full all-3968-segment historical feature grids strictly as-known-at",
+    "evaluate frozen Stage7B on natural prevalence",
+    "retain road_segment_id only in audit metadata",
+    "recalibrate/choose operating threshold on natural validation distribution before deployment"
+  ],
+  "blockers": [
+    "No saved full all-segment historical feature/prediction grid exists for natural-prevalence evaluation.",
+    "outputs are calibrated only against sampled prevalence; they must not be called natural-production probabilities."
+  ]
+}

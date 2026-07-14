@@ -1,0 +1,61 @@
+{
+  "rows": 3968,
+  "columns": 61,
+  "primary_key": [
+    "road_segment_id",
+    "prediction_datetime",
+    "horizon_hours"
+  ],
+  "provider_coverage": {
+    "weather": {
+      "available": 1,
+      "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\openweather_24h_features.parquet",
+      "source_file_exists": true,
+      "stage18a_availability_evidence": true,
+      "collection_timestamp": "2026-07-14T14:13:58.191214+05:00",
+      "warning_count": 0,
+      "degraded": 0
+    },
+    "gov": {
+      "available": 1,
+      "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\gov_kz_road_events.parquet",
+      "source_file_exists": true,
+      "stage18a_availability_evidence": true,
+      "collection_timestamp": "2026-07-14T14:15:29.327311+05:00",
+      "warning_count": 0,
+      "degraded": 0
+    },
+    "ticketon": {
+      "available": 1,
+      "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\ticketon_events.parquet",
+      "source_file_exists": true,
+      "stage18a_availability_evidence": true,
+      "collection_timestamp": "2026-07-14T14:12:53.879443+05:00",
+      "warning_count": 0,
+      "degraded": 0
+    },
+    "traffic": {
+      "available": 1,
+      "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\tomtom_live_traffic.parquet",
+      "source_file_exists": true,
+      "stage18a_availability_evidence": false,
+      "collection_timestamp": "2026-07-14T14:14:26.987252+05:00",
+      "warning_count": 0,
+      "degraded": 0
+    }
+  },
+  "feature_counts_by_namespace": {
+    "weather": 19,
+    "repair": 14,
+    "event": 14,
+    "traffic": 1,
+    "metadata": 1
+  },
+  "collisions": {
+    "duplicate_input_columns": [],
+    "reserved_metadata_collisions": [],
+    "namespace_violations": [],
+    "dtype_mismatches": [],
+    "nullability_conflicts": []
+  }
+}

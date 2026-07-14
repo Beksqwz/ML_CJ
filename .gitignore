@@ -22,8 +22,20 @@ data/future_intelligence/raw/**
 !data/future_intelligence/raw/.gitkeep
 data/future_intelligence/processed/**
 !data/future_intelligence/processed/.gitkeep
+# Historical backfill output is generated locally and can be reproduced from
+# the official source URLs/checkpoints.  Keep only directory sentinels.
+data/future_intelligence/history/**
+!data/future_intelligence/history/.gitkeep
+# Bounded natural-distribution diagnostics are reproducible audit output.
+data/audit/stage19d/**
+!data/audit/stage19d/.gitkeep
+data/audit/stage19e/**
+!data/audit/stage19e/.gitkeep
 reports/stage15/gov_kz_debug/
 
 # Keep Parquet as the canonical data format; CSV exports are reproducible.
 data/processed/*.csv
 data/external/*.csv
+
+# Large local experimental model
+models/stage19h/extra_trees_candidate.joblib

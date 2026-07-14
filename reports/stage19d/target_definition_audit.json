@@ -1,0 +1,12 @@
+{
+  "verified_fact": "make_positive_windows creates event_hour - offset for offset 1..24.",
+  "interval": "(datetime_hour, datetime_hour + 24h]",
+  "timezone": "timezone-naive Asia/Almaty local civil time",
+  "rounding": "accident_datetime.floor('h')",
+  "multiple_events": "same segment/hour positive keys deduplicated",
+  "feature_target_separation": "target and target_datetime_hour excluded by Stage7A feature configuration",
+  "controlled_example": {
+    "event_hour": "2024-01-02 10:00",
+    "positive_prediction_hours": "2024-01-01 10:00 through 2024-01-02 09:00 inclusive"
+  }
+}

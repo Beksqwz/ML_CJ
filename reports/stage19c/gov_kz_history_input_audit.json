@@ -1,0 +1,11 @@
+{
+  "reused_live_provider": "gov_kz_repairs",
+  "date_extraction": "GovKzRoadEventsProvider.parse_dates",
+  "geometry": "AstanaGeocoder + RoadGeometryResolver",
+  "spatial_matching": "SpatialMatchingEngine",
+  "storage_identity": [
+    "source",
+    "source_item_id"
+  ],
+  "archive_gap": "No verified historical date navigation was exposed in this bounded official-listing pilot."
+}

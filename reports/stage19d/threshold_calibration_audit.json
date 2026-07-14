@@ -1,0 +1,14 @@
+{
+  "threshold": {
+    "rule": "maximum validation F1",
+    "value": 0.18556131282293417
+  },
+  "calibration": {
+    "class_weights": "none in saved Stage7B effective parameters",
+    "undersampling": "1:5 before split",
+    "post_sampling_probability_correction": false,
+    "platt_or_isotonic": false,
+    "calibration_distribution": "sampled validation/test prevalence=1/6",
+    "conclusion": "outputs are calibrated only against sampled prevalence; they must not be called natural-production probabilities."
+  }
+}

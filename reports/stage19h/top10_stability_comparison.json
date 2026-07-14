@@ -1,0 +1,147 @@
+{
+  "autumn": {
+    "catboost_candidate": {
+      "permanently_top10_segments": 7,
+      "unique_top10_segments": 12
+    },
+    "extra_trees": {
+      "permanently_top10_segments": 2,
+      "unique_top10_segments": 35
+    },
+    "hist_gradient_boosting": {
+      "permanently_top10_segments": 1,
+      "unique_top10_segments": 21
+    },
+    "historical_baseline": {
+      "permanently_top10_segments": 10,
+      "unique_top10_segments": 10
+    },
+    "lightgbm": {
+      "permanently_top10_segments": 1,
+      "unique_top10_segments": 29
+    },
+    "logistic_regression": {
+      "permanently_top10_segments": 9,
+      "unique_top10_segments": 11
+    },
+    "stage7b_frozen_reference": {
+      "permanently_top10_segments": 9,
+      "unique_top10_segments": 11
+    },
+    "xgboost": {
+      "permanently_top10_segments": 4,
+      "unique_top10_segments": 25
+    }
+  },
+  "cross_season": {
+    "catboost_candidate": {
+      "concentration_rate": 0.8000000000000002,
+      "pairwise_jaccard": null,
+      "three_season_intersection": null
+    },
+    "extra_trees": {
+      "concentration_rate": 0.13333333333333333,
+      "pairwise_jaccard": null,
+      "three_season_intersection": null
+    },
+    "hist_gradient_boosting": {
+      "concentration_rate": 0.2333333333333333,
+      "pairwise_jaccard": null,
+      "three_season_intersection": null
+    },
+    "historical_baseline": {
+      "concentration_rate": 1.0,
+      "pairwise_jaccard": null,
+      "three_season_intersection": null
+    },
+    "lightgbm": {
+      "concentration_rate": 0.23333333333333336,
+      "pairwise_jaccard": null,
+      "three_season_intersection": null
+    },
+    "logistic_regression": {
+      "concentration_rate": 0.9666666666666667,
+      "pairwise_jaccard": null,
+      "three_season_intersection": null
+    },
+    "stage7b_frozen_reference": {
+      "concentration_rate": 0.8666666666666667,
+      "pairwise_jaccard": null,
+      "three_season_intersection": null
+    },
+    "xgboost": {
+      "concentration_rate": 0.3333333333333333,
+      "pairwise_jaccard": null,
+      "three_season_intersection": null
+    }
+  },
+  "cross_season_note": "Exact per-segment cross-season sets were not persisted; null rather than fabricated.",
+  "spring": {
+    "catboost_candidate": {
+      "permanently_top10_segments": 8,
+      "unique_top10_segments": 12
+    },
+    "extra_trees": {
+      "permanently_top10_segments": 2,
+      "unique_top10_segments": 33
+    },
+    "hist_gradient_boosting": {
+      "permanently_top10_segments": 2,
+      "unique_top10_segments": 18
+    },
+    "historical_baseline": {
+      "permanently_top10_segments": 10,
+      "unique_top10_segments": 10
+    },
+    "lightgbm": {
+      "permanently_top10_segments": 4,
+      "unique_top10_segments": 22
+    },
+    "logistic_regression": {
+      "permanently_top10_segments": 10,
+      "unique_top10_segments": 10
+    },
+    "stage7b_frozen_reference": {
+      "permanently_top10_segments": 8,
+      "unique_top10_segments": 12
+    },
+    "xgboost": {
+      "permanently_top10_segments": 4,
+      "unique_top10_segments": 18
+    }
+  },
+  "winter": {
+    "catboost_candidate": {
+      "permanently_top10_segments": 9,
+      "unique_top10_segments": 12
+    },
+    "extra_trees": {
+      "permanently_top10_segments": 0,
+      "unique_top10_segments": 40
+    },
+    "hist_gradient_boosting": {
+      "permanently_top10_segments": 4,
+      "unique_top10_segments": 21
+    },
+    "historical_baseline": {
+      "permanently_top10_segments": 10,
+      "unique_top10_segments": 10
+    },
+    "lightgbm": {
+      "permanently_top10_segments": 2,
+      "unique_top10_segments": 22
+    },
+    "logistic_regression": {
+      "permanently_top10_segments": 10,
+      "unique_top10_segments": 10
+    },
+    "stage7b_frozen_reference": {
+      "permanently_top10_segments": 9,
+      "unique_top10_segments": 11
+    },
+    "xgboost": {
+      "permanently_top10_segments": 2,
+      "unique_top10_segments": 28
+    }
+  }
+}

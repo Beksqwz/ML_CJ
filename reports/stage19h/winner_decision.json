@@ -1,0 +1,8 @@
+{
+  "best_experimental_tree_candidate": "catboost_candidate",
+  "best_production_model": "stage7b_frozen_reference",
+  "best_small_budget_comparator": "historical_baseline / unconverged_logistic_regression",
+  "recommended_next_step": "hybrid operational ranking study, not more model-family training",
+  "replacement_approved": false,
+  "replacement_reason": "No experimental candidate improves frozen Recall@5% by 3% while preserving Lift@5%."
+}

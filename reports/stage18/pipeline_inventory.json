@@ -1,0 +1,7 @@
+{
+  "chain": ["provider registry", "canonical storage", "Nominatim geocoding", "Stage 17 spatial matching", "Stage 18A segment builder", "Stage 18B unified layer"],
+  "canonical_keys": {"events": ["source", "source_item_id"], "matches": ["provider", "source_item_id", "road_segment_id"], "features": ["road_segment_id", "prediction_datetime", "horizon_hours"]},
+  "artifacts": {"matches": {"path": "data/future_intelligence/processed/future_segment_matches.parquet", "rows": 36}, "stage18a": {"path": "data/future_intelligence/processed/future_segment_features_24h.parquet", "rows": 3968, "columns": 52}, "stage18b": {"path": "data/future_intelligence/processed/unified_future_features_24h.parquet", "rows": 3968, "columns": 61}},
+  "provider_coverage": {"gov": "available", "openweather": "available: 7 forecast points", "ticketon": "available: 2 events, no validated geometry", "tomtom": "available: 20 bounded live readings"},
+  "idempotency": "Stage 18A/18B storage tests passed; current unified second build reported unchanged=true"
+}

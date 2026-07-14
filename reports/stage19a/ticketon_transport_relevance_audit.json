@@ -1,0 +1,13 @@
+{
+  "status": "audit_only_no_canonical_data_changed",
+  "proposed_deterministic_rules": {
+    "exclude": ["cinema", "small workshop", "children activity", "routine museum visit", "online event", "no fixed start", "repeated low-capacity session"],
+    "low": "fixed-time theatre/exhibition or unknown small venue",
+    "medium": "concert, forum or sport at documented mid-tier venue",
+    "high": "festival or sport/concert at 5,000+ capacity-proxy venue",
+    "very_high": "match or major concert at Astana Arena/Barys Arena tier"
+  },
+  "required_audit_fields": ["is_transport_relevant", "transport_impact_class", "transport_impact_score", "exclusion_reason"],
+  "observed_live_events": {"count": 2, "transport_relevant_confirmed": 0, "reason": "venue coordinates unresolved; no attendance or matched-road evidence fabricated"},
+  "training_eligibility": {"trainable_requires": ["reliable start datetime", "Astana validation", "valid venue or coordinates", "medium-or-higher transport relevance", "reproducible provenance", "no post-event leakage"], "current_bounded_archive_sample_trainable_count": "not estimable because current parser returns zero records from archived HTML variants"}
+}

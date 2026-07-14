@@ -1,0 +1,13 @@
+{
+  "row_count_3968": true,
+  "unique_segments": true,
+  "primary_key_duplicates": true,
+  "all_ids_in_production": true,
+  "timezone_aware": true,
+  "window_24h": true,
+  "no_infinite_numeric": true,
+  "nonnegative_count_features": true,
+  "confidence_in_range": true,
+  "nonnegative_distances": true,
+  "stable_schema": true
+}

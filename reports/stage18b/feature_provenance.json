@@ -1,0 +1,490 @@
+[
+  {
+    "feature_name": "road_segment_id",
+    "provider": "stage18a",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "context_only",
+    "description": "Unified Future Feature Layer metadata or inherited Stage 18A feature."
+  },
+  {
+    "feature_name": "prediction_datetime",
+    "provider": "stage18a",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "context_only",
+    "description": "Unified Future Feature Layer metadata or inherited Stage 18A feature."
+  },
+  {
+    "feature_name": "forecast_window_start",
+    "provider": "stage18a",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "context_only",
+    "description": "Unified Future Feature Layer metadata or inherited Stage 18A feature."
+  },
+  {
+    "feature_name": "forecast_window_end",
+    "provider": "stage18a",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "context_only",
+    "description": "Unified Future Feature Layer metadata or inherited Stage 18A feature."
+  },
+  {
+    "feature_name": "horizon_hours",
+    "provider": "stage18a",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "context_only",
+    "description": "Unified Future Feature Layer metadata or inherited Stage 18A feature."
+  },
+  {
+    "feature_name": "generated_at",
+    "provider": "stage18a",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "context_only",
+    "description": "Unified Future Feature Layer metadata or inherited Stage 18A feature."
+  },
+  {
+    "feature_name": "weather_temperature_mean",
+    "provider": "openweather",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future weather candidate; separate from frozen model."
+  },
+  {
+    "feature_name": "weather_temperature_min",
+    "provider": "openweather",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future weather candidate; separate from frozen model."
+  },
+  {
+    "feature_name": "weather_temperature_max",
+    "provider": "openweather",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future weather candidate; separate from frozen model."
+  },
+  {
+    "feature_name": "weather_temperature_range",
+    "provider": "openweather",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future weather candidate; separate from frozen model."
+  },
+  {
+    "feature_name": "weather_humidity_mean",
+    "provider": "openweather",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future weather candidate; separate from frozen model."
+  },
+  {
+    "feature_name": "weather_precipitation_probability_max",
+    "provider": "openweather",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future weather candidate; separate from frozen model."
+  },
+  {
+    "feature_name": "weather_rain_sum",
+    "provider": "openweather",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future weather candidate; separate from frozen model."
+  },
+  {
+    "feature_name": "weather_snow_sum",
+    "provider": "openweather",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future weather candidate; separate from frozen model."
+  },
+  {
+    "feature_name": "weather_visibility_min",
+    "provider": "openweather",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future weather candidate; separate from frozen model."
+  },
+  {
+    "feature_name": "weather_wind_speed_max",
+    "provider": "openweather",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future weather candidate; separate from frozen model."
+  },
+  {
+    "feature_name": "weather_wind_gust_max",
+    "provider": "openweather",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future weather candidate; separate from frozen model."
+  },
+  {
+    "feature_name": "weather_freeze_thaw_transition",
+    "provider": "openweather",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future weather candidate; separate from frozen model."
+  },
+  {
+    "feature_name": "weather_road_surface_risk_score",
+    "provider": "openweather",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future weather candidate; separate from frozen model."
+  },
+  {
+    "feature_name": "weather_visibility_risk_score",
+    "provider": "openweather",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future weather candidate; separate from frozen model."
+  },
+  {
+    "feature_name": "weather_severity_score",
+    "provider": "openweather",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future weather candidate; separate from frozen model."
+  },
+  {
+    "feature_name": "weather_available",
+    "provider": "openweather",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "context_only",
+    "description": "Explicit weather availability metadata."
+  },
+  {
+    "feature_name": "weather_fallback_used",
+    "provider": "openweather",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "context_only",
+    "description": "Explicit weather availability metadata."
+  },
+  {
+    "feature_name": "repair_active_next_24h",
+    "provider": "gov_kz_repairs",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future repair/closure context only."
+  },
+  {
+    "feature_name": "repair_event_count_next_24h",
+    "provider": "gov_kz_repairs",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future repair/closure context only."
+  },
+  {
+    "feature_name": "repair_full_closure_next_24h",
+    "provider": "gov_kz_repairs",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future repair/closure context only."
+  },
+  {
+    "feature_name": "repair_partial_closure_next_24h",
+    "provider": "gov_kz_repairs",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future repair/closure context only."
+  },
+  {
+    "feature_name": "repair_lane_closure_next_24h",
+    "provider": "gov_kz_repairs",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future repair/closure context only."
+  },
+  {
+    "feature_name": "repair_intersection_closure_next_24h",
+    "provider": "gov_kz_repairs",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future repair/closure context only."
+  },
+  {
+    "feature_name": "repair_bridge_event_next_24h",
+    "provider": "gov_kz_repairs",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future repair/closure context only."
+  },
+  {
+    "feature_name": "repair_high_severity_count_next_24h",
+    "provider": "gov_kz_repairs",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future repair/closure context only."
+  },
+  {
+    "feature_name": "repair_disruption_score_next_24h",
+    "provider": "gov_kz_repairs",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future repair/closure context only."
+  },
+  {
+    "feature_name": "repair_distance_to_nearest_m",
+    "provider": "gov_kz_repairs",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future repair/closure context only."
+  },
+  {
+    "feature_name": "repair_match_confidence_max",
+    "provider": "gov_kz_repairs",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future repair/closure context only."
+  },
+  {
+    "feature_name": "repair_open_end_count_next_24h",
+    "provider": "gov_kz_repairs",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future repair/closure context only."
+  },
+  {
+    "feature_name": "repair_hours_until_nearest_start",
+    "provider": "gov_kz_repairs",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future repair/closure context only."
+  },
+  {
+    "feature_name": "repair_provider_available",
+    "provider": "gov_kz_repairs",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future repair/closure context only."
+  },
+  {
+    "feature_name": "event_count_next_24h",
+    "provider": "ticketon_events",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future event context only; not attendance."
+  },
+  {
+    "feature_name": "event_count_500m_next_24h",
+    "provider": "ticketon_events",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future event context only; not attendance."
+  },
+  {
+    "feature_name": "event_count_1000m_next_24h",
+    "provider": "ticketon_events",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future event context only; not attendance."
+  },
+  {
+    "feature_name": "event_count_2000m_next_24h",
+    "provider": "ticketon_events",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future event context only; not attendance."
+  },
+  {
+    "feature_name": "event_major_next_24h",
+    "provider": "ticketon_events",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future event context only; not attendance."
+  },
+  {
+    "feature_name": "event_stadium_next_24h",
+    "provider": "ticketon_events",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future event context only; not attendance."
+  },
+  {
+    "feature_name": "event_concert_next_24h",
+    "provider": "ticketon_events",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future event context only; not attendance."
+  },
+  {
+    "feature_name": "event_sports_next_24h",
+    "provider": "ticketon_events",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future event context only; not attendance."
+  },
+  {
+    "feature_name": "event_intensity_sum_next_24h",
+    "provider": "ticketon_events",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future event context only; not attendance."
+  },
+  {
+    "feature_name": "event_intensity_max_next_24h",
+    "provider": "ticketon_events",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future event context only; not attendance."
+  },
+  {
+    "feature_name": "event_distance_to_nearest_m",
+    "provider": "ticketon_events",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future event context only; not attendance."
+  },
+  {
+    "feature_name": "event_hours_until_nearest_start",
+    "provider": "ticketon_events",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future event context only; not attendance."
+  },
+  {
+    "feature_name": "event_post_event_outflow_risk",
+    "provider": "ticketon_events",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future event context only; not attendance."
+  },
+  {
+    "feature_name": "event_match_confidence_max",
+    "provider": "ticketon_events",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future event context only; not attendance."
+  },
+  {
+    "feature_name": "ticketon_provider_available",
+    "provider": "ticketon_events",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "requires_historical_backfill",
+    "description": "Future event context only; not attendance."
+  },
+  {
+    "feature_name": "weather_provider_available",
+    "provider": "metadata",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "context_only",
+    "description": "Unified Future Feature Layer metadata or inherited Stage 18A feature."
+  },
+  {
+    "feature_name": "gov_provider_available",
+    "provider": "metadata",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "context_only",
+    "description": "Unified Future Feature Layer metadata or inherited Stage 18A feature."
+  },
+  {
+    "feature_name": "weather_collection_timestamp",
+    "provider": "metadata",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "context_only",
+    "description": "Unified Future Feature Layer metadata or inherited Stage 18A feature."
+  },
+  {
+    "feature_name": "ticketon_collection_timestamp",
+    "provider": "metadata",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "context_only",
+    "description": "Unified Future Feature Layer metadata or inherited Stage 18A feature."
+  },
+  {
+    "feature_name": "traffic_context_available",
+    "provider": "stage18a",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "context_only",
+    "description": "Unified Future Feature Layer metadata or inherited Stage 18A feature."
+  },
+  {
+    "feature_name": "gov_collection_timestamp",
+    "provider": "metadata",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "context_only",
+    "description": "Unified Future Feature Layer metadata or inherited Stage 18A feature."
+  },
+  {
+    "feature_name": "provider_warning_count",
+    "provider": "metadata",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "context_only",
+    "description": "Unified Future Feature Layer metadata or inherited Stage 18A feature."
+  },
+  {
+    "feature_name": "provider_degraded",
+    "provider": "metadata",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "context_only",
+    "description": "Unified Future Feature Layer metadata or inherited Stage 18A feature."
+  },
+  {
+    "feature_name": "metadata_generated_at",
+    "provider": "metadata",
+    "source_file": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\processed\\future_segment_features_24h.parquet",
+    "generation_timestamp": "2026-07-14T14:14:00.091676+05:00",
+    "training_status": "context_only",
+    "description": "Unified Future Feature Layer metadata or inherited Stage 18A feature."
+  }
+]

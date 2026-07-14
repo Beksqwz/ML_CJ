@@ -64,4 +64,23 @@ The gov.kz public listing serves a JavaScript application to the conservative HT
 
 Auto discovery is ordered: `official-filtered`, verified public JSON/XHR endpoint, official sitemap/feed, optional road search, unfiltered Playwright listing, then legacy server-rendered HTML. JSON is deliberately skipped until it is verified from official browser network activity. Playwright is an optional runtime dependency; install the package from `requirements.txt` and run `playwright install chromium`. It is not required for fixture parsing or any frozen inference path.
 
-Generated raw/processed collection outputs remain local runtime data. Sanitized fixture HTML under `tests/fixtures/` is appropriate for source control; large rendered debug HTML and screenshots are intentionally ignored. Current limitations are missing road coordinates and segment matching. A later stage may add geocoding and road matching, then CTS and Ticketon providers, without changing the frozen Stage 7B input.
+Generated raw/processed collection outputs remain local runtime data. Sanitized fixture HTML under `tests/fixtures/` is appropriate for source control; large rendered debug HTML and screenshots are intentionally ignored. Current limitations include incomplete source geometry and no traffic-control semantics; CTS and other providers can be added without changing the frozen Stage 7B input.
+
+## Spatial matching
+
+`future_intelligence.spatial_matching.SpatialMatchingEngine` is the shared,
+context-only bridge from an event geometry to existing production
+`road_segment_id` values from `data/roads/astana_edges.csv`. It supports point,
+line, and polygon geometry. Ticketon point events use a configurable 1,000 m
+radius; repair lines use direct road-network intersection. Matches are stored
+idempotently in `data/future_intelligence/processed/future_segment_matches.parquet`
+and `.json`, keyed by `(provider, source_item_id, road_segment_id)`. They are
+not model features.
+
+```bash
+python scripts/match_future_intelligence_segments.py --ticketon-radius-m 1000
+```
+
+The command writes `reports/stage17/spatial_matching_report.json`. Missing or
+outside-Astana geometry stays explicitly unmatched; it never invents a road
+segment assignment.

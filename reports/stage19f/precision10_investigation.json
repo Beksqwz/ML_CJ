@@ -1,0 +1,28 @@
+{
+  "unique_segments_in_top10": 11,
+  "top10_positive_rows": 0,
+  "positive_rows_in_top20": 27,
+  "positive_rows_in_top50": 78,
+  "cutoff_tie_size": {
+    "maximum": 1,
+    "mean": 1.0,
+    "median": 1.0
+  },
+  "deterministic_tie_break": "road_segment_id ascending after score descending",
+  "precision_at_10_with_all_cutoff_ties": 0.0,
+  "natural_prevalence": 0.0018931211597542242,
+  "expected_positive_rows_in_top10_at_random": 3.1804435483870965,
+  "top10_segment_frequency": {
+    "10151537925_2473125961_0": 168,
+    "10283911100_10283963125_0": 168,
+    "1774378923_3270477086_0": 168,
+    "2633362585_12744460691_0": 168,
+    "2633614728_6184539538_0": 168,
+    "267482564_2504744970_0": 168,
+    "2680171166_4440521248_0": 168,
+    "277328586_4907856432_0": 168,
+    "798212936_1771857195_0": 168,
+    "268160870_2635276528_0": 133,
+    "6557359029_278445246_0": 35
+  }
+}

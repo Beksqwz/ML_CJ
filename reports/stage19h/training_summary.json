@@ -1,0 +1,56 @@
+{
+  "catboost_candidate": {
+    "validation_pr_auc": 0.28370277707330704,
+    "validation_roc_auc": 0.6437138404248133,
+    "training_seconds": 548.1020862999721,
+    "model_path": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\models\\stage19h\\catboost_candidate.cbm",
+    "model_size_bytes": 179776,
+    "tuning_trials": 1,
+    "tuning_policy": "one fixed validation trial; identical bounded budget for CatBoost, LightGBM and XGBoost"
+  },
+  "lightgbm": {
+    "validation_pr_auc": 0.24246734518434673,
+    "validation_roc_auc": 0.6128684440208219,
+    "training_seconds": 17.0298472000286,
+    "model_path": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\models\\stage19h\\lightgbm_candidate.txt",
+    "model_size_bytes": 3275759,
+    "tuning_trials": 1,
+    "tuning_policy": "one fixed validation trial; identical bounded budget for CatBoost, LightGBM and XGBoost"
+  },
+  "xgboost": {
+    "validation_pr_auc": 0.25098584608005553,
+    "validation_roc_auc": 0.6199441117379386,
+    "training_seconds": 70.92156510002678,
+    "model_path": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\models\\stage19h\\xgboost_candidate.json",
+    "model_size_bytes": 4898302,
+    "tuning_trials": 1,
+    "tuning_policy": "one fixed validation trial; identical bounded budget for CatBoost, LightGBM and XGBoost"
+  },
+  "hist_gradient_boosting": {
+    "validation_pr_auc": 0.2744759318927386,
+    "validation_roc_auc": 0.6417372670250951,
+    "training_seconds": 28.192072900012136,
+    "model_path": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\models\\stage19h\\hist_gradient_boosting_candidate.joblib",
+    "model_size_bytes": 1477096,
+    "tuning_trials": 1,
+    "tuning_policy": "one fixed validation trial; identical bounded budget for CatBoost, LightGBM and XGBoost"
+  },
+  "extra_trees": {
+    "validation_pr_auc": 0.2533380036116731,
+    "validation_roc_auc": 0.6021816018542523,
+    "training_seconds": 134.63188939995598,
+    "model_path": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\models\\stage19h\\extra_trees_candidate.joblib",
+    "model_size_bytes": 1001495113,
+    "tuning_trials": 1,
+    "tuning_policy": "one fixed validation trial; identical bounded budget for CatBoost, LightGBM and XGBoost"
+  },
+  "logistic_regression": {
+    "validation_pr_auc": 0.2593915900082353,
+    "validation_roc_auc": 0.6136082175878128,
+    "training_seconds": 34.50461649999488,
+    "model_path": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\models\\stage19h\\logistic_regression_candidate.joblib",
+    "model_size_bytes": 3259,
+    "tuning_trials": 1,
+    "tuning_policy": "one fixed validation trial; identical bounded budget for CatBoost, LightGBM and XGBoost"
+  }
+}

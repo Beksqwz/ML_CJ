@@ -1,0 +1,11 @@
+{
+  "searched": [
+    "data/processed",
+    "reports",
+    "stage7b prediction outputs",
+    "stage8c outputs"
+  ],
+  "sufficient_unsampled_24h_test_grid": false,
+  "evidence": "training_dataset_24h and Stage7A/7B artifacts are explicitly 1:5 sampled; Stage8C is one current inference hour without historical labels.",
+  "blocker": "No saved full all-segment historical feature/prediction grid exists for natural-prevalence evaluation."
+}

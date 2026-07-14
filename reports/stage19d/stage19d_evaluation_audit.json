@@ -1,0 +1,104 @@
+{
+  "target": {
+    "verified_fact": "make_positive_windows creates event_hour - offset for offset 1..24.",
+    "interval": "(datetime_hour, datetime_hour + 24h]",
+    "timezone": "timezone-naive Asia/Almaty local civil time",
+    "rounding": "accident_datetime.floor('h')",
+    "multiple_events": "same segment/hour positive keys deduplicated",
+    "feature_target_separation": "target and target_datetime_hour excluded by Stage7A feature configuration",
+    "controlled_example": {
+      "event_hour": "2024-01-02 10:00",
+      "positive_prediction_hours": "2024-01-01 10:00 through 2024-01-02 09:00 inclusive"
+    }
+  },
+  "overlap": {
+    "label_dependence": "overlapping_24h_label_windows_not_automatically_leakage",
+    "positive_rows": 297845,
+    "unique_accident_rows": 12449,
+    "positive_rows_per_raw_accident": 23.925214876696923,
+    "theoretical_prediction_rows_per_isolated_accident": 24,
+    "positive_run_length": {
+      "count": 12390,
+      "mean": 24.03914447134786,
+      "max": 48
+    },
+    "lag_autocorrelation": "not_identifiable_from_negative-sampled candidate grid; requires full all-segment hourly grid",
+    "unique_accident_hours": 11169
+  },
+  "split": {
+    "split_time_axis": "datetime_hour interpreted as Asia/Almaty local civil time",
+    "initial_train_validation_boundary": "2022-09-10 13:00:00",
+    "initial_validation_test_boundary": "2024-09-14 12:00:00",
+    "purge_horizon_hours": 24,
+    "train_end_exclusive": "2022-09-09 13:00:00",
+    "validation_start": "2022-09-10 13:00:00",
+    "validation_end_exclusive": "2024-09-13 12:00:00",
+    "test_start": "2024-09-14 12:00:00",
+    "purged_boundary_rows": 1194
+  },
+  "sampling": {
+    "verified_fact": "Stage6 sample_negatives retains all positive windows then draws five negatives per positive at the same datetime_hour.",
+    "horizon": "24h only",
+    "ratio": 5,
+    "seed": 20260711,
+    "stratification": "positive segment road_highway group with all-segment fallback",
+    "sampling_before_split": true,
+    "validation_and_test_sampled": true,
+    "natural_distribution_evaluation": false,
+    "same_negative_population_cross_split": "not possible because datetime ranges are disjoint; sampling itself is before global temporal split"
+  },
+  "metric_reproduction": {
+    "validation": {
+      "rows": 307968,
+      "positive_rows": 51328,
+      "prevalence": 0.16666666666666666,
+      "pr_auc": 0.2828499272698683,
+      "roc_auc": 0.642696946501178,
+      "precision": 0.24245813626486004,
+      "recall": 0.5912562344139651,
+      "f1": 0.343894479194996,
+      "brier_score": 0.1335436695221157,
+      "expected_calibration_error_10_bins": 0.029847847470242626,
+      "recall_at_top_10pct": 0.21302213216957605,
+      "lift_at_top_10pct": 2.1302074877423127
+    },
+    "test": {
+      "rows": 561510,
+      "positive_rows": 93585,
+      "prevalence": 0.16666666666666666,
+      "pr_auc": 0.2556304458420362,
+      "roc_auc": 0.6119725037777589,
+      "precision": 0.20944462747507803,
+      "recall": 0.604584067959609,
+      "f1": 0.31111159987683107,
+      "brier_score": 0.137846258527098,
+      "expected_calibration_error_10_bins": 0.045116612948286866,
+      "recall_at_top_10pct": 0.19948709729123257,
+      "lift_at_top_10pct": 1.9948709729123257
+    }
+  },
+  "calibration": {
+    "class_weights": "none in saved Stage7B effective parameters",
+    "undersampling": "1:5 before split",
+    "post_sampling_probability_correction": false,
+    "platt_or_isotonic": false,
+    "calibration_distribution": "sampled validation/test prevalence=1/6",
+    "conclusion": "outputs are calibrated only against sampled prevalence; they must not be called natural-production probabilities."
+  },
+  "unsampled": {
+    "searched": [
+      "data/processed",
+      "reports",
+      "stage7b prediction outputs",
+      "stage8c outputs"
+    ],
+    "sufficient_unsampled_24h_test_grid": false,
+    "evidence": "training_dataset_24h and Stage7A/7B artifacts are explicitly 1:5 sampled; Stage8C is one current inference hour without historical labels.",
+    "blocker": "No saved full all-segment historical feature/prediction grid exists for natural-prevalence evaluation."
+  },
+  "production_status": "NOT_READY_FOR_PROBABILITY_INTERPRETATION",
+  "blockers": [
+    "No saved full all-segment historical feature/prediction grid exists for natural-prevalence evaluation.",
+    "outputs are calibrated only against sampled prevalence; they must not be called natural-production probabilities."
+  ]
+}

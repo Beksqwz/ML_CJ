@@ -1,0 +1,3 @@
+{
+  "note": "No automatic production replacement; compare mean Recall@5%, Lift@5%, PR-AUC/prevalence, ROC-AUC, size and latency."
+}

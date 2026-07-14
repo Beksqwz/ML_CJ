@@ -1,0 +1,6 @@
+{
+  "model_registry_version": "final-model-registry-v1",
+  "stage7b": {"model_path": "models/production/catboost_24h.cbm", "model_sha256": "0c8e1b88b1cfaf95fb39e395e2fdc54f1b7abda22d8ac00e1d6f561ab9110a0c", "feature_count": 77, "ordered_feature_sha256": "bf0ce06aface9fc3539a95df2557728e57d987a9e0c0e5ac4a195a53b47f6d96"},
+  "stage8c_legacy_probability_checksum": "29c7b5af0e44cd4a0749947b9efec62f8d40375598d02bfedacd98823f4f7f68",
+  "frozen_components": {"registry": "unchanged", "inference": "unchanged", "shap": "unchanged", "recommendation_engine": "unchanged", "one_hour_pipeline": "unchanged"}
+}

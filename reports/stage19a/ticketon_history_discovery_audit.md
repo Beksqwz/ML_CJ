@@ -1,0 +1,7 @@
+# Stage 19A Ticketon historical discovery audit
+
+The current live provider is a 24-hour Astana context collector, not a historical collector. It reads JSON-LD from `https://ticketon.kz/astana`, follows at most 30 public `/astana/event/<slug>` links only when the listing itself has no parsable events, requires a start time and Astana city, and filters to the requested 24-hour window. It has no category, venue-tier or transport-relevance exclusion: small in-window events can enter canonical storage, although only events that Stage 17 can spatially match enter segment features.
+
+The live listing exposed 83 actual detail URLs. A conservative official Wayback CDX query on that verified path returned a 50-row HTML sample with captures from 2023 through 2025. Three replayed pages across those years returned HTTP 200 and contained JSON-LD; one old live URL returned 410 while two continued to render. The existing live Event JSON-LD parser extracted zero records from all three archived variants, so archive pages require a separate audited normalizer. Common Crawl `CC-MAIN-2026-25` returned no captures for this prefix.
+
+The result is partially feasible. Wayback is the best documented acquisition route, but no corpus-level coverage or data-quality rate can be claimed yet. Stage 19B should be a bounded 100-URL archive-parser and venue-directory pilot; Ticketon remains context-only until that pilot demonstrates reproducible date, venue, Astana-validation and road-match coverage.

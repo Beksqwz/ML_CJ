@@ -1,0 +1,7 @@
+{
+  "duplicate_input_columns": [],
+  "reserved_metadata_collisions": [],
+  "namespace_violations": [],
+  "dtype_mismatches": [],
+  "nullability_conflicts": []
+}

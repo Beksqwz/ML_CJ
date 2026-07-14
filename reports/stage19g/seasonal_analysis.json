@@ -1,0 +1,5 @@
+{
+  "best_roc_auc": "autumn",
+  "worst_roc_auc": "winter",
+  "catboost_consistent_over_baseline": true
+}

@@ -1,0 +1,6 @@
+{
+  "openweather": {"registered": true, "configured": true, "metadata": "weather/24h/API key/fallback supported", "processed_output": "openweather_24h_features.parquet", "processed_records": 7, "availability_flag": 1, "status": "ok", "fallback_used": false, "degraded": false, "training_status": "requires_historical_backfill"},
+  "gov_kz_repairs": {"registered": true, "metadata": "repairs/24h/Astana", "processed_output": "data/future_intelligence/processed/gov_kz_road_events.parquet", "rows": 5, "duplicate_source_item_id": 0, "content_hash": true, "availability_flag": 1, "training_status": "requires_historical_backfill"},
+  "ticketon_events": {"registered": true, "metadata": "events/24h/Astana", "processed_output": "ticketon_events.parquet", "processed_records": 2, "availability_flag": 1, "status": "ok", "fallback_used": false, "degraded": false, "training_status": "requires_historical_backfill", "warning": "two real events are unresolved geocoding and therefore unmatched"},
+  "tomtom": {"registered": true, "configured": true, "metadata": "traffic/24h/live bounded snapshot", "processed_output": "tomtom_live_traffic.parquet", "processed_records": 20, "availability_flag": 1, "status": "ok", "fallback_used": false, "degraded": false, "training_status": "collect_for_future"}
+}

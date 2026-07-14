@@ -10,7 +10,11 @@ from typing import Any, Callable
 import requests
 import pandas as pd
 from future_intelligence.providers.repairs.base import RepairsProvider
-from future_intelligence.geocoding import AstanaGeocoder, RoadGeometryResolver, apply_geocode
+from future_intelligence.geocoding import (
+    AstanaGeocoder,
+    RoadGeometryResolver,
+    apply_geocode,
+)
 from future_intelligence.schemas import FutureRecord, ProviderMetadata, ProviderResult
 from future_intelligence.utils import ASTANA_TIMEZONE, parse_prediction_datetime
 from future_intelligence.providers.repairs.discovery import (
@@ -241,7 +245,12 @@ def locations(text: str) -> dict[str, Any]:
     original = []
     for match in street_pattern.finditer(text):
         value = match.group(0).strip(" ,.;")
-        value = re.split(r"\s+(?:частично|полностью|перекро\w*|закро\w*|огранич\w*|ремонт\w*|от|до|с|по|на|в)\b", value, maxsplit=1, flags=re.I)[0]
+        value = re.split(
+            r"\s+(?:частично|полностью|перекро\w*|закро\w*|огранич\w*|ремонт\w*|от|до|с|по|на|в)\b",
+            value,
+            maxsplit=1,
+            flags=re.I,
+        )[0]
         original.append(value.strip(" ,.;"))
     section = re.search(r"от\s+(.{2,60}?)\s+до\s+(.{2,60}?)(?:[,.]|$)", text, re.I)
     intersection = re.search(
@@ -823,13 +832,17 @@ class GovKzRoadEventsProvider(RepairsProvider):
             for record in self.normalize({"parsed": item}, when, horizon_hours)
         ]
         for record in records:
-            apply_geocode(record, self.geocoder.repair(record.payload["location"]))
+            point_result = self.geocoder.repair(record.payload["location"])
+            apply_geocode(record, point_result)
             geometry = self.road_geometry.repair(record.payload["location"])
             record.payload.update({"repair_geometry_quality": geometry.quality})
             record.warnings.extend(geometry.warnings)
             if geometry.geometry is not None:
                 record.geometry = geometry.geometry
                 record.confidence = max(record.confidence or 0, geometry.confidence)
+            elif point_result.latitude is not None:
+                # A validated address point is useful context, but is not road geometry.
+                record.confidence = min(record.confidence or 0.35, 0.35)
         features = self.build_features(records, when, horizon_hours)
         rejection_reasons = {}
         for item in diagnostics:

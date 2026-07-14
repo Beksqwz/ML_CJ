@@ -1,0 +1,21 @@
+{
+  "audit_scope": "Providers -> storage -> geocoding -> spatial matching -> Stage 18A -> Stage 18B",
+  "status": "ready",
+  "production_code_modified": false,
+  "tests": {"ran": 87, "passed": 87, "failed": 0},
+  "providers": {"registered": ["openweather", "gov_kz_repairs", "ticketon_events", "tomtom"], "tomtom_registered": true},
+  "processed_inputs": {
+    "openweather_24h_features.parquet": {"rows": 1, "status": "ok", "forecast_points": 7},
+    "gov_kz_road_events.parquet": {"rows": 5, "duplicate_source_item_id": 0, "content_hash_present": true},
+    "ticketon_events.parquet": {"rows": 2, "status": "ok", "events_in_window": 2},
+    "tomtom_live_traffic.parquet": {"rows": 20, "status": "ok", "available_readings": 20}
+  },
+  "geocoding": {"known_venue": "tested", "bbox_and_city_validation": "tested", "retry_limit": 3, "cache": "tested", "fabricated_coordinates": false},
+  "spatial_matching": {"production_segment_universe": 3968, "matches": 36, "invalid_road_segment_id": 0, "negative_distance": 0, "invalid_confidence": 0, "duplicate_identity": 0},
+  "stage18a": {"rows": 3968, "columns": 52, "schema_sha256": "39b3509fd2f4c2e5e181d1224e43dac52fd88a707d75edc1f2ada064d8e944f1", "provider_degradation": "explicit"},
+  "stage18b": {"rows": 3968, "columns": 61, "duplicate_columns": 0, "collision_report": "empty", "provider_warning_count": 0, "provider_degraded": 0, "deterministic_checksum": "0f37a56a7b15966ca173a64d2b3fc6f9edaf06995d0c598504423a92b80f7a53"},
+  "quality": {"infinite_values": 0, "duplicate_unified_rows": 0, "timezone_validation": "passed", "weather_candidate_null_rate": 0.0, "ticketon_events_unmatched": 2, "repair_events_outside_selected_window": true},
+  "production_freeze": {"stage": "Stage 7B", "model_sha256": "0c8e1b88b1cfaf95fb39e395e2fdc54f1b7abda22d8ac00e1d6f561ab9110a0c", "feature_count": 77, "feature_order_sha256": "bf0ce06aface9fc3539a95df2557728e57d987a9e0c0e5ac4a195a53b47f6d96", "legacy_stage8c_checksum": "29c7b5af0e44cd4a0749947b9efec62f8d40375598d02bfedacd98823f4f7f68", "registry_changed": false, "inference_changed": false, "shap_changed": false, "recommendations_changed": false, "one_hour_changed": false},
+  "scores_out_of_10": {"architecture": 9, "code_quality": 8, "ml_readiness": 8, "future_intelligence": 9, "production_readiness": 8, "data_quality": 8, "feature_engineering": 8, "provider_integration": 8},
+  "blockers": []
+}

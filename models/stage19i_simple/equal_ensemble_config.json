@@ -1,0 +1,12 @@
+{
+  "components": [
+    "score_catboost_stage19h",
+    "score_hist_gradient_boosting"
+  ],
+  "weights": {
+    "score_catboost_stage19h": 0.5,
+    "score_hist_gradient_boosting": 0.5
+  },
+  "normalization": "validation_global_percentile_rank",
+  "status": "frozen"
+}

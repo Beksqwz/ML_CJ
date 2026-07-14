@@ -1,0 +1,8 @@
+{
+  "components": [
+    "score_catboost_stage19h",
+    "score_hist_gradient_boosting",
+    "score_logistic_regression"
+  ],
+  "logistic_warning": "max_iter_300_convergence_warning"
+}

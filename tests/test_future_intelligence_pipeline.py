@@ -6,6 +6,10 @@ from datetime import datetime
 from future_intelligence.pipeline import FutureIntelligencePipeline
 from future_intelligence.registry import ProviderRegistry, default_registry
 from future_intelligence.schemas import ProviderMetadata, ProviderResult
+from future_intelligence.providers.weather.openweather import (
+    OpenWeatherForecastProvider,
+)
+from ml_service.weather import OpenWeatherService
 from ml_service.inference.feature_builder import _config
 from ml_service.registry import ModelRegistry, ROOT
 
@@ -31,7 +35,14 @@ class FutureIntelligencePipelineTests(unittest.TestCase):
         self.assertIn("openweather", default_registry().names())
 
     def test_pipeline_handles_missing_key_without_raising(self):
-        context = FutureIntelligencePipeline().collect("2026-07-14T00:00:00+05:00")
+        registry = ProviderRegistry()
+        registry.register(
+            "openweather",
+            lambda: OpenWeatherForecastProvider(OpenWeatherService(api_key="")),
+        )
+        context = FutureIntelligencePipeline(registry).collect(
+            "2026-07-14T00:00:00+05:00"
+        )
         self.assertEqual(context["status"], "degraded")
         self.assertTrue(context["fallback_used"])
 

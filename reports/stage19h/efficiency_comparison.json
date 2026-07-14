@@ -1,0 +1,62 @@
+{
+  "catboost_candidate": {
+    "artifact_size_bytes": 179776,
+    "operational_suitability": "measured",
+    "seasonal_inference_seconds": null,
+    "training_seconds": 548.1020862999721,
+    "warnings": null
+  },
+  "extra_trees": {
+    "artifact_size_bytes": 1001495113,
+    "operational_suitability": "not_recommended",
+    "seasonal_inference_seconds": null,
+    "training_seconds": 134.63188939995598,
+    "warnings": [
+      "artifact_size_1GB_operationally_impractical"
+    ]
+  },
+  "hist_gradient_boosting": {
+    "artifact_size_bytes": 1477096,
+    "operational_suitability": "measured",
+    "seasonal_inference_seconds": null,
+    "training_seconds": 28.192072900012136,
+    "warnings": null
+  },
+  "historical_baseline": {
+    "artifact_size_bytes": null,
+    "operational_suitability": "measured",
+    "seasonal_inference_seconds": null,
+    "training_seconds": null,
+    "warnings": null
+  },
+  "lightgbm": {
+    "artifact_size_bytes": 3275759,
+    "operational_suitability": "measured",
+    "seasonal_inference_seconds": null,
+    "training_seconds": 17.0298472000286,
+    "warnings": null
+  },
+  "logistic_regression": {
+    "artifact_size_bytes": 3259,
+    "operational_suitability": "not_recommended",
+    "seasonal_inference_seconds": null,
+    "training_seconds": 34.50461649999488,
+    "warnings": [
+      "lbfgs_max_iter_300_convergence_warning"
+    ]
+  },
+  "stage7b_frozen_reference": {
+    "artifact_size_bytes": 113272,
+    "operational_suitability": "measured",
+    "seasonal_inference_seconds": null,
+    "training_seconds": null,
+    "warnings": null
+  },
+  "xgboost": {
+    "artifact_size_bytes": 4898302,
+    "operational_suitability": "measured",
+    "seasonal_inference_seconds": null,
+    "training_seconds": 70.92156510002678,
+    "warnings": null
+  }
+}

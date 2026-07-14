@@ -1,0 +1,12 @@
+{
+  "provider": "future_intelligence.providers.events.ticketon.TicketonEventsProvider",
+  "listing_discovery": {"primary_url": "https://ticketon.kz/astana", "method": "application/ld+json Event extraction", "fallback": "bounded public href /astana/event/... detail links", "max_event_pages": 30, "live_listing_detail_urls_observed": 83},
+  "scope": {"city": "only records whose city contains Astana/Астана", "temporal": "valid_from < prediction_datetime + 24h and valid_to is null or > prediction_datetime", "category_filter": "none", "venue_filter": "none"},
+  "classification": {"rules": "keyword classifier over name/category/venue", "types": ["football_match", "large_concert", "festival", "exhibition", "theatre", "public_event"], "severity": "1-5, multiplied by local capacity proxy when known"},
+  "exclusions": ["missing name", "missing start datetime", "non-Astana city", "outside the next-24h window", "robots disallow or request failure"],
+  "geocoding": "known local venue directory first, then bounded Astana Nominatim; unresolved venue remains null with warning",
+  "spatial_matching": "Stage 17 matches validated points by 1000m Ticketon radius; unresolved geometry remains unmatched",
+  "canonical_storage": "all parsed in-window Astana events, including small events, are stored; no transport-relevance exclusion exists",
+  "segment_features": "only Stage 17 matched Ticketon records contribute; unmatched events do not create segment event counts",
+  "live_evidence": {"listing_events": 105, "records_in_window": 2, "detail_pages_failed": 0, "both_events_geocoding_quality": "unresolved"}
+}

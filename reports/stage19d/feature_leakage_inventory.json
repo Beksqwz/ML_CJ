@@ -1,0 +1,541 @@
+[
+  {
+    "feature_name": "road_lanes_num",
+    "source_group": "road_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "road_maxspeed_kmh",
+    "source_group": "road_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "road_length",
+    "source_group": "road_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "segment_longitude",
+    "source_group": "road_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "segment_latitude",
+    "source_group": "road_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "poi_total_100m",
+    "source_group": "poi_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "poi_crossing_100m",
+    "source_group": "poi_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "poi_education_100m",
+    "source_group": "poi_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "poi_emergency_100m",
+    "source_group": "poi_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "poi_healthcare_100m",
+    "source_group": "poi_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "poi_other_100m",
+    "source_group": "poi_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "poi_traffic_signal_100m",
+    "source_group": "poi_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "poi_transit_stop_100m",
+    "source_group": "poi_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "poi_total_250m",
+    "source_group": "poi_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "poi_crossing_250m",
+    "source_group": "poi_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "poi_education_250m",
+    "source_group": "poi_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "poi_emergency_250m",
+    "source_group": "poi_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "poi_healthcare_250m",
+    "source_group": "poi_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "poi_other_250m",
+    "source_group": "poi_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "poi_traffic_signal_250m",
+    "source_group": "poi_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "poi_transit_stop_250m",
+    "source_group": "poi_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "poi_total_500m",
+    "source_group": "poi_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "poi_crossing_500m",
+    "source_group": "poi_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "poi_education_500m",
+    "source_group": "poi_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "poi_emergency_500m",
+    "source_group": "poi_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "poi_healthcare_500m",
+    "source_group": "poi_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "poi_other_500m",
+    "source_group": "poi_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "poi_traffic_signal_500m",
+    "source_group": "poi_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "poi_transit_stop_500m",
+    "source_group": "poi_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "weather_temperature_2m",
+    "source_group": "historical_weather",
+    "available_at_prediction_time": "current_hour_join_only",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "weather_relative_humidity_2m",
+    "source_group": "historical_weather",
+    "available_at_prediction_time": "current_hour_join_only",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "weather_precipitation",
+    "source_group": "historical_weather",
+    "available_at_prediction_time": "current_hour_join_only",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "weather_rain",
+    "source_group": "historical_weather",
+    "available_at_prediction_time": "current_hour_join_only",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "weather_snowfall",
+    "source_group": "historical_weather",
+    "available_at_prediction_time": "current_hour_join_only",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "weather_cloud_cover",
+    "source_group": "historical_weather",
+    "available_at_prediction_time": "current_hour_join_only",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "weather_wind_speed_10m",
+    "source_group": "historical_weather",
+    "available_at_prediction_time": "current_hour_join_only",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "weather_wind_gusts_10m",
+    "source_group": "historical_weather",
+    "available_at_prediction_time": "current_hour_join_only",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "segment_accidents_total_prior",
+    "source_group": "accident_history",
+    "available_at_prediction_time": "strictly_prior_event_hour_by_code",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "segment_accidents_prev_24h",
+    "source_group": "accident_history",
+    "available_at_prediction_time": "strictly_prior_event_hour_by_code",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "segment_accidents_prev_7d",
+    "source_group": "accident_history",
+    "available_at_prediction_time": "strictly_prior_event_hour_by_code",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "segment_accidents_prev_30d",
+    "source_group": "accident_history",
+    "available_at_prediction_time": "strictly_prior_event_hour_by_code",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "segment_hours_since_prev_accident",
+    "source_group": "other",
+    "available_at_prediction_time": "requires_source_review",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "review_required"
+  },
+  {
+    "feature_name": "city_accidents_total_prior",
+    "source_group": "accident_history",
+    "available_at_prediction_time": "strictly_prior_event_hour_by_code",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "city_accidents_prev_24h",
+    "source_group": "accident_history",
+    "available_at_prediction_time": "strictly_prior_event_hour_by_code",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "city_accidents_prev_7d",
+    "source_group": "accident_history",
+    "available_at_prediction_time": "strictly_prior_event_hour_by_code",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "city_accidents_prev_30d",
+    "source_group": "accident_history",
+    "available_at_prediction_time": "strictly_prior_event_hour_by_code",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "segment_accidents_same_month_prior",
+    "source_group": "accident_history",
+    "available_at_prediction_time": "strictly_prior_event_hour_by_code",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "segment_accidents_same_hour_weekday_prior",
+    "source_group": "accident_history",
+    "available_at_prediction_time": "strictly_prior_event_hour_by_code",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "segment_accidents_same_month_hour_weekday_prior",
+    "source_group": "accident_history",
+    "available_at_prediction_time": "strictly_prior_event_hour_by_code",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "segment_accidents_holiday_prior",
+    "source_group": "accident_history",
+    "available_at_prediction_time": "strictly_prior_event_hour_by_code",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "segment_accidents_new_year_period_prior",
+    "source_group": "accident_history",
+    "available_at_prediction_time": "strictly_prior_event_hour_by_code",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "road_highway",
+    "source_group": "road_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "road_oneway",
+    "source_group": "road_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "road_lanes_missing",
+    "source_group": "road_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "road_maxspeed_missing",
+    "source_group": "road_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "road_name_missing",
+    "source_group": "road_static",
+    "available_at_prediction_time": "static_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "calendar_year",
+    "source_group": "calendar",
+    "available_at_prediction_time": "known_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "calendar_month",
+    "source_group": "calendar",
+    "available_at_prediction_time": "known_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "calendar_day",
+    "source_group": "calendar",
+    "available_at_prediction_time": "known_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "calendar_hour",
+    "source_group": "calendar",
+    "available_at_prediction_time": "known_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "calendar_weekday",
+    "source_group": "calendar",
+    "available_at_prediction_time": "known_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "calendar_is_weekend",
+    "source_group": "calendar",
+    "available_at_prediction_time": "known_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "calendar_is_holiday",
+    "source_group": "calendar",
+    "available_at_prediction_time": "known_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "calendar_holiday_name",
+    "source_group": "calendar",
+    "available_at_prediction_time": "known_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "calendar_is_day_before_holiday",
+    "source_group": "calendar",
+    "available_at_prediction_time": "known_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "calendar_is_day_after_holiday",
+    "source_group": "calendar",
+    "available_at_prediction_time": "known_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "calendar_is_rush_hour",
+    "source_group": "calendar",
+    "available_at_prediction_time": "known_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "calendar_season",
+    "source_group": "calendar",
+    "available_at_prediction_time": "known_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "calendar_is_school_year",
+    "source_group": "calendar",
+    "available_at_prediction_time": "known_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "calendar_is_school_summer_break",
+    "source_group": "calendar",
+    "available_at_prediction_time": "known_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "calendar_is_school_winter_break",
+    "source_group": "calendar",
+    "available_at_prediction_time": "known_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "calendar_is_school_spring_break",
+    "source_group": "calendar",
+    "available_at_prediction_time": "known_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "calendar_is_school_autumn_break",
+    "source_group": "calendar",
+    "available_at_prediction_time": "known_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "calendar_is_school_break",
+    "source_group": "calendar",
+    "available_at_prediction_time": "known_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "calendar_is_new_year_period",
+    "source_group": "calendar",
+    "available_at_prediction_time": "known_at_prediction_time",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "weather_weather_code",
+    "source_group": "historical_weather",
+    "available_at_prediction_time": "current_hour_join_only",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  },
+  {
+    "feature_name": "segment_has_history",
+    "source_group": "accident_history",
+    "available_at_prediction_time": "strictly_prior_event_hour_by_code",
+    "target_window_leakage_evidence": "no_target_or_target_datetime_column_in_feature_config",
+    "status": "verified_by_builder_code"
+  }
+]

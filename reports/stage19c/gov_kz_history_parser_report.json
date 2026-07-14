@@ -1,0 +1,289 @@
+{
+  "status": "ok",
+  "backfill_status": "NOT_READY",
+  "blockers": [
+    "bounded_official_listing_pilot_did_not_prove_multi_year_coverage",
+    "no_leakage_safe_historical_training_eligible_events_collected"
+  ],
+  "target_range": {
+    "start": "2022-01-01T00:00:00+05:00",
+    "end": "2026-07-14T15:30:00+05:00"
+  },
+  "pilot_only": true,
+  "discovery": {
+    "robots": "fetched",
+    "robots_allows_listing": true,
+    "pages_requested": 1,
+    "selected_method": "official_filtered_listing",
+    "discovery_chain": [
+      {
+        "method_name": "official_filtered_listing",
+        "status": "ok",
+        "article_urls": [
+          "https://www.gov.kz/memleket/entities/astana/press/news/details/1257347?lang=ru"
+        ],
+        "pages_scanned": 1,
+        "warnings": [],
+        "errors": []
+      }
+    ],
+    "pages_scanned": 1,
+    "listing_cards_seen": 10,
+    "listing_cards_selected": 1,
+    "duplicate_urls_removed": 0,
+    "listing_card_diagnostics": [
+      {
+        "page_number": 1,
+        "source_item_id": "1257417",
+        "source_url": "https://www.gov.kz/memleket/entities/astana/press/news/details/1257417?lang=ru",
+        "card_title": "В Астане почти 140 новых школ предусмотрено Генпланом до 2035 года",
+        "card_snippet": "13 июля 2026",
+        "visible_published_at": "13 июля 2026",
+        "prefilter_matched_keywords": {
+          "strong": [],
+          "weak": [],
+          "road_context": []
+        },
+        "prefilter_score": 0,
+        "candidate_selected": false,
+        "rejection_reason": "no_strong_road_event_term_or_weak_term_with_road_context"
+      },
+      {
+        "page_number": 1,
+        "source_item_id": "1257392",
+        "source_url": "https://www.gov.kz/memleket/entities/astana/press/news/details/1257392?lang=ru",
+        "card_title": "Авторская одежда местных брендов и инновационные решения: в столице завершился первый фестиваль Astana Pop Up Store",
+        "card_snippet": "13 июля 2026",
+        "visible_published_at": "13 июля 2026",
+        "prefilter_matched_keywords": {
+          "strong": [],
+          "weak": [],
+          "road_context": []
+        },
+        "prefilter_score": 0,
+        "candidate_selected": false,
+        "rejection_reason": "no_strong_road_event_term_or_weak_term_with_road_context"
+      },
+      {
+        "page_number": 1,
+        "source_item_id": "1257391",
+        "source_url": "https://www.gov.kz/memleket/entities/astana/press/news/details/1257391?lang=ru",
+        "card_title": "Борьба с наркопреступностью: столичная прокуратура сделала важное предупреждение молодежи",
+        "card_snippet": "13 июля 2026",
+        "visible_published_at": "13 июля 2026",
+        "prefilter_matched_keywords": {
+          "strong": [],
+          "weak": [],
+          "road_context": []
+        },
+        "prefilter_score": 0,
+        "candidate_selected": false,
+        "rejection_reason": "no_strong_road_event_term_or_weak_term_with_road_context"
+      },
+      {
+        "page_number": 1,
+        "source_item_id": "1257347",
+        "source_url": "https://www.gov.kz/memleket/entities/astana/press/news/details/1257347?lang=ru",
+        "card_title": "Участок улицы Кордай временно закроют в связи с проведением ремонтных работ",
+        "card_snippet": "Транспорт и автодороги/\n\n13 июля 2026",
+        "visible_published_at": "13 июля 2026",
+        "prefilter_matched_keywords": {
+          "strong": [],
+          "weak": [
+            "ремонт"
+          ],
+          "road_context": [
+            "транспорт"
+          ]
+        },
+        "prefilter_score": 2,
+        "candidate_selected": true,
+        "rejection_reason": null
+      },
+      {
+        "page_number": 1,
+        "source_item_id": "1257223",
+        "source_url": "https://www.gov.kz/memleket/entities/astana/press/news/details/1257223?lang=ru",
+        "card_title": "В Астане в рамках фестиваля «Отбасы Time» прошёл Trend Up Fest",
+        "card_snippet": "13 июля 2026",
+        "visible_published_at": "13 июля 2026",
+        "prefilter_matched_keywords": {
+          "strong": [],
+          "weak": [],
+          "road_context": []
+        },
+        "prefilter_score": 0,
+        "candidate_selected": false,
+        "rejection_reason": "no_strong_road_event_term_or_weak_term_with_road_context"
+      },
+      {
+        "page_number": 1,
+        "source_item_id": "1257219",
+        "source_url": "https://www.gov.kz/memleket/entities/astana/press/news/details/1257219?lang=ru",
+        "card_title": "Около 400 спортсменов со всей страны собрал баскетбольный турнир «Astana Open 3x3» в столице",
+        "card_snippet": "Спорт/\n\n13 июля 2026",
+        "visible_published_at": "13 июля 2026",
+        "prefilter_matched_keywords": {
+          "strong": [],
+          "weak": [],
+          "road_context": []
+        },
+        "prefilter_score": 0,
+        "candidate_selected": false,
+        "rejection_reason": "no_strong_road_event_term_or_weak_term_with_road_context"
+      },
+      {
+        "page_number": 1,
+        "source_item_id": "1257203",
+        "source_url": "https://www.gov.kz/memleket/entities/astana/press/news/details/1257203?lang=ru",
+        "card_title": "Антинаркотическую акцию в формате «открытого микрофона» провели в Астане",
+        "card_snippet": "13 июля 2026",
+        "visible_published_at": "13 июля 2026",
+        "prefilter_matched_keywords": {
+          "strong": [],
+          "weak": [],
+          "road_context": []
+        },
+        "prefilter_score": 0,
+        "candidate_selected": false,
+        "rejection_reason": "no_strong_road_event_term_or_weak_term_with_road_context"
+      },
+      {
+        "page_number": 1,
+        "source_item_id": "1257014",
+        "source_url": "https://www.gov.kz/memleket/entities/astana/press/news/details/1257014?lang=ru",
+        "card_title": "Creative Aimaq: креативный потенциал Костанайской области представили в Астане",
+        "card_snippet": "13 июля 2026",
+        "visible_published_at": "13 июля 2026",
+        "prefilter_matched_keywords": {
+          "strong": [],
+          "weak": [],
+          "road_context": []
+        },
+        "prefilter_score": 0,
+        "candidate_selected": false,
+        "rejection_reason": "no_strong_road_event_term_or_weak_term_with_road_context"
+      },
+      {
+        "page_number": 1,
+        "source_item_id": "1256912",
+        "source_url": "https://www.gov.kz/memleket/entities/astana/press/news/details/1256912?lang=ru",
+        "card_title": "Одна минута без присмотра может стоить жизни: столичный врач обратился к родителям",
+        "card_snippet": "13 июля 2026",
+        "visible_published_at": "13 июля 2026",
+        "prefilter_matched_keywords": {
+          "strong": [],
+          "weak": [],
+          "road_context": []
+        },
+        "prefilter_score": 0,
+        "candidate_selected": false,
+        "rejection_reason": "no_strong_road_event_term_or_weak_term_with_road_context"
+      },
+      {
+        "page_number": 1,
+        "source_item_id": "1256911",
+        "source_url": "https://www.gov.kz/memleket/entities/astana/press/news/details/1256911?lang=ru",
+        "card_title": "Столичные спасатели напомнили о мерах по предотвращению выпадения детей из окон",
+        "card_snippet": "13 июля 2026",
+        "visible_published_at": "13 июля 2026",
+        "prefilter_matched_keywords": {
+          "strong": [],
+          "weak": [],
+          "road_context": []
+        },
+        "prefilter_score": 0,
+        "candidate_selected": false,
+        "rejection_reason": "no_strong_road_event_term_or_weak_term_with_road_context"
+      }
+    ],
+    "already_known_articles_skipped": 0,
+    "article_links_found": 1,
+    "articles_downloaded": 1,
+    "detail_pages_rendered": 1,
+    "rendered_successfully": 1,
+    "relevant_articles": 1,
+    "rejected_articles": 0,
+    "prefilter_precision": 1.0,
+    "rejection_reasons": {},
+    "language": "ru",
+    "article_diagnostics": [
+      {
+        "source_item_id": "1257347",
+        "source_url": "https://www.gov.kz/memleket/entities/astana/press/news/details/1257347?lang=ru",
+        "acquisition_method": "playwright_fallback",
+        "requests_html_length": 836,
+        "requests_extracted_text_length": 181,
+        "shell_detected": true,
+        "playwright_used": true,
+        "rendered_html_length": 137904,
+        "rendered_title": "Участок улицы Кордай временно закроют в связи с проведением ремонтных работ",
+        "rendered_text_length": 2190,
+        "title": "Участок улицы Кордай временно закроют в связи с проведением ремонтных работ",
+        "extracted_text_length": 2190,
+        "matched_keywords": {
+          "repair": [
+            "ремонт",
+            "строительств"
+          ],
+          "restriction": [
+            "закрыт"
+          ],
+          "infra": [
+            "улиц",
+            "дорог"
+          ]
+        },
+        "relevance_score": 5,
+        "relevant": true,
+        "rejection_reason": null,
+        "acquisition_warnings": []
+      }
+    ]
+  },
+  "records_parsed": 1,
+  "training_eligible": 0,
+  "matches": 36,
+  "coverage_by_year": {
+    "2026": 1
+  },
+  "date_extraction_rate": 1.0,
+  "spatial_match_rate": 1.0,
+  "leakage_safe_rate": 0.0,
+  "storage": {
+    "paths": {
+      "articles": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\history\\gov_kz\\gov_kz_historical_articles.parquet",
+      "events": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\history\\gov_kz\\gov_kz_historical_events.parquet",
+      "matches": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\history\\gov_kz\\gov_kz_historical_segment_matches.parquet",
+      "rejected": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\future_intelligence\\history\\gov_kz\\gov_kz_historical_rejected.parquet"
+    },
+    "writes": {
+      "articles": {
+        "new": 0,
+        "updated": 0,
+        "unchanged": 1
+      },
+      "events": {
+        "new": 0,
+        "updated": 1,
+        "unchanged": 0
+      },
+      "matches": {
+        "new": 0,
+        "updated": 0,
+        "unchanged": 36
+      },
+      "rejected": {
+        "new": 0,
+        "updated": 1,
+        "unchanged": 0
+      }
+    }
+  },
+  "resume": {
+    "enabled": false,
+    "records_skipped_from_checkpoint": 0,
+    "checkpoint_urls_added": 0
+  },
+  "warnings": []
+}

@@ -1,0 +1,16 @@
+{
+  "archive_pages_checked": 3,
+  "archive_pages_rendered": 3,
+  "archive_pages_parsed": 1,
+  "jsonld_success_rate": 1.0,
+  "exact_datetime_rate": 1.0,
+  "venue_rate": 0.0,
+  "astana_rate": 0.0,
+  "geocoding_rate": 0.0,
+  "major_venue_rate": 0.0,
+  "transport_relevant_count": 0,
+  "duplicate_rate": 0.0,
+  "usable_by_year": {
+    "2024": 1
+  }
+}

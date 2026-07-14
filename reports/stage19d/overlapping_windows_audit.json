@@ -1,0 +1,14 @@
+{
+  "label_dependence": "overlapping_24h_label_windows_not_automatically_leakage",
+  "positive_rows": 297845,
+  "unique_accident_rows": 12449,
+  "positive_rows_per_raw_accident": 23.925214876696923,
+  "theoretical_prediction_rows_per_isolated_accident": 24,
+  "positive_run_length": {
+    "count": 12390,
+    "mean": 24.03914447134786,
+    "max": 48
+  },
+  "lag_autocorrelation": "not_identifiable_from_negative-sampled candidate grid; requires full all-segment hourly grid",
+  "unique_accident_hours": 11169
+}

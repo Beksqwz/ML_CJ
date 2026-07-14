@@ -1,0 +1,10 @@
+{
+  "row_count": true,
+  "unique_segments": true,
+  "duplicate_primary_keys": true,
+  "duplicate_columns": true,
+  "stable_base_schema": true,
+  "timezone_aware": true,
+  "no_infinite_values": true,
+  "provider_metadata_present": true
+}

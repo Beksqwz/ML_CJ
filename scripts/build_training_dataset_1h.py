@@ -11,7 +11,6 @@ from __future__ import annotations
 
 import argparse
 import json
-from collections import defaultdict
 from datetime import UTC, datetime
 from pathlib import Path
 

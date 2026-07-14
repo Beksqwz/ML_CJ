@@ -1,0 +1,31 @@
+{
+  "weights": {
+    "score_catboost_stage19h": 0.8,
+    "score_hist_gradient_boosting": 0.19999999999999996,
+    "score_logistic_regression": 0.0
+  },
+  "validation": {
+    "pr_auc": 0.28420836316515546,
+    "roc_auc": 0.6463727582214999
+  },
+  "subperiods": [
+    {
+      "pr_auc": 0.2845265405738443,
+      "roc_auc": 0.6519125719932439
+    },
+    {
+      "pr_auc": 0.28951740332669834,
+      "roc_auc": 0.6480413192239357
+    },
+    {
+      "pr_auc": 0.28111708898736876,
+      "roc_auc": 0.6395699521310609
+    }
+  ],
+  "minimum_subperiod_pr_auc": 0.28111708898736876,
+  "std_subperiod_pr_auc": 0.003449611123621081,
+  "normalization": "validation_global_percentile_rank",
+  "status": "frozen",
+  "selection_rule": "PR-AUC,min subperiod PR-AUC,ROC-AUC,equal proximity",
+  "configuration_checksum": "365b8e2d16438c94e752727e20e60728223f32501e31c5dddb18b943eb0f12c2"
+}

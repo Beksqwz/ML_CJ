@@ -1,0 +1,30 @@
+{
+  "providers": [
+    "gov_kz_repairs",
+    "ticketon_events"
+  ],
+  "records": 7,
+  "matched": 0,
+  "unmatched": 7,
+  "coverage": 0.0,
+  "average_matches_per_event": 0.0,
+  "distance_m": {
+    "min": null,
+    "mean": null,
+    "max": null
+  },
+  "match_confidence": {
+    "min": null,
+    "mean": null,
+    "max": null
+  },
+  "warnings": [
+    "geometry_missing_or_invalid",
+    "geometry_missing_or_invalid",
+    "geometry_missing_or_invalid",
+    "geometry_missing_or_invalid",
+    "geometry_missing_or_invalid",
+    "geometry_missing_or_invalid",
+    "geometry_missing_or_invalid"
+  ]
+}

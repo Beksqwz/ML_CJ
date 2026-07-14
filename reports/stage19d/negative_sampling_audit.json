@@ -1,0 +1,11 @@
+{
+  "verified_fact": "Stage6 sample_negatives retains all positive windows then draws five negatives per positive at the same datetime_hour.",
+  "horizon": "24h only",
+  "ratio": 5,
+  "seed": 20260711,
+  "stratification": "positive segment road_highway group with all-segment fallback",
+  "sampling_before_split": true,
+  "validation_and_test_sampled": true,
+  "natural_distribution_evaluation": false,
+  "same_negative_population_cross_split": "not possible because datetime ranges are disjoint; sampling itself is before global temporal split"
+}

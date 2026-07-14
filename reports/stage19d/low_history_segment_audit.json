@@ -1,0 +1,4 @@
+{
+  "status": "not_evaluable_from_saved_prediction artifacts",
+  "missing": "road_segment_id is deliberately excluded from Stage7A split and Stage7B prediction files; no join key to segment-level prediction performance remains."
+}

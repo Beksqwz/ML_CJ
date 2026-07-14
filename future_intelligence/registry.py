@@ -10,6 +10,7 @@ from future_intelligence.providers.weather.openweather import (
 )
 from future_intelligence.providers.repairs.gov_kz import GovKzRoadEventsProvider
 from future_intelligence.providers.events.ticketon import TicketonEventsProvider
+from future_intelligence.providers.traffic.tomtom import TomTomFutureTrafficProvider
 
 
 class ProviderRegistry:
@@ -36,4 +37,5 @@ def default_registry() -> ProviderRegistry:
     registry.register("openweather", OpenWeatherForecastProvider)
     registry.register("gov_kz_repairs", GovKzRoadEventsProvider)
     registry.register("ticketon_events", TicketonEventsProvider)
+    registry.register("tomtom", TomTomFutureTrafficProvider)
     return registry

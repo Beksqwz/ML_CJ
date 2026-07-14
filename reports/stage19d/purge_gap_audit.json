@@ -1,0 +1,18 @@
+{
+  "configured_hours": 24,
+  "boundaries": {
+    "split_time_axis": "datetime_hour interpreted as Asia/Almaty local civil time",
+    "initial_train_validation_boundary": "2022-09-10 13:00:00",
+    "initial_validation_test_boundary": "2024-09-14 12:00:00",
+    "purge_horizon_hours": 24,
+    "train_end_exclusive": "2022-09-09 13:00:00",
+    "validation_start": "2022-09-10 13:00:00",
+    "validation_end_exclusive": "2024-09-13 12:00:00",
+    "test_start": "2024-09-14 12:00:00",
+    "purged_boundary_rows": 1194
+  },
+  "train_validation_target_overlap": false,
+  "validation_test_target_overlap": false,
+  "verification": "train < first_boundary-24h; validation >= first_boundary and < second_boundary-24h; test >= second_boundary",
+  "status": "pass"
+}

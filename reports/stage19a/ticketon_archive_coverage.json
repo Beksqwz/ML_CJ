@@ -1,0 +1,17 @@
+{
+  "wayback_cdx": {
+    "endpoint": "https://web.archive.org/cdx/search/cdx",
+    "verified_url_pattern": "ticketon.kz/astana/event/*",
+    "bounded_query": "url=ticketon.kz/astana/event/*; output=json; filter=statuscode:200; filter=mimetype:text/html; collapse=digest; limit=50",
+    "observed_response": {"status": 200, "rows_returned": 50, "mime_type": "text/html", "first_capture_year": 2023, "last_capture_year": 2025, "duplicates": "query-parameter variants and repeated slugs remain in the bounded sample"},
+    "availability_warning": "The official CDX service also returned intermittent HTTP 503 during the same conservative audit; no unbounded enumeration was attempted.",
+    "sampled_pages": [
+      {"capture_year": 2023, "original_url": "https://ticketon.kz/astana/event/2000s-hits-tutti-beats", "live_status": 410, "archive_status": 200, "archive_jsonld": true, "current_parser_events": 0},
+      {"capture_year": 2024, "original_url": "https://ticketon.kz/astana/event/13-komediya-ckz", "live_status": 200, "archive_status": 200, "archive_jsonld": true, "archive_contains_start_and_end_date": true, "current_parser_events": 0},
+      {"capture_year": 2025, "original_url": "https://ticketon.kz/astana/event/100-letie-nurgisy-tlendieva-astana", "live_status": 200, "archive_status": 200, "archive_jsonld": true, "archive_contains_venue_and_offer": true, "current_parser_events": 0}
+    ],
+    "coverage_by_capture_year": {"2023": "observed", "2024": "observed", "2025": "observed", "pre_2023": "not established by bounded sample", "2026": "not established by bounded sample"}
+  },
+  "common_crawl": {"index_checked": "CC-MAIN-2026-25", "status": 404, "detail_urls_found": 0, "interpretation": "no captures for this prefix in this one current index; no WARC pipeline justified"},
+  "live_historical_retention": "mixed; therefore it is not a reproducible historical source by itself"
+}

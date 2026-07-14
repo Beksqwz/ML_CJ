@@ -1,0 +1,55 @@
+{
+  "source": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\processed\\stage7a\\training_dataset_24h_validation.parquet",
+  "source_sha256": "1198a85b8ae7193912f585fa09d441e2c49f2c024a119625be53a2be021ae590",
+  "row_count": 307968,
+  "feature_count": 77,
+  "score_columns": [
+    "score_catboost_stage19h",
+    "score_lightgbm",
+    "score_xgboost",
+    "score_hist_gradient_boosting",
+    "score_logistic_regression"
+  ],
+  "checksums": {
+    "row_id": "5fdf1542e65d5e75a25bfd2c45e04313a4c1faae7bc910a57258e33dd275ca16",
+    "datetime_hour": "2cc0604e4d06759fe9648b6616083bd394c67fab87ac558cd2007bb0883e9c4f",
+    "target_24h": "3e954501a6595c6c0d69eac783dc310f08c1443a60e2721de28790561fb534ce",
+    "score_catboost_stage19h": "2fd3af6da81b4fab3ba8a07d40d91d0873b8ef5f232a1e05e9d9feaa5c3e4258",
+    "score_lightgbm": "fb21764ca31c51090605335c3969d372216c27b3ebe3e7992414e955e9c576f9",
+    "score_xgboost": "5370bbf3c67ba625643473eb30947c2a00bea29724c64a0c072a5f855c234dd3",
+    "score_hist_gradient_boosting": "2a83c48ebbc63064c05e6070e52c8d711650c5ad978801de0fd46f1ffac45508",
+    "score_logistic_regression": "b492c109c4857e8f03ce099ca1e15c3260c53ff1a5470624f399028ad1d755b2"
+  },
+  "missing_values": {
+    "row_id": 0,
+    "datetime_hour": 0,
+    "target_24h": 0,
+    "score_catboost_stage19h": 0,
+    "score_lightgbm": 0,
+    "score_xgboost": 0,
+    "score_hist_gradient_boosting": 0,
+    "score_logistic_regression": 0
+  },
+  "finite_scores": {
+    "score_catboost_stage19h": true,
+    "score_lightgbm": true,
+    "score_xgboost": true,
+    "score_hist_gradient_boosting": true,
+    "score_logistic_regression": true
+  },
+  "row_id_consecutive": true,
+  "runtime_seconds": 7.47265349997906,
+  "model_hashes": {
+    "catboost_candidate.cbm": "5b574c92959bf8e17388c0046f46e3ef402f16030bea77fbd3ea945e2efb27fb",
+    "extra_trees_candidate.joblib": "011fb715d638253ff539169e84d3b23d71f06a2535c38c05f4d5036f4f567229",
+    "hist_gradient_boosting_candidate.joblib": "409b41c62ba68b976f26f711b174f7903ef124331cde27be2c12819dd13554c9",
+    "lightgbm_candidate.txt": "d8c9cafaa1a363eda18ab877ff94f5acb5f26d6c2d5cde27da1709e1d741d04e",
+    "logistic_regression_candidate.joblib": "95ed5eee57a4e6e2160619c9a04dbea18307ef5ad34765bb5b8f4eae81b4b240",
+    "xgboost_candidate.json": "5fd1f5b8b5de9337d4e13872f6fddaa1a4be1291a614733c37cc98eb2f73a2bf"
+  },
+  "warnings": [
+    "row_id_is_artifact_local_not_road_identity",
+    "logistic_regression_max_iter_300_convergence_warning"
+  ],
+  "ready_for_validation_only_weight_search": true
+}

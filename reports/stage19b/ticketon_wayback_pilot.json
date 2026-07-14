@@ -1,0 +1,81 @@
+{
+  "pages": [
+    {
+      "original_url": "https://ticketon.kz/astana/event/2000s-hits-tutti-beats",
+      "archive_timestamp": "20230716075946",
+      "http_status": 200,
+      "rendered": true,
+      "jsonld_blocks": 2,
+      "jsonld_parse_failures": 1,
+      "event_nodes": 0,
+      "normalized_events": 0
+    },
+    {
+      "original_url": "https://ticketon.kz/astana/event/13-komediya-ckz",
+      "archive_timestamp": "20240203001217",
+      "http_status": 200,
+      "rendered": true,
+      "jsonld_blocks": 2,
+      "jsonld_parse_failures": 0,
+      "event_nodes": 1,
+      "normalized_events": 1
+    },
+    {
+      "original_url": "https://ticketon.kz/astana/event/100-letie-nurgisy-tlendieva-astana",
+      "archive_timestamp": "20250324101923",
+      "http_status": 200,
+      "rendered": true,
+      "jsonld_blocks": 2,
+      "jsonld_parse_failures": 0,
+      "event_nodes": 1,
+      "normalized_events": 0
+    }
+  ],
+  "records": [
+    {
+      "source": "Ticketon Wayback",
+      "source_item_id": "872ada1da79efcca27800c4b",
+      "source_url": "https://ticketon.kz/astana/event/13-komediya-ckz",
+      "archive_year": 2024,
+      "title": "КОМЕДИЯ «№13»",
+      "start_datetime": "2023-02-20T18:29:00+06:00",
+      "end_datetime": "2023-02-20T20:09:00+06:00",
+      "venue": null,
+      "city": null,
+      "address": null,
+      "category": "TheaterEvent",
+      "description": "Место проведения: г. Астана, ул. Мангилик ел, 10/1, ЦКЗ «Казахстан», Камерный зал Дата: 11 января, 2024 Время: 19:30 Жанр: Комедия Продолжительность: 100 минут Возрастное ограничение: 7+ Дополнительно: Пьеса проходит на казахском языке",
+      "price": "0",
+      "sold_out": false,
+      "latitude": null,
+      "longitude": null,
+      "venue_tier": "unknown",
+      "venue_alias": null,
+      "astana_valid": false,
+      "is_transport_relevant": false,
+      "transport_impact_score": 1,
+      "transport_class": "low",
+      "exclusion_reason": null,
+      "training_eligibility": "rejected"
+    }
+  ],
+  "metrics": {
+    "archive_pages_checked": 3,
+    "archive_pages_rendered": 3,
+    "archive_pages_parsed": 1,
+    "jsonld_success_rate": 1.0,
+    "exact_datetime_rate": 1.0,
+    "venue_rate": 0.0,
+    "astana_rate": 0.0,
+    "geocoding_rate": 0.0,
+    "major_venue_rate": 0.0,
+    "transport_relevant_count": 0,
+    "duplicate_rate": 0.0,
+    "usable_by_year": {
+      "2024": 1
+    }
+  },
+  "warnings": [
+    "using_stage19a_verified_wayback_seed_sample"
+  ]
+}

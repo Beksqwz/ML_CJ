@@ -1,0 +1,9 @@
+{
+  "method": "validation_global_percentile_rank",
+  "source": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\audit\\stage19i_simple\\validation_scores.parquet",
+  "columns": [
+    "score_catboost_stage19h",
+    "score_hist_gradient_boosting",
+    "score_logistic_regression"
+  ]
+}
