@@ -30,7 +30,7 @@
     "warnings": null
   },
   "lightgbm": {
-    "artifact_size_bytes": 3275759,
+    "artifact_size_bytes": 3285470,
     "operational_suitability": "measured",
     "seasonal_inference_seconds": null,
     "training_seconds": 17.0298472000286,

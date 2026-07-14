@@ -1,0 +1,7 @@
+catboost==1.2.10
+joblib==1.5.3
+numpy==2.4.6
+pandas==3.0.3
+pyarrow==25.0.0
+requests==2.32.5
+scikit-learn==1.9.0

@@ -66,7 +66,14 @@ def main() -> int:
     hashes = {"stage7b_frozen_reference": sha(PRODUCTION)}
     for name, info in training.items():
         path = Path(info["model_path"])
-        sizes[name], hashes[name] = path.stat().st_size, sha(path)
+        # Benchmark reports may retain a historical absolute path.  Prefer the
+        # co-located frozen artifact by filename; keep absent, intentionally
+        # untracked experimental artifacts explicit rather than fabricating a
+        # hash or depending on another developer's home directory.
+        local = MODELS / path.name
+        artifact = path if path.is_file() else local if local.is_file() else None
+        sizes[name] = artifact.stat().st_size if artifact else info["model_size_bytes"]
+        hashes[name] = sha(artifact) if artifact else None
     warnings = {name: [] for name in models}
     warnings["logistic_regression"].append("lbfgs_max_iter_300_convergence_warning")
     warnings["extra_trees"].append("artifact_size_1GB_operationally_impractical")

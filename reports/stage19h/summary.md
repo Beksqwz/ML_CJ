@@ -315,5 +315,5 @@
       }
     }
   },
-  "checkpoint": "C:\\Users\\Beknur\\Desktop\\test_arcgis_geometry.py\\data\\audit\\stage19h\\evaluation_checkpoint.json"
+  "checkpoint": "C:\\Users\\yedil\\OneDrive\\\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b\\bim\\ML_CJ_stage19\\data\\audit\\stage19h\\evaluation_checkpoint.json"
 }
