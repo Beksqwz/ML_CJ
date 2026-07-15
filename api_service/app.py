@@ -22,9 +22,13 @@ try:
     from ml_service import AccidentRiskPredictor
     _predictor = AccidentRiskPredictor()
     import threading
-    def _warm():
-        try:
-            at = os.getenv("ML_PREDICTION_DATETIME", datetime.now(UTC).isoformat())
+        def _warm():
+            try:
+                at = os.getenv("ML_PREDICTION_DATETIME", datetime.now(UTC).isoformat())
+                if "+" in at:
+                    at = at[:at.rindex("+")]
+                elif at.endswith("Z"):
+                    at = at[:-1]
             _predictor.predict_city(at, "1h")
         except Exception:
             pass
@@ -196,6 +200,11 @@ def create_app(*, api_key: str | None = None, runtime: Runtime | None = None, tr
         if _predictor is not None:
             try:
                 at = os.getenv("ML_PREDICTION_DATETIME", datetime.now(UTC).isoformat())
+                # Strip timezone — predictor data is tz-naive
+                if "+" in at:
+                    at = at[:at.rindex("+")]
+                elif at.endswith("Z"):
+                    at = at[:-1]
                 city_result = _predictor.predict_city(at, "1h")
                 for rec in city_result.get("predictions", []):
                     shap_lookup[str(rec["road_segment_id"])] = {
