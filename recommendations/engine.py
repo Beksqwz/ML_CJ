@@ -76,6 +76,73 @@ def _add(
     )
 
 
+_FEATURE_NAMES: dict[str, str] = {
+    "road_lanes_num": "Число полос",
+    "road_maxspeed_kmh": "Скоростной режим (км/ч)",
+    "road_length": "Длина участка (м)",
+    "segment_longitude": "Долгота",
+    "segment_latitude": "Широта",
+    "road_highway": "Тип дороги",
+    "road_oneway": "Одностороннее движение",
+    "road_lanes_missing": "Число полос не указано",
+    "road_maxspeed_missing": "Скорость не указана",
+    "road_name_missing": "Название дороги не указано",
+}
+
+
+def _feature_label(feature: str) -> str:
+    if feature in _FEATURE_NAMES:
+        return _FEATURE_NAMES[feature]
+    if feature.startswith("weather_risk_"):
+        risk = feature.replace("weather_risk_", "").replace("_now", "")
+        return {"precip": "Осадки", "snow": "Снег", "freezing": "Гололёд", "high_wind": "Сильный ветер", "adverse": "Неблагоприятная погода"}.get(risk, feature)
+    if feature.startswith("weather_") and "_prev_" in feature:
+        parts = feature.replace("weather_", "").split("_prev_")
+        metric = parts[0].replace("_", " ")
+        hours = parts[1].replace("h", "")
+        return f"Погода: {metric} за {hours}ч"
+    if feature.startswith("weather_"):
+        return "Погода: " + feature.replace("weather_", "").replace("_", " ")
+    if feature.startswith("poi_"):
+        parts = feature.replace("poi_", "").rsplit("_", 1)
+        cat = parts[0].replace("_", " ")
+        radius = parts[1].replace("m", "")
+        labels = {"crossing": "Переходы", "education": "Образование", "emergency": "Скорая помощь", "healthcare": "Медицина", "other": "Прочее", "traffic_signal": "Светофоры", "transit_stop": "Остановки", "total": "Всего POI"}
+        return f"{labels.get(cat, cat)} ({radius}м)"
+    if feature.startswith("segment_accidents"):
+        return "ДТП: " + feature.replace("segment_accidents_", "").replace("_", " ")
+    if feature.startswith("city_accidents"):
+        return "ДТП (город): " + feature.replace("city_accidents_", "").replace("_", " ")
+    if feature.startswith("calendar_"):
+        return "Календарь: " + feature.replace("calendar_", "").replace("_", " ")
+    if feature.startswith("segment_"):
+        return "Участок: " + feature.replace("segment_", "").replace("_", " ")
+    return feature.replace("_", " ")
+
+
+def _format_value(feature: str, value: object) -> str:
+    if value is None:
+        return "неизвестно"
+    if isinstance(value, bool):
+        return "да" if value else "нет"
+    if isinstance(value, (int, float)):
+        abs_v = abs(float(value))
+        if abs_v < 1 and "_missing" not in feature:
+            return f"{float(value):.2f}"
+        if abs_v == int(abs_v):
+            return str(int(value))
+        return f"{float(value):.1f}"
+    return str(value)
+
+
+def factor_text(feature: str, value: object, shap_value: float) -> str:
+    direction = "Повышает" if shap_value > 0 else "Снижает"
+    impact = f"{abs(shap_value) * 100:.0f}%"
+    label = _feature_label(feature)
+    val_str = _format_value(feature, value)
+    return f"{label}: {val_str}. {direction} риск на {impact}."
+
+
 def recommend(
     *,
     probability: float,
@@ -276,8 +343,18 @@ def recommend(
     return {
         "risk_probability": float(probability),
         "risk_level": risk_level(float(probability), rules["risk_levels"]),
-        "top_positive_factors": [{"feature": n, "shap_value": v} for n, v in positive],
-        "top_negative_factors": [{"feature": n, "shap_value": v} for n, v in negative],
+        "top_positive_factors": [
+            {"feature": n, "shap_value": v,
+             "value": feature_values.get(n),
+             "text": factor_text(n, feature_values.get(n), v)}
+            for n, v in positive
+        ],
+        "top_negative_factors": [
+            {"feature": n, "shap_value": v,
+             "value": feature_values.get(n),
+             "text": factor_text(n, feature_values.get(n), v)}
+            for n, v in negative
+        ],
         "recommendations": recommendations,
         "model_horizon": model_horizon,
         "final_model_version": final_model_version,

@@ -140,7 +140,10 @@ class AccidentRiskPredictor:
                     "top_positive_factors": explanation["top_positive_factors"],
                     "top_negative_factors": explanation["top_negative_factors"],
                     "recommendations": explanation["recommendations"],
+                    "feature_values": values,
                     "final_model_version": entry["stage"],
+                    "longitude": float(row.segment_longitude) if "segment_longitude" in row else None,
+                    "latitude": float(row.segment_latitude) if "segment_latitude" in row else None,
                 }
             )
         self._cache[key] = (records, data.reset_index(drop=True))

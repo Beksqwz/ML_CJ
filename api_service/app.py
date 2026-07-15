@@ -147,6 +147,15 @@ def create_app(*, api_key: str | None = None, runtime: Runtime | None = None, tr
     def model_info() -> dict[str, object]:
         return model_status()
 
+    def _risk_level(probability: float) -> str:
+        if probability >= 0.35:
+            return "CRITICAL"
+        if probability >= 0.20:
+            return "HIGH"
+        if probability >= 0.10:
+            return "MEDIUM"
+        return "LOW"
+
     @app.post("/api/v1/predict", dependencies=[Depends(authenticated)])
     def predict(_: PredictRequest) -> dict[str, object]:
         try:
@@ -155,11 +164,31 @@ def create_app(*, api_key: str | None = None, runtime: Runtime | None = None, tr
             raise HTTPException(status_code=409, detail=str(exc)) from exc
         except Exception as exc:
             raise HTTPException(status_code=500, detail="PREDICTION_FAILED") from exc
+        predictions = []
+        for _, row in frame.iterrows():
+            prob = float(row.get("dynamic_score", 0) or 0)
+            pred = {
+                "road_segment_id": str(row.road_segment_id),
+                "risk_probability": prob,
+                "risk_level": _risk_level(prob),
+                "top_positive_factors": row.get("top_positive_factors") or [],
+                "top_negative_factors": row.get("top_negative_factors") or [],
+                "feature_values": row.get("feature_values") or {},
+                "reasons": row.get("reasons") or [],
+                "possible_plan": row.get("possible_plan") or [],
+                "uncertainty": float(row.get("uncertainty", 0) or 0),
+                "warnings": row.get("warnings") or [],
+                "priority_rank": int(row.get("priority_rank", 999) or 999),
+                "longitude": float(row.get("longitude", 0) or 0),
+                "latitude": float(row.get("latitude", 0) or 0),
+            }
+            predictions.append(pred)
         return {
             "status": "completed", "batchId": batch_id,
             "predictionsCount": len(frame), "executionTimeMs": elapsed,
             "modelVersionId": str(uuid.uuid5(uuid.NAMESPACE_URL, ENGINE_VERSION)),
             "completedAt": datetime.now(UTC).isoformat(),
+            "predictions": predictions,
         }
 
     @app.post("/api/v1/training", status_code=202, dependencies=[Depends(authenticated)])
