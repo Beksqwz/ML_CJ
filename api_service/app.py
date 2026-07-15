@@ -21,6 +21,15 @@ from recommendations.stage20b import recommend_stage20b
 try:
     from ml_service import AccidentRiskPredictor
     _predictor = AccidentRiskPredictor()
+    # Pre-warm: compute once at startup so subsequent calls are cached
+    import threading
+    def _warm():
+        try:
+            at = os.getenv("ML_PREDICTION_DATETIME", datetime.now(UTC).isoformat())
+            _predictor.predict_city(at, "1h")
+        except Exception:
+            pass
+    threading.Thread(target=_warm, daemon=True).start()
 except Exception:
     _predictor = None
 
