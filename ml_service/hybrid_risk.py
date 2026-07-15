@@ -9,8 +9,10 @@ from __future__ import annotations
 
 import json
 import os
+import re
 from pathlib import Path
 from datetime import UTC, datetime, timedelta
+from functools import lru_cache
 from zoneinfo import ZoneInfo
 
 import joblib
@@ -19,6 +21,10 @@ import pandas as pd
 from catboost import CatBoostClassifier
 
 from ml_service.inference.feature_builder import ROOT, build_features
+from ml_service.inference.catboost_explanations import (
+    catboost_explanations,
+    unavailable_explanations,
+)
 
 
 ENGINE_VERSION = "stage19i_ensemble_v1"
@@ -88,6 +94,40 @@ def _local_model_hour(value: str | pd.Timestamp) -> pd.Timestamp:
     return timestamp.tz_localize(None) if timestamp.tzinfo is not None else timestamp
 
 
+@lru_cache(maxsize=1)
+def _canonical_segment_coordinates() -> pd.DataFrame:
+    """Return deterministic centroids from the canonical OSM edge source."""
+    path = ROOT / "data" / "roads" / "astana_edges.csv"
+    if not path.exists():
+        return pd.DataFrame(columns=["road_segment_id", "longitude", "latitude"])
+    roads = pd.read_csv(path, usecols=["u", "v", "key", "geometry"])
+
+    def centroid(value: object) -> tuple[float | None, float | None]:
+        pairs = re.findall(r"(-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)", str(value))
+        if not pairs:
+            return None, None
+        points = np.asarray([(float(lon), float(lat)) for lon, lat in pairs])
+        lon, lat = float(points[:, 0].mean()), float(points[:, 1].mean())
+        return (
+            (lon, lat) if 70.0 <= lon <= 72.0 and 50.0 <= lat <= 52.0 else (None, None)
+        )
+
+    values = roads["geometry"].map(centroid)
+    return pd.DataFrame(
+        {
+            "road_segment_id": (
+                roads["u"].astype(str)
+                + "_"
+                + roads["v"].astype(str)
+                + "_"
+                + roads["key"].astype(str)
+            ),
+            "longitude": values.map(lambda item: item[0]),
+            "latitude": values.map(lambda item: item[1]),
+        }
+    ).drop_duplicates("road_segment_id")
+
+
 def _weather_override(context: pd.DataFrame | None) -> dict | None:
     """Map only existing frozen weather inputs from a valid future snapshot."""
     if (
@@ -127,6 +167,41 @@ def _weather_override(context: pd.DataFrame | None) -> dict | None:
         "wind_speed_10m": origin.get("wind_speed", np.nan),
         "wind_gusts_10m": origin.get("wind_gust", np.nan),
     }
+
+
+def _component_metadata(
+    cat_scores: pd.Series,
+    cat_percentiles: pd.Series,
+    hgb_scores: pd.Series,
+    hgb_percentiles: pd.Series,
+    cat_weight: float,
+    hgb_weight: float,
+) -> list[dict[str, dict[str, float | str]]]:
+    """Return transparent component metadata; final ordering stays separate."""
+
+    return [
+        {
+            "catboost": {
+                "score": float(cat_score),
+                "score_type": "probability",
+                "percentile": float(cat_percentile),
+                "weight": round(cat_weight, 12),
+            },
+            "hgb": {
+                "score": float(hgb_score),
+                "score_type": "probability",
+                "percentile": float(hgb_percentile),
+                "weight": round(hgb_weight, 12),
+            },
+        }
+        for cat_score, cat_percentile, hgb_score, hgb_percentile in zip(
+            cat_scores,
+            cat_percentiles,
+            hgb_scores,
+            hgb_percentiles,
+            strict=True,
+        )
+    ]
 
 
 def build_dynamic_risk(
@@ -172,12 +247,29 @@ def build_dynamic_risk(
     hgb_scores = hgb.predict_proba(preprocessor.transform(features))[:, 1]
     cat_weight, hgb_weight = _weights()
 
+    try:
+        explanations, _ = catboost_explanations(
+            catboost,
+            features,
+            ordered_features=ordered_features,
+            categorical_features=categorical_features,
+            component_weight=cat_weight,
+        )
+        explanation_warnings: list[list[str]] = [[] for _ in range(len(features))]
+    except Exception:
+        explanations = unavailable_explanations(len(features), cat_weight)
+        explanation_warnings = [
+            ["CATBOOST_EXPLANATION_UNAVAILABLE"] for _ in range(len(features))
+        ]
+
     result = features[["road_segment_id", "datetime_hour"]].copy()
     result = result.rename(columns={"datetime_hour": "prediction_datetime"})
     result["prediction_datetime"] = pd.Timestamp(prediction_datetime).floor("h")
     result["road_segment_id"] = result["road_segment_id"].astype(str)
     result["score_catboost_stage19h"] = cat_scores
     result["score_hist_gradient_boosting"] = hgb_scores
+    result["enrichment_warnings"] = explanation_warnings
+    result["explanation"] = explanations
     # Percentiles are calculated within this one complete prediction hour.
     result["_cat_percentile"] = result["score_catboost_stage19h"].rank(pct=True)
     result["_hgb_percentile"] = result["score_hist_gradient_boosting"].rank(pct=True)
@@ -193,6 +285,45 @@ def build_dynamic_risk(
     )
     result["dynamic_engine_version"] = ENGINE_VERSION
     result["dynamic_engine_status"] = ENGINE_STATUS
+    result = result.merge(
+        _canonical_segment_coordinates(),
+        on="road_segment_id",
+        how="left",
+        validate="one_to_one",
+    )
+    for coordinate in ("longitude", "latitude"):
+        result[coordinate] = (
+            result[coordinate].astype(object).where(result[coordinate].notna(), None)
+        )
+    result["dynamic_risk"] = [
+        {
+            "score": float(score),
+            "score_type": "weighted_percentile_ensemble",
+            "rank": int(rank),
+            "percentile": float(percentile),
+            "population_size": EXPECTED_SEGMENTS,
+            "horizon_hours": 24,
+            "engine": "stage19i_ensemble",
+            "weights": {
+                "catboost": round(cat_weight, 12),
+                "hgb": round(hgb_weight, 12),
+            },
+        }
+        for score, rank, percentile in zip(
+            result["dynamic_score"],
+            result["dynamic_rank"],
+            result["dynamic_percentile"],
+            strict=True,
+        )
+    ]
+    result["model_components"] = _component_metadata(
+        result["score_catboost_stage19h"],
+        result["_cat_percentile"],
+        result["score_hist_gradient_boosting"],
+        result["_hgb_percentile"],
+        cat_weight,
+        hgb_weight,
+    )
     return result.drop(columns=["_cat_percentile", "_hgb_percentile"])
 
 

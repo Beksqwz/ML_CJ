@@ -160,7 +160,9 @@ def recommend_stage20b(frame: pd.DataFrame) -> pd.DataFrame:
     for _, row in frame.iterrows():
         reasons, flags = _reasons(row)
         priority = _priority(row, reasons, flags)
-        warnings = _as_list(row.future_context_warnings)
+        warnings = _as_list(row.future_context_warnings) + _as_list(
+            row.get("enrichment_warnings")
+        )
         if "PROVIDER_DEGRADED" in reasons and "provider_degraded" not in warnings:
             warnings.append("provider_degraded")
         uncertainty = (

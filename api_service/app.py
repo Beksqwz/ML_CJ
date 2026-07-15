@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import hmac
+import json
+import math
 import os
 import time
 import uuid
@@ -26,6 +28,181 @@ class PredictRequest(BaseModel):
     force: bool = False
     prediction_datetime: datetime | None = None
     strict_live_features: bool = False
+    response_mode: Literal["compact", "full"] = "compact"
+    include_explanations: bool | None = None
+    max_explanation_factors: int = Field(default=3, ge=0, le=3)
+
+
+PREDICT_FULL_RESPONSE_MAX_BYTES_DEFAULT = 16 * 1024 * 1024
+
+
+def _full_response_max_bytes() -> int:
+    """Read the bounded full-response budget without accepting invalid values."""
+
+    try:
+        configured = int(
+            os.getenv(
+                "PREDICT_FULL_RESPONSE_MAX_BYTES",
+                str(PREDICT_FULL_RESPONSE_MAX_BYTES_DEFAULT),
+            )
+        )
+    except ValueError:
+        return PREDICT_FULL_RESPONSE_MAX_BYTES_DEFAULT
+    return max(1, configured)
+
+
+def _response_size_bytes(payload: dict[str, object]) -> int:
+    """Return UTF-8 JSON bytes using the public response serialization contract."""
+
+    return len(
+        json.dumps(
+            payload,
+            ensure_ascii=False,
+            allow_nan=False,
+            separators=(",", ":"),
+            default=str,
+        ).encode("utf-8")
+    )
+
+
+def _json_safe_public(value: object) -> object:
+    """Replace non-finite values before strict public JSON serialization."""
+
+    if isinstance(value, float):
+        return value if math.isfinite(value) else None
+    if isinstance(value, dict):
+        return {str(key): _json_safe_public(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_json_safe_public(item) for item in value]
+    return value
+
+
+def _set_response_size(payload: dict[str, object]) -> int:
+    """Set a stable self-inclusive responseSizeBytes value and return it."""
+
+    size = 0
+    for _ in range(4):
+        payload["responseSizeBytes"] = size
+        measured = _response_size_bytes(payload)
+        if measured == size:
+            return measured
+        size = measured
+    payload["responseSizeBytes"] = size
+    return size
+
+
+def _public_context(row: dict[str, object]) -> dict[str, object]:
+    """Construct the compact, safe operational context from a persisted row."""
+
+    return {
+        "weather": {
+            "available": row.get("weather_context_available"),
+            "severity_score": row.get("weather_severity_score"),
+            "provider": row.get("weather_provider", "openweather"),
+            "snapshotVersion": row.get("weather_snapshot_version"),
+            "validFrom": row.get("weather_valid_from"),
+            "validUntil": row.get("weather_valid_until"),
+            "worstPeriodStart": row.get("weather_worst_period_start"),
+            "worstPeriodEnd": row.get("weather_worst_period_end"),
+            "consistent": row.get("weather_snapshot_consistent", False),
+            "degraded": row.get("ml_weather_degraded", True),
+        },
+        "traffic": {
+            "available": row.get("traffic_context_available"),
+            "severity_score": row.get("traffic_severity_score"),
+            "validFrom": row.get("traffic_valid_from"),
+            "validUntil": row.get("traffic_valid_until"),
+        },
+        "repairs": {
+            "available": row.get("repair_context_available"),
+            "active": row.get("repair_active"),
+            "validFrom": row.get("repair_valid_from"),
+            "validUntil": row.get("repair_valid_until"),
+        },
+        "events": {
+            "available": row.get("event_context_available"),
+            "major": row.get("event_major"),
+            "name": row.get("event_name"),
+            "venue": row.get("event_venue"),
+            "start": row.get("event_start"),
+            "end": row.get("event_end"),
+        },
+    }
+
+
+def _public_prediction_segment(
+    row: dict[str, object],
+    *,
+    include_explanations: bool,
+    max_explanation_factors: int,
+) -> dict[str, object]:
+    """Whitelist one persisted result for synchronous full-mode responses."""
+
+    public_keys = (
+        "road_segment_id",
+        "longitude",
+        "latitude",
+        "prediction_datetime",
+        "dynamic_score",
+        "dynamic_rank",
+        "dynamic_percentile",
+        "dynamic_risk",
+        "model_components",
+        "operational_priority",
+        "priority_rank",
+        "historical_hotspot_rank",
+        "historical_hotspot_percentile",
+        "historical_accident_count",
+        "historical_accident_count_30d",
+        "historical_accident_count_90d",
+        "historical_accident_count_365d",
+        "reasons",
+        "warnings",
+        "uncertainty",
+        "possible_plan",
+    )
+    value = {key: row.get(key) for key in public_keys}
+    value["context"] = _public_context(row)
+    stored_explanation = row.get("explanation")
+    if include_explanations and isinstance(stored_explanation, dict):
+        explanation = dict(stored_explanation)
+        for factor_key in ("top_positive_factors", "top_negative_factors"):
+            factors = explanation.get(factor_key, [])
+            explanation[factor_key] = (
+                list(factors)[:max_explanation_factors]
+                if isinstance(factors, list)
+                else []
+            )
+        value["explanation"] = explanation
+    else:
+        value["explanation"] = {
+            "explanation_status": "excluded_by_request",
+            "scope": "catboost_component_only",
+        }
+    return _json_safe_public(value)  # type: ignore[return-value]
+
+
+def _ordered_public_predictions(
+    rows: list[dict[str, object]],
+    *,
+    include_explanations: bool,
+    max_explanation_factors: int,
+) -> list[dict[str, object]]:
+    ordered = sorted(
+        rows,
+        key=lambda row: (
+            int(row.get("dynamic_rank") or 10**9),
+            str(row.get("road_segment_id") or ""),
+        ),
+    )
+    return [
+        _public_prediction_segment(
+            row,
+            include_explanations=include_explanations,
+            max_explanation_factors=max_explanation_factors,
+        )
+        for row in ordered
+    ]
 
 
 class ActionPlanRequest(BaseModel):
@@ -242,23 +419,70 @@ def create_app(
         return model_status()
 
     @app.post("/api/v1/predict", dependencies=[Depends(authenticated)])
-    def predict(_: PredictRequest) -> dict[str, object]:
+    def predict(request: PredictRequest) -> dict[str, object]:
         try:
             batch_id, frame, elapsed = runtime.predict(
-                _.prediction_datetime, _.strict_live_features
+                request.prediction_datetime, request.strict_live_features
             )
         except RuntimeError as exc:
             raise HTTPException(status_code=409, detail=str(exc)) from exc
         except Exception as exc:
             raise HTTPException(status_code=500, detail="PREDICTION_FAILED") from exc
-        return {
+        include_explanations = request.response_mode == "full" and (
+            request.include_explanations
+            if request.include_explanations is not None
+            else True
+        )
+        response: dict[str, object] = {
             "status": "completed",
             "batchId": batch_id,
             "predictionsCount": len(frame),
             "executionTimeMs": elapsed,
             "modelVersionId": str(uuid.uuid5(uuid.NAMESPACE_URL, ENGINE_VERSION)),
             "completedAt": datetime.now(UTC).isoformat(),
+            "responseMode": request.response_mode,
+            "predictionsIncluded": request.response_mode == "full",
+            "explanationsIncluded": include_explanations,
+            "maxExplanationFactors": request.max_explanation_factors,
         }
+        if request.response_mode == "compact":
+            _set_response_size(response)
+            return response
+
+        persisted_rows = runtime.store.get_prediction_segments_for_batch(batch_id)
+        predictions = _ordered_public_predictions(
+            persisted_rows,
+            include_explanations=include_explanations,
+            max_explanation_factors=request.max_explanation_factors,
+        )
+        response.update(
+            {
+                "predictionDatetime": runtime.store.batch(batch_id)[
+                    "predictionDatetime"
+                ],
+                "horizonHours": 24,
+                "engine": "stage19i_ensemble",
+                "summary": {
+                    "segmentsPredicted": len(frame),
+                    "predictionsReturned": len(predictions),
+                    "explanationsIncluded": include_explanations,
+                    "maxExplanationFactors": request.max_explanation_factors,
+                },
+                "predictions": predictions,
+            }
+        )
+        response["explanationsIncluded"] = include_explanations
+        size = _set_response_size(response)
+        if size > _full_response_max_bytes():
+            raise HTTPException(
+                status_code=413,
+                detail={
+                    "code": "PREDICT_FULL_RESPONSE_TOO_LARGE",
+                    "batchId": batch_id,
+                    "message": "Use compact mode or batch segment lookup endpoints.",
+                },
+            )
+        return response
 
     @app.post(
         "/api/v1/action-plans", status_code=201, dependencies=[Depends(authenticated)]
@@ -404,14 +628,24 @@ def create_app(
         )
         if row is None:
             raise HTTPException(status_code=404, detail="SEGMENT_NOT_FOUND")
-        return row | {
-            "dynamic_risk": {
+        dynamic_risk = row.get("dynamic_risk")
+        if not isinstance(dynamic_risk, dict):
+            dynamic_risk = {
                 "score": row.get("dynamic_score"),
+                "score_type": "weighted_percentile_ensemble",
                 "rank": row.get("dynamic_rank"),
                 "percentile": row.get("dynamic_percentile"),
-                "engine_version": row.get("dynamic_engine_version"),
-                "status": row.get("dynamic_engine_status"),
-            },
+                "population_size": None,
+                "horizon_hours": 24,
+                "engine": row.get("dynamic_engine_version"),
+                "weights": None,
+            }
+        dynamic_risk = dynamic_risk | {
+            "engine_version": row.get("dynamic_engine_version"),
+            "status": row.get("dynamic_engine_status"),
+        }
+        return row | {
+            "dynamic_risk": dynamic_risk,
             "historical_hotspot": {
                 "rank": row.get("historical_hotspot_rank"),
                 "percentile": row.get("historical_hotspot_percentile"),

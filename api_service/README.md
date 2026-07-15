@@ -66,3 +66,39 @@ No ML prediction is re-run and no provider is refreshed. `action_priority_score`
 orders operational actions; it is not an accident probability. Every action needs
 human/operator confirmation. `/api/v1/recommendations/top` remains a segment
 ranking endpoint, not the city-plan endpoint.
+
+## Synchronous prediction response modes
+
+`POST /api/v1/predict` remains compact by default and first persists the completed
+24-hour prediction batch. A compact request is either omitted or explicit:
+
+```json
+{"response_mode": "compact"}
+```
+
+It returns batch metadata only, including `responseMode: "compact"`,
+`predictionsIncluded: false`, and `responseSizeBytes`. To receive the already
+persisted 3,968 compact segment results in the same HTTP response, request:
+
+```json
+{
+  "response_mode": "full",
+  "include_explanations": true,
+  "max_explanation_factors": 3
+}
+```
+
+Full mode returns `predictions` ordered by final dynamic rank. The main
+`dynamic_score` / `dynamic_risk.score` is the Stage19I weighted-percentile
+ensemble ordering score, not an accident probability. `model_components` keeps
+the CatBoost and HGB scores separately. The optional SHAP factors explain only
+the CatBoost component, not the full ensemble; set `include_explanations` to
+`false` or `max_explanation_factors` to `0..3` to reduce the response.
+
+The service does not rerun prediction, SHAP, or provider collection to form a
+full response: it reads the completed batch just written to SQLite. Full payloads
+are bounded by `PREDICT_FULL_RESPONSE_MAX_BYTES` (default 16 MiB). If the bound
+is exceeded, the batch remains completed and the API returns HTTP 413 with its
+`batchId`; retry compact mode or use segment/batch lookup endpoints. No raw
+feature vectors, full SHAP vectors, provider payloads, credentials, or local
+paths are returned.
