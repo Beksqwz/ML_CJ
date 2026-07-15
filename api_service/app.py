@@ -18,10 +18,19 @@ from pydantic import BaseModel
 from ml_service.hybrid_risk import ENGINE_VERSION, build_hybrid_risk
 from recommendations.stage20b import recommend_stage20b
 
-# TODO: add SHAP factors when Docker image includes full ML_CJ data (models, roads, configs)
-# from ml_service import AccidentRiskPredictor
-# _predictor = AccidentRiskPredictor()
-# _predictor.predict_city(...)
+try:
+    from ml_service import AccidentRiskPredictor
+    _predictor = AccidentRiskPredictor()
+    import threading
+    def _warm():
+        try:
+            at = os.getenv("ML_PREDICTION_DATETIME", datetime.now(UTC).isoformat())
+            _predictor.predict_city(at, "1h")
+        except Exception:
+            pass
+    threading.Thread(target=_warm, daemon=True).start()
+except Exception:
+    _predictor = None
 
 
 class PredictRequest(BaseModel):
@@ -182,23 +191,42 @@ def create_app(*, api_key: str | None = None, runtime: Runtime | None = None, tr
         except Exception as exc:
             raise HTTPException(status_code=500, detail="PREDICTION_FAILED") from exc
 
+        # Fetch SHAP factors + feature_values from CatBoost predictor (pipeline #1)
+        shap_lookup: dict[str, dict[str, object]] = {}
+        if _predictor is not None:
+            try:
+                at = os.getenv("ML_PREDICTION_DATETIME", datetime.now(UTC).isoformat())
+                city_result = _predictor.predict_city(at, "1h")
+                for rec in city_result.get("predictions", []):
+                    shap_lookup[str(rec["road_segment_id"])] = {
+                        "top_positive_factors": rec.get("top_positive_factors", []),
+                        "top_negative_factors": rec.get("top_negative_factors", []),
+                        "feature_values": rec.get("feature_values", {}),
+                        "longitude": rec.get("longitude"),
+                        "latitude": rec.get("latitude"),
+                    }
+            except Exception:
+                pass
+
         predictions = []
         for _, row in frame.iterrows():
+            seg_id = str(row.road_segment_id)
+            shap = shap_lookup.get(seg_id, {})
             prob = _safe_float(row.get("score_catboost_stage19h") or row.get("dynamic_score", 0))
             pred = {
-                "road_segment_id": str(row.road_segment_id),
+                "road_segment_id": seg_id,
                 "risk_probability": prob,
                 "risk_level": _risk_level(prob),
-                "top_positive_factors": row.get("top_positive_factors") or [],
-                "top_negative_factors": row.get("top_negative_factors") or [],
-                "feature_values": row.get("feature_values") or {},
+                "top_positive_factors": shap.get("top_positive_factors") or row.get("top_positive_factors") or [],
+                "top_negative_factors": shap.get("top_negative_factors") or row.get("top_negative_factors") or [],
+                "feature_values": shap.get("feature_values") or row.get("feature_values") or {},
                 "reasons": row.get("reasons") or [],
                 "possible_plan": row.get("possible_plan") or [],
                 "uncertainty": _safe_float(row.get("uncertainty")),
                 "warnings": row.get("warnings") or [],
                 "priority_rank": _safe_int(row.get("priority_rank"), 999),
-                "longitude": _safe_float(row.get("longitude")),
-                "latitude": _safe_float(row.get("latitude")),
+                "longitude": _safe_float(shap.get("longitude") or row.get("longitude")),
+                "latitude": _safe_float(shap.get("latitude") or row.get("latitude")),
             }
             predictions.append(pred)
         return {
