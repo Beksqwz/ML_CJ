@@ -28,9 +28,26 @@ class PredictRequest(BaseModel):
     force: bool = False
     prediction_datetime: datetime | None = None
     strict_live_features: bool = False
-    response_mode: Literal["compact", "full"] = "compact"
+    response_mode: Literal["compact", "full", "backend_sync"] = "compact"
+    road_segment_ids: list[str] | None = Field(default=None, max_length=6_000)
     include_explanations: bool | None = None
     max_explanation_factors: int = Field(default=3, ge=0, le=3)
+
+    @field_validator("road_segment_ids")
+    @classmethod
+    def normalize_road_segment_ids(cls, value: list[str] | None) -> list[str] | None:
+        if value is None:
+            return None
+        normalized: list[str] = []
+        seen: set[str] = set()
+        for segment_id in value:
+            cleaned = segment_id.strip()
+            if not cleaned:
+                raise ValueError("road_segment_ids must not contain blank values")
+            if cleaned not in seen:
+                normalized.append(cleaned)
+                seen.add(cleaned)
+        return normalized
 
 
 PREDICT_FULL_RESPONSE_MAX_BYTES_DEFAULT = 16 * 1024 * 1024
@@ -203,6 +220,75 @@ def _ordered_public_predictions(
         )
         for row in ordered
     ]
+
+
+_BACKEND_RISK_LEVELS = {
+    "critical": "CRITICAL",
+    "high": "HIGH",
+    "medium": "MEDIUM",
+    "low": "LOW",
+    "monitor_only": "LOW",
+}
+
+
+def _backend_factor(value: object) -> dict[str, object]:
+    """Convert the persisted SHAP factor to the backend explanation contract."""
+
+    factor = value if isinstance(value, dict) else {}
+    result: dict[str, object] = {
+        "feature": str(factor.get("feature") or ""),
+        "shap_value": factor.get("shap_value"),
+    }
+    if "feature_value" in factor:
+        result["value"] = factor["feature_value"]
+    if "text" in factor and factor["text"] is not None:
+        result["text"] = factor["text"]
+    return result
+
+
+def _backend_sync_prediction(row: dict[str, object]) -> dict[str, object]:
+    """Build the versioned DTO consumed by the RRAI backend.
+
+    ``dynamic_score`` is deliberately exported as ``risk_score``: it is a
+    ranking score, not an accident probability.
+    """
+
+    priority = str(row.get("operational_priority") or "").lower()
+    risk_level = _BACKEND_RISK_LEVELS.get(priority)
+    if risk_level is None:
+        raise ValueError(f"unsupported operational_priority: {priority!r}")
+
+    explanation = row.get("explanation")
+    explanation = explanation if isinstance(explanation, dict) else {}
+    uncertainty = row.get("uncertainty")
+    calibrated_uncertainty = (
+        float(uncertainty)
+        if isinstance(uncertainty, (int, float)) and 0 <= uncertainty <= 1
+        else None
+    )
+    return {
+        "road_segment_id": str(row.get("road_segment_id") or ""),
+        "risk_score": row.get("dynamic_score"),
+        "risk_level": risk_level,
+        "confidence": None,
+        "uncertainty": calibrated_uncertainty,
+        "top_positive_factors": [
+            _backend_factor(factor)
+            for factor in explanation.get("top_positive_factors", [])
+            if isinstance(factor, dict)
+        ],
+        "top_negative_factors": [
+            _backend_factor(factor)
+            for factor in explanation.get("top_negative_factors", [])
+            if isinstance(factor, dict)
+        ],
+        "reasons": row.get("reasons") or [],
+        "possible_plan": row.get("possible_plan") or [],
+        "warnings": row.get("warnings") or [],
+        "priority_rank": row.get("priority_rank"),
+        "longitude": row.get("longitude"),
+        "latitude": row.get("latitude"),
+    }
 
 
 class ActionPlanRequest(BaseModel):
@@ -420,6 +506,10 @@ def create_app(
 
     @app.post("/api/v1/predict", dependencies=[Depends(authenticated)])
     def predict(request: PredictRequest) -> dict[str, object]:
+        if request.response_mode == "backend_sync" and not request.road_segment_ids:
+            raise HTTPException(
+                status_code=422, detail="BACKEND_SYNC_SEGMENT_IDS_REQUIRED"
+            )
         try:
             batch_id, frame, elapsed = runtime.predict(
                 request.prediction_datetime, request.strict_live_features
@@ -428,10 +518,13 @@ def create_app(
             raise HTTPException(status_code=409, detail=str(exc)) from exc
         except Exception as exc:
             raise HTTPException(status_code=500, detail="PREDICTION_FAILED") from exc
-        include_explanations = request.response_mode == "full" and (
-            request.include_explanations
-            if request.include_explanations is not None
-            else True
+        include_explanations = request.response_mode == "backend_sync" or (
+            request.response_mode == "full"
+            and (
+                request.include_explanations
+                if request.include_explanations is not None
+                else True
+            )
         )
         response: dict[str, object] = {
             "status": "completed",
@@ -441,7 +534,7 @@ def create_app(
             "modelVersionId": str(uuid.uuid5(uuid.NAMESPACE_URL, ENGINE_VERSION)),
             "completedAt": datetime.now(UTC).isoformat(),
             "responseMode": request.response_mode,
-            "predictionsIncluded": request.response_mode == "full",
+            "predictionsIncluded": request.response_mode != "compact",
             "explanationsIncluded": include_explanations,
             "maxExplanationFactors": request.max_explanation_factors,
         }
@@ -450,6 +543,33 @@ def create_app(
             return response
 
         persisted_rows = runtime.store.get_prediction_segments_for_batch(batch_id)
+        if request.response_mode == "backend_sync":
+            requested_ids = set(request.road_segment_ids or [])
+            selected_rows = [
+                row
+                for row in persisted_rows
+                if str(row.get("road_segment_id") or "") in requested_ids
+            ]
+            predictions = [
+                _backend_sync_prediction(row)
+                for row in _ordered_public_predictions(
+                    selected_rows,
+                    include_explanations=True,
+                    max_explanation_factors=request.max_explanation_factors,
+                )
+            ]
+            response.update(
+                {
+                    "contractVersion": "1",
+                    "modelHorizon": "24h",
+                    "generatedAt": response["completedAt"],
+                    "predictionsReturned": len(predictions),
+                    "predictions": predictions,
+                }
+            )
+            _set_response_size(response)
+            return response
+
         predictions = _ordered_public_predictions(
             persisted_rows,
             include_explanations=include_explanations,

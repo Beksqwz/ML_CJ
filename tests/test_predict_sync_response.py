@@ -351,6 +351,47 @@ class PredictSyncResponseTests(unittest.TestCase):
             200,
         )
 
+    def test_31_backend_sync_returns_only_requested_backend_dto(self):
+        client, _, _ = self._client()
+        response = self._post(
+            client,
+            response_mode="backend_sync",
+            road_segment_ids=["segment-0002", "segment-0000", "segment-0000"],
+        )
+        self.assertEqual(response.status_code, 200)
+        payload = response.json()
+        self.assertEqual(payload["contractVersion"], "1")
+        self.assertEqual(payload["modelHorizon"], "24h")
+        self.assertEqual(payload["predictionsCount"], 3)
+        self.assertEqual(payload["predictionsReturned"], 2)
+        self.assertEqual(
+            [row["road_segment_id"] for row in payload["predictions"]],
+            ["segment-0000", "segment-0002"],
+        )
+        row = payload["predictions"][0]
+        self.assertEqual(row["risk_score"], 1)
+        self.assertEqual(row["risk_level"], "HIGH")
+        self.assertIsNone(row["confidence"])
+        self.assertIsNone(row["uncertainty"])
+        self.assertEqual(row["top_positive_factors"][0]["value"], 100)
+        self.assertNotIn("dynamic_score", row)
+        self.assertNotIn("risk_probability", row)
+
+    def test_32_backend_sync_requires_segment_ids(self):
+        client, _, _ = self._client()
+        response = self._post(client, response_mode="backend_sync")
+        self.assertEqual(response.status_code, 422)
+        self.assertEqual(response.json()["detail"], "BACKEND_SYNC_SEGMENT_IDS_REQUIRED")
+
+    def test_33_backend_sync_rejects_blank_segment_id(self):
+        client, _, _ = self._client()
+        self.assertEqual(
+            self._post(
+                client, response_mode="backend_sync", road_segment_ids=[" "]
+            ).status_code,
+            422,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
