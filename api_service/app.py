@@ -156,6 +156,18 @@ def create_app(*, api_key: str | None = None, runtime: Runtime | None = None, tr
             return "MEDIUM"
         return "LOW"
 
+    def _safe_float(value: object, default: float = 0.0) -> float:
+        try:
+            return float(value)  # type: ignore[arg-type]
+        except (ValueError, TypeError):
+            return default
+
+    def _safe_int(value: object, default: int = 0) -> int:
+        try:
+            return int(value)  # type: ignore[arg-type]
+        except (ValueError, TypeError):
+            return default
+
     @app.post("/api/v1/predict", dependencies=[Depends(authenticated)])
     def predict(_: PredictRequest) -> dict[str, object]:
         try:
@@ -166,7 +178,7 @@ def create_app(*, api_key: str | None = None, runtime: Runtime | None = None, tr
             raise HTTPException(status_code=500, detail="PREDICTION_FAILED") from exc
         predictions = []
         for _, row in frame.iterrows():
-            prob = float(row.get("dynamic_score", 0) or 0)
+            prob = _safe_float(row.get("dynamic_score", 0))
             pred = {
                 "road_segment_id": str(row.road_segment_id),
                 "risk_probability": prob,
@@ -176,11 +188,11 @@ def create_app(*, api_key: str | None = None, runtime: Runtime | None = None, tr
                 "feature_values": row.get("feature_values") or {},
                 "reasons": row.get("reasons") or [],
                 "possible_plan": row.get("possible_plan") or [],
-                "uncertainty": float(row.get("uncertainty", 0) or 0),
+                "uncertainty": _safe_float(row.get("uncertainty")),
                 "warnings": row.get("warnings") or [],
-                "priority_rank": int(row.get("priority_rank", 999) or 999),
-                "longitude": float(row.get("longitude", 0) or 0),
-                "latitude": float(row.get("latitude", 0) or 0),
+                "priority_rank": _safe_int(row.get("priority_rank"), 999),
+                "longitude": _safe_float(row.get("longitude")),
+                "latitude": _safe_float(row.get("latitude")),
             }
             predictions.append(pred)
         return {
