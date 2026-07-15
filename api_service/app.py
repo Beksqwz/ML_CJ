@@ -178,7 +178,7 @@ def create_app(*, api_key: str | None = None, runtime: Runtime | None = None, tr
             raise HTTPException(status_code=500, detail="PREDICTION_FAILED") from exc
         predictions = []
         for _, row in frame.iterrows():
-            prob = _safe_float(row.get("dynamic_score", 0))
+            prob = _safe_float(row.get("score_catboost_stage19h") or row.get("dynamic_score", 0))
             pred = {
                 "road_segment_id": str(row.road_segment_id),
                 "risk_probability": prob,
