@@ -18,6 +18,8 @@
 !data/external/calendar_features_hourly.parquet
 !data/roads/
 !data/roads/astana_edges.csv
+!config/
+!config/risk_thresholds.json
 !models/
 !models/stage19h/
 !models/stage19h/catboost_candidate.cbm
