@@ -17,7 +17,9 @@ def parse_datetime(
     if pd.isna(result):
         raise InvalidDatetimeError(f"Invalid datetime_hour: {value}")
     if minimum is not None and maximum is not None and not minimum <= result <= maximum:
-        raise InvalidDatetimeError(f"datetime_hour is outside available source coverage: {result}")
+        raise InvalidDatetimeError(
+            f"datetime_hour is outside available source coverage: {result}"
+        )
     return result
 
 

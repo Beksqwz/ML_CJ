@@ -34,6 +34,46 @@ WEATHER_COLUMNS = (
     "weather_road_surface_risk_score",
     "weather_visibility_risk_score",
     "weather_severity_score",
+    # Context-only canonical snapshot fields; never added to frozen ML input.
+    "weather_snapshot",
+    "weather_origin",
+    "weather_summary_24h",
+)
+WEATHER_CONTEXT_COLUMNS = (
+    "weather_snapshot_version",
+    "weather_provider",
+    "weather_collected_at",
+    "weather_valid_from",
+    "weather_valid_until",
+    "weather_source_step_hours",
+    "weather_stale",
+    "weather_origin_prediction_datetime",
+    "weather_origin_source_before",
+    "weather_origin_source_after",
+    "weather_origin_interpolated",
+    "weather_origin_temperature",
+    "weather_origin_humidity",
+    "weather_origin_pressure",
+    "weather_origin_wind_speed",
+    "weather_origin_rain",
+    "weather_origin_visibility",
+    "weather_origin_weather_condition",
+    "weather_forecast_start",
+    "weather_forecast_end",
+    "weather_forecast_points_available",
+    "weather_expected_points",
+    "weather_forecast_complete",
+    "weather_max_weather_severity_score",
+    "weather_severe_weather_expected",
+    "weather_worst_period_start",
+    "weather_worst_period_end",
+    "weather_precipitation_expected",
+    "weather_snow_expected",
+    "weather_heavy_rain_expected",
+    "weather_minimum_visibility_m",
+    "weather_maximum_wind_speed",
+    "weather_summary_temperature_min",
+    "weather_summary_temperature_max",
 )
 REPAIR_COLUMNS = (
     "repair_active_next_24h",
@@ -77,6 +117,7 @@ BASE_COLUMNS = (
 FEATURE_COLUMNS = (
     *BASE_COLUMNS,
     *WEATHER_COLUMNS,
+    *WEATHER_CONTEXT_COLUMNS,
     "weather_available",
     "weather_fallback_used",
     *REPAIR_COLUMNS,
@@ -84,6 +125,12 @@ FEATURE_COLUMNS = (
     *EVENT_COLUMNS,
     "ticketon_provider_available",
 )
+
+_DUPLICATE_FEATURE_COLUMNS = sorted(
+    {name for name in FEATURE_COLUMNS if FEATURE_COLUMNS.count(name) > 1}
+)
+if _DUPLICATE_FEATURE_COLUMNS:
+    raise ValueError(f"duplicate_feature_columns: {_DUPLICATE_FEATURE_COLUMNS}")
 
 
 @dataclass(frozen=True)
@@ -230,7 +277,9 @@ class FutureSegmentFeatureBuilder:
     def _weather(
         self, prediction_datetime: datetime
     ) -> tuple[dict[str, Any], dict[str, Any]]:
-        values = {column: None for column in WEATHER_COLUMNS}
+        values = {
+            column: None for column in (*WEATHER_COLUMNS, *WEATHER_CONTEXT_COLUMNS)
+        }
         metadata = {"available": 0, "fallback_used": 1, "coverage": {}, "warnings": []}
         path = self.paths.weather_features_path
         if not path.exists():
@@ -247,7 +296,7 @@ class FutureSegmentFeatureBuilder:
             metadata["warnings"].append("weather_features_requested_window_missing")
             return values, metadata
         row = candidate.iloc[-1]
-        for column in WEATHER_COLUMNS:
+        for column in (*WEATHER_COLUMNS, *WEATHER_CONTEXT_COLUMNS):
             if column in row and pd.notna(row[column]):
                 values[column] = (
                     row[column].item() if hasattr(row[column], "item") else row[column]
@@ -658,6 +707,22 @@ def feature_catalog() -> list[dict[str, Any]]:
                 "spatial_scope": "city_broadcast",
                 "training_status": "requires_historical_backfill",
                 "description": "Future weather candidate; separate from frozen model.",
+            }
+        )
+    for name in WEATHER_CONTEXT_COLUMNS:
+        catalog.append(
+            {
+                "feature_name": name,
+                "provider": "openweather",
+                "group": "weather_context",
+                "dtype": "context_metadata",
+                "default_value": None,
+                "nullable": True,
+                "formula": "canonical weather snapshot provenance or 24h summary",
+                "temporal_window": "[prediction_datetime, +24h]",
+                "spatial_scope": "city_broadcast",
+                "training_status": "context_only",
+                "description": "Operational weather context; excluded from frozen ML input.",
             }
         )
     for name in ("weather_available", "weather_fallback_used"):

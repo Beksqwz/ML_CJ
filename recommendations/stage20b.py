@@ -14,9 +14,15 @@ import pandas as pd
 
 PRIORITY_ORDER = {"critical": 0, "high": 1, "medium": 2, "low": 3, "monitor_only": 4}
 REQUIRED_COLUMNS = {
-    "road_segment_id", "prediction_datetime", "dynamic_rank", "dynamic_percentile",
-    "historical_hotspot_rank", "historical_hotspot_percentile", "future_context_flags",
-    "future_context_warnings", "provider_degraded",
+    "road_segment_id",
+    "prediction_datetime",
+    "dynamic_rank",
+    "dynamic_percentile",
+    "historical_hotspot_rank",
+    "historical_hotspot_percentile",
+    "future_context_flags",
+    "future_context_warnings",
+    "provider_degraded",
 }
 STRONG_SIGNALS = {"severe_weather", "heavy_traffic", "road_repair", "major_event"}
 
@@ -89,9 +95,16 @@ def _reasons(row: pd.Series) -> tuple[list[str], set[str]]:
         "major_event": "MAJOR_EVENT",
     }
     reasons.extend(code for flag, code in mapping.items() if flag in flags)
-    if float(row.dynamic_percentile) >= 0.95 and float(row.historical_hotspot_percentile) < 0.50:
+    if (
+        float(row.dynamic_percentile) >= 0.95
+        and float(row.historical_hotspot_percentile) < 0.50
+    ):
         reasons.append("MODEL_DISAGREEMENT")
-    independent = int(float(row.dynamic_percentile) >= 0.95) + int(int(row.historical_hotspot_rank) <= 50) + len(flags & STRONG_SIGNALS)
+    independent = (
+        int(float(row.dynamic_percentile) >= 0.95)
+        + int(int(row.historical_hotspot_rank) <= 50)
+        + len(flags & STRONG_SIGNALS)
+    )
     if independent >= 3:
         reasons.append("MULTI_SIGNAL_AGREEMENT")
     if bool(row.provider_degraded):
@@ -105,7 +118,9 @@ def _priority(row: pd.Series, reasons: list[str], flags: set[str]) -> str:
     hotspot_top_20 = "HOTSPOT_TOP_20" in reasons
     hotspot_top_50 = hotspot_top_20 or "HOTSPOT_TOP_50" in reasons
     strong = bool(flags & STRONG_SIGNALS)
-    if dynamic_top_1 and ((hotspot_top_20 and strong) or "MULTI_SIGNAL_AGREEMENT" in reasons):
+    if dynamic_top_1 and (
+        (hotspot_top_20 and strong) or "MULTI_SIGNAL_AGREEMENT" in reasons
+    ):
         return "critical"
     if dynamic_top_5 or (hotspot_top_50 and strong) or strong:
         return "high"
@@ -148,18 +163,33 @@ def recommend_stage20b(frame: pd.DataFrame) -> pd.DataFrame:
         warnings = _as_list(row.future_context_warnings)
         if "PROVIDER_DEGRADED" in reasons and "provider_degraded" not in warnings:
             warnings.append("provider_degraded")
-        uncertainty = "high" if bool(row.provider_degraded) else ("medium" if "MODEL_DISAGREEMENT" in reasons else "low")
-        rows.append({
-            "operational_priority": priority,
-            "reasons": reasons,
-            "possible_plan": _plans(reasons),
-            "uncertainty": uncertainty,
-            "warnings": warnings,
-        })
+        uncertainty = (
+            "high"
+            if bool(row.provider_degraded)
+            else ("medium" if "MODEL_DISAGREEMENT" in reasons else "low")
+        )
+        rows.append(
+            {
+                "operational_priority": priority,
+                "reasons": reasons,
+                "possible_plan": _plans(reasons),
+                "uncertainty": uncertainty,
+                "warnings": warnings,
+            }
+        )
     result = pd.concat([frame.reset_index(drop=True), pd.DataFrame(rows)], axis=1)
     result = result.sort_values(
-        ["operational_priority", "dynamic_rank", "historical_hotspot_rank", "road_segment_id"],
-        key=lambda values: values.map(PRIORITY_ORDER) if values.name == "operational_priority" else values,
+        [
+            "operational_priority",
+            "dynamic_rank",
+            "historical_hotspot_rank",
+            "road_segment_id",
+        ],
+        key=lambda values: (
+            values.map(PRIORITY_ORDER)
+            if values.name == "operational_priority"
+            else values
+        ),
         kind="stable",
     ).reset_index(drop=True)
     result["priority_rank"] = range(1, len(result) + 1)

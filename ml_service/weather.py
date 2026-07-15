@@ -19,9 +19,9 @@ ASTANA = {"latitude": 51.1694, "longitude": 71.4491}
 
 def _dew_point_celsius(temperature_c: float, humidity_percent: float) -> float:
     a, b = 17.62, 243.12
-    gamma = math.log(max(humidity_percent, 0.1) / 100) + (
-        a * temperature_c
-    ) / (b + temperature_c)
+    gamma = math.log(max(humidity_percent, 0.1) / 100) + (a * temperature_c) / (
+        b + temperature_c
+    )
     return (b * gamma) / (a - gamma)
 
 
@@ -46,8 +46,10 @@ class OpenWeatherService:
         timeout_seconds: float = 10.0,
         session: requests.Session | None = None,
     ) -> None:
-        self.api_key = api_key if api_key is not None else (
-            os.getenv("OPENWEATHER_API_KEY") or _local_api_key()
+        self.api_key = (
+            api_key
+            if api_key is not None
+            else (os.getenv("OPENWEATHER_API_KEY") or _local_api_key())
         )
         self.timeout_seconds = timeout_seconds
         self.session = session or requests.Session()
@@ -68,8 +70,10 @@ class OpenWeatherService:
             response = self.session.get(
                 CURRENT_WEATHER_URL,
                 params={
-                    "lat": ASTANA["latitude"], "lon": ASTANA["longitude"],
-                    "appid": self.api_key, "units": "metric",
+                    "lat": ASTANA["latitude"],
+                    "lon": ASTANA["longitude"],
+                    "appid": self.api_key,
+                    "units": "metric",
                 },
                 timeout=self.timeout_seconds,
             )

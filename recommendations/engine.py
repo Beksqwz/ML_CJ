@@ -129,7 +129,9 @@ def recommend(
         "junction_complexity_unregulated",
         "visibility_risk",
     )
-    structural_hits = [name for name in structural_names if _truth(feature_values.get(name))]
+    structural_hits = [
+        name for name in structural_names if _truth(feature_values.get(name))
+    ]
     if (
         _number(feature_values.get("segment_accidents_total_prior"))
         < float(rules["historical_accidents_min"])

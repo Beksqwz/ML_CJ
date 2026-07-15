@@ -22,15 +22,17 @@ class HybridRiskTests(unittest.TestCase):
         )
 
     def _valid(self) -> pd.DataFrame:
-        return pd.DataFrame({
-            "road_segment_id": ["3", "2", "1"],
-            "prediction_datetime": ["2026-07-15T10:00:00+05:00"] * 3,
-            "dynamic_score": [0.2, 0.5, 1.0],
-            "dynamic_rank": [3, 2, 1],
-            "dynamic_percentile": [1 / 3, 2 / 3, 1.0],
-            "dynamic_engine_version": [ENGINE_VERSION] * 3,
-            "dynamic_engine_status": [ENGINE_STATUS] * 3,
-        })
+        return pd.DataFrame(
+            {
+                "road_segment_id": ["3", "2", "1"],
+                "prediction_datetime": ["2026-07-15T10:00:00+05:00"] * 3,
+                "dynamic_score": [0.2, 0.5, 1.0],
+                "dynamic_rank": [3, 2, 1],
+                "dynamic_percentile": [1 / 3, 2 / 3, 1.0],
+                "dynamic_engine_version": [ENGINE_VERSION] * 3,
+                "dynamic_engine_status": [ENGINE_STATUS] * 3,
+            }
+        )
 
     def test_dynamic_contract_accepts_complete_unique_ranked_output(self):
         validate_dynamic_risk(self._valid(), expected_segments=3)
@@ -50,20 +52,24 @@ class HybridRiskTests(unittest.TestCase):
     def test_missing_future_context_is_explicitly_degraded(self):
         context = _future_context(pd.Series(["1", "2", "3"]), None)
         self.assertTrue(context["provider_degraded"].all())
-        self.assertTrue(context["future_context_warnings"].str.contains("unavailable").all())
+        self.assertTrue(
+            context["future_context_warnings"].str.contains("unavailable").all()
+        )
 
     def test_future_context_maps_provider_flags_and_signals(self):
-        source = pd.DataFrame({
-            "road_segment_id": ["1", "2", "3"],
-            "weather_provider_available": [1, 0, 0],
-            "traffic_context_available": [1, 0, 0],
-            "repair_provider_available": [1, 0, 0],
-            "ticketon_provider_available": [1, 0, 0],
-            "weather_severity_score": [0.8, 0.0, 0.0],
-            "traffic_congestion_score": [0.9, 0.0, 0.0],
-            "repair_active_next_24h": [1, 0, 0],
-            "event_major_next_24h": [1, 0, 0],
-        })
+        source = pd.DataFrame(
+            {
+                "road_segment_id": ["1", "2", "3"],
+                "weather_provider_available": [1, 0, 0],
+                "traffic_context_available": [1, 0, 0],
+                "repair_provider_available": [1, 0, 0],
+                "ticketon_provider_available": [1, 0, 0],
+                "weather_severity_score": [0.8, 0.0, 0.0],
+                "traffic_congestion_score": [0.9, 0.0, 0.0],
+                "repair_active_next_24h": [1, 0, 0],
+                "event_major_next_24h": [1, 0, 0],
+            }
+        )
         context = _future_context(pd.Series(["1", "2", "3"]), source)
         self.assertFalse(context.loc[0, "provider_degraded"])
         self.assertEqual(
@@ -86,7 +92,7 @@ class HybridRiskTests(unittest.TestCase):
             "repair_context_available": [False] * 3,
             "event_context_available": [False] * 3,
             "future_context_flags": ["[]"] * 3,
-            "future_context_warnings": ["[\"provider_degraded\"]"] * 3,
+            "future_context_warnings": ['["provider_degraded"]'] * 3,
             "future_context_confidence": ["degraded"] * 3,
             "provider_degraded": [True] * 3,
         }.items():

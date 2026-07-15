@@ -18,6 +18,11 @@ from future_intelligence.aggregation import numeric, summary
 from future_intelligence.providers.weather.base import WeatherForecastProvider
 from future_intelligence.schemas import FutureRecord, ProviderMetadata, ProviderResult
 from future_intelligence.utils import api_timezone, parse_prediction_datetime
+from future_intelligence.weather_snapshot import (
+    canonical_snapshot,
+    summarize_24h,
+    select_origin_weather,
+)
 from ml_service.weather import ASTANA, OpenWeatherService
 
 
@@ -383,5 +388,17 @@ class OpenWeatherForecastProvider(WeatherForecastProvider):
             None
             if not sunset_dt
             else max(0.0, (sunset_dt - prediction_datetime).total_seconds() / 3600)
+        )
+        snapshot = canonical_snapshot(
+            rows,
+            normalized_records[0].collected_at.isoformat(),
+            str(prediction_datetime),
+        )
+        features["weather_snapshot"] = snapshot
+        features["weather_origin"] = select_origin_weather(
+            snapshot, str(prediction_datetime)
+        )
+        features["weather_summary_24h"] = summarize_24h(
+            snapshot, str(prediction_datetime)
         )
         return features

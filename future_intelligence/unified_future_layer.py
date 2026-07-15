@@ -186,6 +186,22 @@ class UnifiedFutureLayerBuilder:
             "metadata_generated_at": base["generated_at"],
         }
         unified = base.assign(**metadata)
+        # Operational severity is a separate explanation contract, always 0..1.
+        # Preserve provenance so a provider-scale issue remains diagnosable.
+        if "weather_severity_score" in unified:
+            original = pd.to_numeric(unified["weather_severity_score"], errors="coerce")
+            unified["weather_severity_original_value"] = original
+            maximum = (
+                float(original.max(skipna=True)) if original.notna().any() else 1.0
+            )
+            scale = 1 if maximum <= 1 else (5 if maximum <= 5 else 10)
+            unified["weather_severity_original_scale"] = scale
+            normalized = original / scale
+            out_of_range = normalized.notna() & ~normalized.between(0, 1)
+            unified["weather_severity_data_quality_warning"] = out_of_range.astype(
+                "int8"
+            )
+            unified["weather_severity_score"] = normalized.clip(0, 1)
         report = {
             "rows": len(unified),
             "columns": len(unified.columns),

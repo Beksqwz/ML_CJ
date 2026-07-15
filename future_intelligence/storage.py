@@ -45,6 +45,44 @@ def save_result(
         "provider": result.metadata.provider_name,
         **result.features,
     }
+    # Persist the canonical forecast once, while the segment layer receives
+    # only compact provenance/origin/summary fields.
+    snapshot = feature_row.pop("weather_snapshot", None)
+    origin = feature_row.pop("weather_origin", None) or {}
+    weather_summary = feature_row.pop("weather_summary_24h", None) or {}
+    if snapshot:
+        version = snapshot["snapshot_version"]
+        snapshot_path = (
+            output_dir / "processed" / f"openweather_snapshot_{version}.json"
+        )
+        temporary = snapshot_path.with_suffix(".tmp")
+        temporary.write_text(
+            json.dumps(to_jsonable(snapshot), ensure_ascii=False), encoding="utf-8"
+        )
+        temporary.replace(snapshot_path)
+        feature_row.update(
+            {
+                "weather_snapshot_version": version,
+                "weather_provider": snapshot.get("provider"),
+                "weather_collected_at": snapshot.get("collected_at"),
+                "weather_valid_from": snapshot.get("valid_from"),
+                "weather_valid_until": snapshot.get("valid_until"),
+                "weather_source_step_hours": snapshot.get("source_step_hours"),
+                "weather_stale": False,
+                **{
+                    f"weather_origin_{key}": value
+                    for key, value in origin.items()
+                    if key != "snapshot_version"
+                },
+                **{
+                    {
+                        "temperature_min": "weather_summary_temperature_min",
+                        "temperature_max": "weather_summary_temperature_max",
+                    }.get(key, f"weather_{key}"): value
+                    for key, value in weather_summary.items()
+                },
+            }
+        )
     feature_path = output_dir / "processed" / f"{provider}_24h_features.parquet"
     pd.DataFrame([feature_row]).to_parquet(feature_path, index=False)
     universal_path = output_dir / "processed" / "future_intelligence_features.parquet"

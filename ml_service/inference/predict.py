@@ -8,7 +8,6 @@ from __future__ import annotations
 import json
 import time
 from pathlib import Path
-import numpy as np
 import pandas as pd
 from catboost import CatBoostClassifier, Pool
 from recommendations.engine import recommend
@@ -77,7 +76,9 @@ def run(datetime_hour: str, output_dir: Path) -> dict:
                     "final_model_version": version,
                 }
             )
-        gp, jp = export(rows, h, output_dir, ROOT / "data" / "roads" / "astana_edges.csv")
+        gp, jp = export(
+            rows, h, output_dir, ROOT / "data" / "roads" / "astana_edges.csv"
+        )
         elapsed = time.perf_counter() - started
         geo = json.loads(gp.read_text(encoding="utf8"))
         ready_segments = pd.read_parquet(

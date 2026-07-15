@@ -45,3 +45,6 @@ models/stage19h/extra_trees_candidate.joblib
 
 # Local Docker build transcripts.
 api_service/*.log
+data/runtime/*.sqlite3
+data/runtime/*.sqlite3-*
+data/runtime/*.json

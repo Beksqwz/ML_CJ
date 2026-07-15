@@ -20,7 +20,9 @@ class ModelRegistry:
             if not isinstance(self.payload["models"], dict):
                 raise KeyError("models")
         except (FileNotFoundError, json.JSONDecodeError, KeyError, TypeError) as exc:
-            raise RegistryNotFoundError(f"Final model registry is unavailable or invalid: {path}") from exc
+            raise RegistryNotFoundError(
+                f"Final model registry is unavailable or invalid: {path}"
+            ) from exc
 
     def get(self, horizon: str) -> dict[str, Any]:
         try:

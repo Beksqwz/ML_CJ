@@ -9,6 +9,7 @@ import pandas as pd
 
 from future_intelligence.segment_feature_builder import (
     BuilderPaths,
+    FEATURE_COLUMNS,
     FutureSegmentFeatureBuilder,
     feature_catalog,
     validate_features,
@@ -313,6 +314,11 @@ class FutureSegmentFeatureBuilderTests(unittest.TestCase):
             all(item["training_status"] != "trainable_now" for item in catalog)
         )
         self.assertTrue(all(validation.values()))
+
+    def test_feature_schema_has_unique_weather_summary_columns(self):
+        self.assertEqual(len(FEATURE_COLUMNS), len(set(FEATURE_COLUMNS)))
+        self.assertEqual(FEATURE_COLUMNS.count("weather_summary_temperature_min"), 1)
+        self.assertEqual(FEATURE_COLUMNS.count("weather_summary_temperature_max"), 1)
 
     def test_frozen_24h_feature_hash_is_unchanged(self):
         from tests.test_future_intelligence_pipeline import _config

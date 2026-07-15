@@ -161,9 +161,18 @@ def _live_calendar(when: pd.Timestamp) -> pd.Series:
             "is_day_after_holiday": False,
             "is_rush_hour": hour in (7, 8, 9, 17, 18, 19),
             "season": {
-                12: "winter", 1: "winter", 2: "winter", 3: "spring",
-                4: "spring", 5: "spring", 6: "summer", 7: "summer",
-                8: "summer", 9: "autumn", 10: "autumn", 11: "autumn",
+                12: "winter",
+                1: "winter",
+                2: "winter",
+                3: "spring",
+                4: "spring",
+                5: "spring",
+                6: "summer",
+                7: "summer",
+                8: "summer",
+                9: "autumn",
+                10: "autumn",
+                11: "autumn",
             }[month],
             "is_school_year": month in (9, 10, 11, 12, 1, 2, 3, 4, 5),
             "is_school_summer_break": month in (6, 7, 8),
@@ -176,8 +185,10 @@ def _live_calendar(when: pd.Timestamp) -> pd.Series:
     calendar["is_school_break"] = any(
         calendar[name]
         for name in (
-            "is_school_summer_break", "is_school_winter_break",
-            "is_school_spring_break", "is_school_autumn_break",
+            "is_school_summer_break",
+            "is_school_winter_break",
+            "is_school_spring_break",
+            "is_school_autumn_break",
         )
     )
     return calendar
@@ -197,8 +208,10 @@ def _live_weather(weather_override: dict) -> pd.Series:
         any(
             weather[name]
             for name in (
-                "weather_risk_precip_now", "weather_risk_snow_now",
-                "weather_risk_freezing_now", "weather_risk_high_wind_now",
+                "weather_risk_precip_now",
+                "weather_risk_snow_now",
+                "weather_risk_freezing_now",
+                "weather_risk_high_wind_now",
             )
         )
     )
@@ -210,6 +223,7 @@ def build_features(
     horizon: str,
     *,
     weather_override: dict | None = None,
+    strict_live_weather: bool = False,
 ) -> tuple[pd.DataFrame, dict]:
     """Return ordered model features and segment metadata available at the requested hour."""
     when = pd.Timestamp(datetime_hour).floor("h")
@@ -245,8 +259,8 @@ def build_features(
     )
     selected_calendar = cal.loc[cal.datetime_hour.eq(when)]
     if selected_calendar.empty:
-        if weather_override is None:
-            raise IndexError(f"No archived calendar row for {when}")
+        # Live inference is deliberately independent from the finite archived
+        # calendar table.  Historical backtests still select their archived row.
         c = _live_calendar(when)
     else:
         c = selected_calendar.iloc[0]
@@ -277,7 +291,15 @@ def build_features(
             (when.month == 12 and when.day >= 25) or (when.month == 1 and when.day <= 7)
         )
     if weather_override is None:
-        w = _weather_enriched().loc[lambda x: x.datetime_hour.eq(when)].iloc[0]
+        archived_weather = _weather_enriched().loc[lambda x: x.datetime_hour.eq(when)]
+        if archived_weather.empty:
+            if strict_live_weather:
+                raise ValueError(f"LIVE_WEATHER_UNAVAILABLE:{when}")
+            # Missing values are intentional: CatBoost and the frozen HGB
+            # preprocessor support the training-time missing-value fallback.
+            w = pd.Series(dtype="float64")
+        else:
+            w = archived_weather.iloc[0]
     else:
         w = _live_weather(weather_override)
     weather_map = {
@@ -292,7 +314,7 @@ def build_features(
         "weather_wind_gusts_10m": "wind_gusts_10m",
     }
     for out, source in weather_map.items():
-        data[out] = w[source]
+        data[out] = w.get(source, np.nan)
     for f in features:
         if f.startswith("weather_") and f in w.index:
             data[f] = w[f]
@@ -344,14 +366,17 @@ def build_features(
     if missing:
         raise ValueError(f"Feature builder missing: {missing}")
     entirely_missing = data[features].isna().all(axis=0)
+    allow_live_weather_missing = weather_override is not None or selected_calendar.empty
     unsupported_missing = [
         feature
         for feature in features
         if entirely_missing[feature]
-        and not (weather_override is not None and feature.startswith("weather_"))
+        and not (allow_live_weather_missing and feature.startswith("weather_"))
     ]
     if unsupported_missing:
-        raise ValueError(f"A required feature is entirely missing: {unsupported_missing}")
+        raise ValueError(
+            f"A required feature is entirely missing: {unsupported_missing}"
+        )
     return data, {
         "datetime_hour": str(when),
         "segments": len(data),

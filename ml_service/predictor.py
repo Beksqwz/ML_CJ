@@ -36,8 +36,7 @@ class AccidentRiskPredictor:
         try:
             self.thresholds = load_risk_thresholds()
             self.feature_configs = {
-                horizon: _config(horizon)
-                for horizon in self.registry.info()["models"]
+                horizon: _config(horizon) for horizon in self.registry.info()["models"]
             }
             calendar = pd.read_parquet(
                 ROOT / "data" / "external" / "calendar_features_hourly.parquet",
@@ -55,12 +54,20 @@ class AccidentRiskPredictor:
                 pd.Timestamp(calendar.datetime_hour.max()),
                 pd.Timestamp(weather.datetime_hour.max()),
             )
-        except (FileNotFoundError, json.JSONDecodeError, KeyError, IndexError, TypeError) as exc:
+        except (
+            FileNotFoundError,
+            json.JSONDecodeError,
+            KeyError,
+            IndexError,
+            TypeError,
+        ) as exc:
             raise ConfigNotFoundError(
                 "Required feature, calendar, weather, or threshold configuration is unavailable."
             ) from exc
         self.models: dict[str, CatBoostClassifier] = {}
-        self._cache: dict[tuple[str, str, bool], tuple[list[dict[str, Any]], pd.DataFrame]] = {}
+        self._cache: dict[
+            tuple[str, str, bool], tuple[list[dict[str, Any]], pd.DataFrame]
+        ] = {}
         self._geometry = _geometry_map(ROOT / "data" / "roads" / "astana_edges.csv")
         for horizon in self.registry.info()["models"]:
             entry = self.registry.get(horizon)
@@ -91,7 +98,13 @@ class AccidentRiskPredictor:
         entry = self.registry.get(horizon)
         try:
             data, _ = build_features(when, horizon, weather_override=weather_override)
-        except (FileNotFoundError, json.JSONDecodeError, KeyError, IndexError, TypeError) as exc:
+        except (
+            FileNotFoundError,
+            json.JSONDecodeError,
+            KeyError,
+            IndexError,
+            TypeError,
+        ) as exc:
             raise ConfigNotFoundError(
                 "Feature construction configuration is unavailable for this prediction."
             ) from exc
