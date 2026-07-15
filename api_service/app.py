@@ -22,13 +22,13 @@ try:
     from ml_service import AccidentRiskPredictor
     _predictor = AccidentRiskPredictor()
     import threading
-        def _warm():
-            try:
-                at = os.getenv("ML_PREDICTION_DATETIME", datetime.now(UTC).isoformat())
-                if "+" in at:
-                    at = at[:at.rindex("+")]
-                elif at.endswith("Z"):
-                    at = at[:-1]
+    def _warm():
+        try:
+            at = os.getenv("ML_PREDICTION_DATETIME", datetime.now(UTC).isoformat())
+            if "+" in at:
+                at = at[:at.rindex("+")]
+            elif at.endswith("Z"):
+                at = at[:-1]
             _predictor.predict_city(at, "1h")
         except Exception:
             pass
