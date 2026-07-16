@@ -551,7 +551,6 @@ def load_valid_future_context(
     requested = pd.Timestamp(prediction_datetime)
     if requested.tzinfo is None:
         requested = requested.tz_localize(ALMATY)
-    requested = requested.floor("h")
     starts = pd.to_datetime(source["forecast_window_start"], utc=True)
     ends = pd.to_datetime(source["forecast_window_end"], utc=True)
     selected = source.loc[
