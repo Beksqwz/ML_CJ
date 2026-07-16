@@ -35,7 +35,7 @@ previous responses.
 `road_segment_ids` is required, accepts at most 6,000 non-blank IDs, and is
 deduplicated. The service still calculates the city prediction once, then
 returns only the requested known segments. The response contains
-`contractVersion: "1"`, `modelVersionId`, `modelHorizon: "24h"`, `generatedAt`,
+`contractVersion: "2"`, `modelVersionId`, `modelHorizon: "24h"`, `generatedAt`,
 and `predictions`.
 
 Each prediction uses `risk_score` for the Stage19I ranking score. It is not an
@@ -43,3 +43,10 @@ accident probability. `operational_priority` is mapped to the backend enum
 `LOW`, `MEDIUM`, `HIGH`, or `CRITICAL`; `monitor_only` maps to `LOW`.
 Uncalibrated uncertainty labels are emitted as `null`, and `confidence` is
 always `null` until ML provides a documented confidence metric.
+
+Each prediction also contains `future_context`. It holds multilingual, display-ready
+weather, traffic, repair and event signals for the next 24 hours, their provider
+availability and warnings. This is operational context: it must be displayed in a
+separate UI section and does **not** change the frozen ML score or SHAP explanation.
+Factors additionally retain a multilingual `display_name`; clients must display it
+instead of the technical `feature` key.

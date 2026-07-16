@@ -90,6 +90,13 @@ REPAIR_COLUMNS = (
     "repair_open_end_count_next_24h",
     "repair_hours_until_nearest_start",
 )
+REPAIR_CONTEXT_COLUMNS = (
+    "repair_source_id",
+    "repair_title",
+    "repair_road_name",
+    "repair_start",
+    "repair_end",
+)
 EVENT_COLUMNS = (
     "event_count_next_24h",
     "event_count_500m_next_24h",
@@ -106,6 +113,13 @@ EVENT_COLUMNS = (
     "event_post_event_outflow_risk",
     "event_match_confidence_max",
 )
+EVENT_CONTEXT_COLUMNS = (
+    "event_source_id",
+    "event_name",
+    "event_venue",
+    "event_start",
+    "event_end",
+)
 BASE_COLUMNS = (
     "road_segment_id",
     "prediction_datetime",
@@ -121,8 +135,10 @@ FEATURE_COLUMNS = (
     "weather_available",
     "weather_fallback_used",
     *REPAIR_COLUMNS,
+    *REPAIR_CONTEXT_COLUMNS,
     "repair_provider_available",
     *EVENT_COLUMNS,
+    *EVENT_CONTEXT_COLUMNS,
     "ticketon_provider_available",
 )
 
@@ -360,6 +376,7 @@ class FutureSegmentFeatureBuilder:
     @staticmethod
     def _zero_repair() -> dict[str, Any]:
         values = {column: 0 for column in REPAIR_COLUMNS}
+        values.update({column: None for column in REPAIR_CONTEXT_COLUMNS})
         values["repair_distance_to_nearest_m"] = None
         values["repair_hours_until_nearest_start"] = None
         return values
@@ -367,6 +384,7 @@ class FutureSegmentFeatureBuilder:
     @staticmethod
     def _zero_event() -> dict[str, Any]:
         values = {column: 0 for column in EVENT_COLUMNS}
+        values.update({column: None for column in EVENT_CONTEXT_COLUMNS})
         values["event_distance_to_nearest_m"] = None
         values["event_hours_until_nearest_start"] = None
         return values
@@ -377,6 +395,15 @@ class FutureSegmentFeatureBuilder:
         output: dict[str, dict[str, Any]] = {}
         for segment_id, group in rows.groupby("road_segment_id"):
             events = group.to_dict("records")
+            primary = min(
+                events,
+                key=lambda item: (
+                    float(item["distance_m"])
+                    if pd.notna(item["distance_m"])
+                    else float("inf"),
+                    str(item["source_item_id"]),
+                ),
+            )
             unique_ids = {str(event["source_item_id"]) for event in events}
             restrictions = [
                 str(event["restriction_type"] or "unknown") for event in events
@@ -442,6 +469,11 @@ class FutureSegmentFeatureBuilder:
                 )
                 if starts
                 else None,
+                "repair_source_id": str(primary["source_item_id"]),
+                "repair_title": primary.get("title"),
+                "repair_road_name": primary.get("road_name"),
+                "repair_start": primary.get("valid_from"),
+                "repair_end": primary.get("valid_to"),
             }
         return output
 
@@ -453,6 +485,15 @@ class FutureSegmentFeatureBuilder:
             events = group.to_dict("records")
             unique = {str(event["source_item_id"]): event for event in events}
             events = list(unique.values())
+            primary = min(
+                events,
+                key=lambda item: (
+                    float(item["distance_m"])
+                    if pd.notna(item["distance_m"])
+                    else float("inf"),
+                    str(item["source_item_id"]),
+                ),
+            )
             distances = [
                 float(event["distance_m"])
                 for event in events
@@ -505,6 +546,11 @@ class FutureSegmentFeatureBuilder:
                 "event_match_confidence_max": max(
                     float(event["match_confidence"]) for event in events
                 ),
+                "event_source_id": str(primary["source_item_id"]),
+                "event_name": primary.get("name"),
+                "event_venue": primary.get("venue"),
+                "event_start": primary.get("valid_from"),
+                "event_end": primary.get("valid_to"),
             }
         return output
 
@@ -550,6 +596,8 @@ class FutureSegmentFeatureBuilder:
                         or payload.get("restriction_type"),
                         "event_type": event.get("event_type"),
                         "severity": event.get("severity"),
+                        "title": event.get("title") or payload.get("title"),
+                        "road_name": event.get("road_name"),
                         "open_end": open_end,
                     }
                 )
@@ -576,6 +624,7 @@ class FutureSegmentFeatureBuilder:
                             "event_intensity_score", 0
                         ),
                         "venue": payload.get("venue"),
+                        "name": event.get("name") or payload.get("name"),
                     }
                 )
 
@@ -759,6 +808,22 @@ def feature_catalog() -> list[dict[str, Any]]:
                 "description": "Future repair/closure context only.",
             }
         )
+    for name in REPAIR_CONTEXT_COLUMNS:
+        catalog.append(
+            {
+                "feature_name": name,
+                "provider": "gov_kz_repairs",
+                "group": "repair_context",
+                "dtype": "context_metadata",
+                "default_value": None,
+                "nullable": True,
+                "formula": "nearest matched repair event overlapping the 24h window",
+                "temporal_window": "[prediction_datetime, +24h)",
+                "spatial_scope": "matched_segment",
+                "training_status": "context_only",
+                "description": "Display metadata for an operational repair plan.",
+            }
+        )
     for name in EVENT_COLUMNS + ("ticketon_provider_available",):
         catalog.append(
             {
@@ -775,6 +840,22 @@ def feature_catalog() -> list[dict[str, Any]]:
                 "spatial_scope": "matched_segment",
                 "training_status": "requires_historical_backfill",
                 "description": "Future event context only; not attendance.",
+            }
+        )
+    for name in EVENT_CONTEXT_COLUMNS:
+        catalog.append(
+            {
+                "feature_name": name,
+                "provider": "ticketon_events",
+                "group": "event_context",
+                "dtype": "context_metadata",
+                "default_value": None,
+                "nullable": True,
+                "formula": "nearest matched Ticketon event overlapping the 24h window",
+                "temporal_window": "[prediction_datetime, +24h)",
+                "spatial_scope": "matched_segment",
+                "training_status": "context_only",
+                "description": "Display metadata for an operational event plan.",
             }
         )
     return catalog

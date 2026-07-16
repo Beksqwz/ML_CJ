@@ -99,6 +99,22 @@ def execute_provider(provider: str) -> int:
     return subprocess.run(command, cwd=ROOT, capture_output=True, text=True).returncode
 
 
+def synchronize_api() -> dict[str, object]:
+    """Ask the API to persist a new batch and operational plan after refresh."""
+
+    if not os.getenv("FUTURE_SYNC_API_URL") or not os.getenv("ML_SERVICE_API_KEY"):
+        return {"status": "disabled", "reason": "sync_configuration_missing"}
+    command = [sys.executable, str(ROOT / "scripts" / "sync_future_layer_to_api.py")]
+    result = subprocess.run(command, cwd=ROOT, capture_output=True, text=True)
+    try:
+        payload = json.loads(result.stdout)
+    except json.JSONDecodeError:
+        payload = {"status": "degraded", "error": "sync_response_invalid"}
+    if result.returncode:
+        payload["status"] = "degraded"
+    return payload
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--once", action="store_true")
@@ -146,11 +162,17 @@ def main() -> int:
             ]
             for name in names:
                 due[name] = now + 60 * int(os.getenv(INTERVALS[name], DEFAULTS[name]))
+            api_sync = (
+                synchronize_api()
+                if any(outcome["status"] == "ok" for outcome in outcomes)
+                else {"status": "skipped", "reason": "no_provider_refreshed"}
+            )
             atomic_json(
                 args.state,
                 {
                     "updated_at": datetime.now(timezone.utc).isoformat(),
                     "providers": outcomes,
+                    "api_sync": api_sync,
                 },
             )
         if args.once:

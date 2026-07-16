@@ -28,9 +28,7 @@ def main():
     p.add_argument("--output-dir", default="data/audit/stage19i_simple/smoke")
     p.add_argument("--overwrite", action="store_true")
     a = p.parse_args()
-    cfg = json.loads(
-        (ROOT / "models/stage19i_simple/weighted_ensemble_config.json").read_text()
-    )
+    cfg = json.loads((ROOT / "models/final/ensemble_config.json").read_text())
     w = cfg["weights"]
     catboost_weight = float(w["score_catboost_stage19h"])
     hgb_weight = float(w["score_hist_gradient_boosting"])
@@ -52,13 +50,13 @@ def main():
         raw[["road_segment_id", "prediction_datetime"]], ctx.counts
     )[["road_segment_id", "prediction_datetime", "target_24h"]]
     cat = CatBoostClassifier()
-    cat.load_model(ROOT / "models/stage19h/catboost_candidate.cbm")
+    cat.load_model(ROOT / "models/final/stage19i_catboost.cbm")
     cf = raw[f].copy()
     for col in c["categorical_features"]:
         cf[col] = cf[col].astype("string").fillna("__MISSING__").astype(str)
     cs = cat.predict_proba(cf)[:, 1]
-    pre = joblib.load(ROOT / "models/stage19h/train_only_preprocessor_v2.joblib")
-    hgb = joblib.load(ROOT / "models/stage19h/hist_gradient_boosting_candidate.joblib")
+    pre = joblib.load(ROOT / "models/final/stage19i_preprocessor.joblib")
+    hgb = joblib.load(ROOT / "models/final/stage19i_hist_gradient_boosting.joblib")
     hs = hgb.predict_proba(pre.transform(raw))[:, 1]
     o = raw[["road_segment_id", "prediction_datetime"]].merge(
         targets, on=["road_segment_id", "prediction_datetime"]

@@ -1,0 +1,39 @@
+services:
+  ml-api:
+    build:
+      context: .
+      dockerfile: api_service/Dockerfile
+    env_file: .env
+    environment:
+      PORT: "7860"
+      ML_RUNTIME_DB_PATH: data/runtime/ml_service.sqlite3
+    ports:
+      - "7860:7860"
+    volumes:
+      # Future context is shared read-only by convention: only the worker writes it.
+      - ./data/future_intelligence:/app/data/future_intelligence
+      - ./data/runtime:/app/data/runtime
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:7860/health')\""]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  future-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.future-worker
+    env_file: .env
+    environment:
+      FUTURE_SYNC_API_URL: http://ml-api:7860
+      ML_RUNTIME_DB_PATH: data/runtime/ml_service.sqlite3
+    depends_on:
+      ml-api:
+        condition: service_healthy
+    volumes:
+      - ./data/future_intelligence:/app/data/future_intelligence
+      - ./data/runtime:/app/data/runtime
+      - ./reports/stage18b:/app/reports/stage18b
+    restart: unless-stopped

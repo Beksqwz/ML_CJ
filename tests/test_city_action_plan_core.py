@@ -47,6 +47,9 @@ def rows():
         historical_hotspot_percentile=0.7,
         road_name="Main",
         reasons=["MAJOR_EVENT"],
+        event_source_id="event-1",
+        event_name="Concert",
+        event_venue="Arena",
         event_start="e1",
         event_end="e2",
     )
@@ -57,6 +60,9 @@ def rows():
         historical_hotspot_percentile=0.6,
         road_ref="R1",
         reasons=["ROAD_REPAIR"],
+        repair_source_id="repair-1",
+        repair_title="Lane closure",
+        repair_road_name="Repair road",
         repair_start="r1",
         repair_end="r2",
     )
@@ -106,12 +112,16 @@ class Core(unittest.TestCase):
                 "CONGESTION_MONITORING",
             }.issubset(codes)
         )
+        self.assertNotIn("ROAD_SURFACE_CHECK", codes)
+        warning = self.plan(max_actions=50)["citywide_warnings"][0]
+        self.assertEqual(warning["warning_code"], "SEVERE_WEATHER")
+        self.assertEqual(warning["recommended_period"]["basis"], "weather_period")
 
     def test_location_fallback_order(self):
         p = self.plan(max_actions=50)
         names = {a["location"]["display_name"] for a in p["actions"]}
         self.assertIn("Main", names)
-        self.assertIn("R1", names)
+        self.assertIn("Repair road", names)
         self.assertIn("участок дороги", names)
 
     def test_time_basis_selection(self):
@@ -121,9 +131,35 @@ class Core(unittest.TestCase):
         }
         self.assertEqual(by["EVENT_TRAFFIC_CONTROL"]["basis"], "event_period")
         self.assertEqual(by["REPAIR_ZONE_SAFETY_REVIEW"]["basis"], "repair_period")
-        self.assertEqual(by["ROAD_SURFACE_CHECK"]["basis"], "weather_period")
+        self.assertEqual(
+            self.plan(max_actions=50)["citywide_warnings"][0]["recommended_period"][
+                "basis"
+            ],
+            "weather_period",
+        )
         self.assertEqual(by["CONGESTION_MONITORING"]["basis"], "traffic_period")
         self.assertEqual(by["INCREASE_PATROL"]["basis"], "prediction_horizon")
+
+    def test_event_and_repair_actions_keep_operational_context(self):
+        actions = self.plan(max_actions=50)["actions"]
+        event = next(
+            item for item in actions if item["action_code"] == "EVENT_TRAFFIC_CONTROL"
+        )
+        repair = next(
+            item
+            for item in actions
+            if item["action_code"] == "REPAIR_ZONE_SAFETY_REVIEW"
+        )
+        self.assertEqual(
+            (event["location"]["display_name"], event["context"]["name"]),
+            ("Arena", "Concert"),
+        )
+        self.assertEqual(event["recommended_period"]["basis"], "event_period")
+        self.assertEqual(
+            (repair["location"]["display_name"], repair["context"]["title"]),
+            ("Repair road", "Lane closure"),
+        )
+        self.assertEqual(repair["recommended_period"]["basis"], "repair_period")
 
     def test_priority_formula_top_n_and_determinism(self):
         p = self.plan(max_actions=1)

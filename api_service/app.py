@@ -133,16 +133,116 @@ def _public_context(row: dict[str, object]) -> dict[str, object]:
         "repairs": {
             "available": row.get("repair_context_available"),
             "active": row.get("repair_active"),
-            "validFrom": row.get("repair_valid_from"),
-            "validUntil": row.get("repair_valid_until"),
+            "title": row.get("repair_title"),
+            "roadName": row.get("repair_road_name"),
+            "sourceId": row.get("repair_source_id"),
+            "validFrom": row.get("repair_start") or row.get("repair_valid_from"),
+            "validUntil": row.get("repair_end") or row.get("repair_valid_until"),
         },
         "events": {
             "available": row.get("event_context_available"),
             "major": row.get("event_major"),
             "name": row.get("event_name"),
             "venue": row.get("event_venue"),
+            "sourceId": row.get("event_source_id"),
             "start": row.get("event_start"),
             "end": row.get("event_end"),
+        },
+    }
+
+
+_FUTURE_SIGNAL_COPY = {
+    "severe_weather": {
+        "code": "SEVERE_WEATHER",
+        "source": "openweather",
+        "title": {
+            "ru": "Неблагоприятная погода",
+            "kz": "Қолайсыз ауа райы",
+            "en": "Adverse weather",
+        },
+        "description": {
+            "ru": "В ближайшие 24 часа ожидаются погодные условия, ухудшающие безопасность движения.",
+            "kz": "Келесі 24 сағатта жол қауіпсіздігін төмендететін ауа райы күтіледі.",
+            "en": "Weather conditions that can reduce road safety are expected in the next 24 hours.",
+        },
+    },
+    "heavy_traffic": {
+        "code": "HEAVY_TRAFFIC",
+        "source": "tomtom",
+        "title": {
+            "ru": "Высокая загруженность",
+            "kz": "Жол кептелісі",
+            "en": "Heavy traffic",
+        },
+        "description": {
+            "ru": "На участке зафиксирована высокая загруженность движения.",
+            "kz": "Учаскеде көлік қозғалысының жоғары жүктемесі тіркелді.",
+            "en": "High traffic congestion was observed on this segment.",
+        },
+    },
+    "road_repair": {
+        "code": "ROAD_REPAIR",
+        "source": "gov_kz_repairs",
+        "title": {"ru": "Дорожные работы", "kz": "Жол жұмыстары", "en": "Road works"},
+        "description": {
+            "ru": "Вблизи участка есть информация о дорожных работах или ограничениях.",
+            "kz": "Учаске маңында жол жұмыстары немесе шектеулер туралы ақпарат бар.",
+            "en": "Road works or restrictions have been reported near this segment.",
+        },
+    },
+    "major_event": {
+        "code": "MAJOR_EVENT",
+        "source": "ticketon",
+        "title": {
+            "ru": "Крупное мероприятие",
+            "kz": "Ірі іс-шара",
+            "en": "Major event",
+        },
+        "description": {
+            "ru": "В ближайшие 24 часа мероприятие может увеличить транспортный и пешеходный поток.",
+            "kz": "Келесі 24 сағатта іс-шара көлік пен жаяу жүргінші ағынын арттыруы мүмкін.",
+            "en": "An event may increase traffic and pedestrian flow in the next 24 hours.",
+        },
+    },
+}
+
+
+def _json_list(value: object) -> list[str]:
+    """Read persisted JSON/list fields without leaking invalid internal values."""
+
+    if isinstance(value, list):
+        return [str(item) for item in value]
+    if isinstance(value, str):
+        try:
+            decoded = json.loads(value)
+        except json.JSONDecodeError:
+            return []
+        return [str(item) for item in decoded] if isinstance(decoded, list) else []
+    return []
+
+
+def _future_context_contract(row: dict[str, object]) -> dict[str, object]:
+    """Build UI-ready, context-only Future Layer data for backend consumers."""
+
+    flags = _json_list(row.get("future_context_flags"))
+    warnings = _json_list(row.get("future_context_warnings"))
+    signals = []
+    for flag in flags:
+        copy = _FUTURE_SIGNAL_COPY.get(flag)
+        if copy is not None:
+            signals.append(copy | {"flag": flag})
+    degraded = bool(row.get("provider_degraded"))
+    return {
+        "status": "degraded" if degraded else "available",
+        "confidence": row.get("future_context_confidence")
+        or ("degraded" if degraded else "available"),
+        "signals": signals,
+        "warnings": warnings,
+        "providers": _public_context(row),
+        "disclaimer": {
+            "ru": "Оперативный контекст не изменяет оценку зафиксированной ML-модели.",
+            "kz": "Операциялық контекст бекітілген ML-модель бағасын өзгертпейді.",
+            "en": "Operational context does not change the frozen ML model score.",
         },
     }
 
@@ -239,6 +339,8 @@ def _backend_factor(value: object) -> dict[str, object]:
         "feature": str(factor.get("feature") or ""),
         "shap_value": factor.get("shap_value"),
     }
+    if isinstance(factor.get("display_name"), dict):
+        result["display_name"] = factor["display_name"]
     if "feature_value" in factor:
         result["value"] = factor["feature_value"]
     if "text" in factor and factor["text"] is not None:
@@ -246,7 +348,9 @@ def _backend_factor(value: object) -> dict[str, object]:
     return result
 
 
-def _backend_sync_prediction(row: dict[str, object]) -> dict[str, object]:
+def _backend_sync_prediction(
+    row: dict[str, object], *, max_explanation_factors: int
+) -> dict[str, object]:
     """Build the versioned DTO consumed by the RRAI backend.
 
     ``dynamic_score`` is deliberately exported as ``risk_score``: it is a
@@ -274,14 +378,19 @@ def _backend_sync_prediction(row: dict[str, object]) -> dict[str, object]:
         "uncertainty": calibrated_uncertainty,
         "top_positive_factors": [
             _backend_factor(factor)
-            for factor in explanation.get("top_positive_factors", [])
+            for factor in explanation.get("top_positive_factors", [])[
+                :max_explanation_factors
+            ]
             if isinstance(factor, dict)
         ],
         "top_negative_factors": [
             _backend_factor(factor)
-            for factor in explanation.get("top_negative_factors", [])
+            for factor in explanation.get("top_negative_factors", [])[
+                :max_explanation_factors
+            ]
             if isinstance(factor, dict)
         ],
+        "future_context": _future_context_contract(row),
         "reasons": row.get("reasons") or [],
         "possible_plan": row.get("possible_plan") or [],
         "warnings": row.get("warnings") or [],
@@ -551,16 +660,20 @@ def create_app(
                 if str(row.get("road_segment_id") or "") in requested_ids
             ]
             predictions = [
-                _backend_sync_prediction(row)
-                for row in _ordered_public_predictions(
+                _backend_sync_prediction(
+                    row, max_explanation_factors=request.max_explanation_factors
+                )
+                for row in sorted(
                     selected_rows,
-                    include_explanations=True,
-                    max_explanation_factors=request.max_explanation_factors,
+                    key=lambda row: (
+                        int(row.get("dynamic_rank") or 10**9),
+                        str(row.get("road_segment_id") or ""),
+                    ),
                 )
             ]
             response.update(
                 {
-                    "contractVersion": "1",
+                    "contractVersion": "2",
                     "modelHorizon": "24h",
                     "generatedAt": response["completedAt"],
                     "predictionsReturned": len(predictions),

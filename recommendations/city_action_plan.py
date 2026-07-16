@@ -17,7 +17,6 @@ CATALOG = {
     "DYNAMIC_TOP_5PCT": ("INCREASE_PATROL", "SPEED_MONITORING"),
     "HOTSPOT_TOP_20": ("ENGINEERING_INSPECTION",),
     "HOTSPOT_TOP_50": ("ENGINEERING_INSPECTION",),
-    "SEVERE_WEATHER": ("SPEED_MONITORING", "ROAD_SURFACE_CHECK", "DRIVER_WARNING"),
     "ROAD_REPAIR": ("REPAIR_ZONE_SAFETY_REVIEW",),
     "MAJOR_EVENT": ("EVENT_TRAFFIC_CONTROL", "PEDESTRIAN_FLOW_MONITORING"),
     "HEAVY_TRAFFIC": ("CONGESTION_MONITORING",),
@@ -26,6 +25,85 @@ WEATHER = {"SPEED_MONITORING", "ROAD_SURFACE_CHECK", "DRIVER_WARNING"}
 EVENT = {"EVENT_TRAFFIC_CONTROL", "PEDESTRIAN_FLOW_MONITORING"}
 REPAIR = {"REPAIR_ZONE_SAFETY_REVIEW"}
 TRAFFIC = {"CONGESTION_MONITORING"}
+
+
+def _citywide_weather_warnings(rows, prediction_datetime):
+    """Return a plan-level warning only when severe weather is present."""
+
+    affected = [row for row in rows if "SEVERE_WEATHER" in set(row.get("reasons", []))]
+    if not affected:
+        return []
+    starts = [row.get("weather_worst_period_start") for row in affected]
+    ends = [row.get("weather_worst_period_end") for row in affected]
+    start = next((value for value in starts if value), prediction_datetime)
+    end = next((value for value in ends if value), prediction_datetime)
+    return [
+        {
+            "warning_code": "SEVERE_WEATHER",
+            "affected_segments": len({str(row["road_segment_id"]) for row in affected}),
+            "recommended_period": {
+                "start": start,
+                "end": end,
+                "basis": "weather_period",
+            },
+            "text": {
+                "ru": "Неблагоприятные погодные условия: усилить патрулирование и контроль безопасности движения в указанный период.",
+                "kz": "Қолайсыз ауа райы: көрсетілген кезеңде патрульдеуді және жол қауіпсіздігін бақылауды күшейту.",
+                "en": "Adverse weather: strengthen patrol coverage and road-safety monitoring during the stated period.",
+            },
+        }
+    ]
+
+
+def _group_key(code, row):
+    """Keep all segments affected by one event or repair in one plan action."""
+
+    if code in EVENT and row.get("event_source_id"):
+        return (
+            code,
+            "event",
+            str(row["event_source_id"]),
+            "",
+        )
+    if code in REPAIR and row.get("repair_source_id"):
+        return (
+            code,
+            "repair",
+            str(row["repair_source_id"]),
+            "",
+        )
+    label = row.get("road_name") or row.get("road_ref") or row["road_segment_id"]
+    return (code, "road", str(label).strip().casefold(), "")
+
+
+def _display_label(code, row):
+    if code in EVENT:
+        return row.get("event_venue") or row.get("event_name") or "event zone"
+    if code in REPAIR:
+        return row.get("repair_road_name") or row.get("repair_title") or "repair zone"
+    return row.get("road_name") or row.get("road_ref") or "участок дороги"
+
+
+def _action_context(code, row):
+    if code in EVENT:
+        return {
+            "type": "event",
+            "source_id": row.get("event_source_id"),
+            "name": row.get("event_name"),
+            "venue": row.get("event_venue"),
+            "start": row.get("event_start"),
+            "end": row.get("event_end"),
+        }
+    if code in REPAIR:
+        return {
+            "type": "repair",
+            "source_id": row.get("repair_source_id"),
+            "title": row.get("repair_title"),
+            "road_name": row.get("repair_road_name"),
+            "start": row.get("repair_start"),
+            "end": row.get("repair_end"),
+        }
+    return None
 
 
 def generate_city_action_plan(
@@ -40,6 +118,7 @@ def generate_city_action_plan(
     rows = list(
         segments.to_dict("records") if hasattr(segments, "to_dict") else segments
     )
+    citywide_warnings = _citywide_weather_warnings(rows, prediction_datetime)
     minv = PRIORITY[minimum_priority]
     candidates = []
     for r in rows:
@@ -68,13 +147,13 @@ def generate_city_action_plan(
             candidates.append((code, r, reasons))
     groups = defaultdict(list)
     for code, r, reasons in candidates:
-        label = r.get("road_name") or r.get("road_ref") or r["road_segment_id"]
-        groups[(code, str(label).strip().casefold())].append((r, reasons))
+        groups[_group_key(code, r)].append((r, reasons))
     actions = []
-    for (code, label), items in groups.items():
+    for (code, _, _, _), items in groups.items():
         rs = [x[0] for x in items]
         reasons = sorted(set().union(*(x[1] for x in items)))
         best = max(rs, key=lambda x: float(x.get("dynamic_percentile", 0)))
+        label = str(_display_label(code, best)).strip()
         n = len(rs)
         context = max(
             [float(x.get("weather_severity_score", 0) or 0) for x in rs] + [0]
@@ -105,6 +184,7 @@ def generate_city_action_plan(
             "segment_ids": sorted(str(x["road_segment_id"]) for x in rs),
             "center": {"lon": best.get("lon"), "lat": best.get("lat")},
         }
+        loc["display_name"] = label
         aid = hashlib.sha1(
             (batch_id + code + label + "|".join(loc["segment_ids"])).encode()
         ).hexdigest()[:16]
@@ -133,6 +213,7 @@ def generate_city_action_plan(
                     "supporting_segments": n,
                 },
                 "text": _text(code, loc["display_name"], start, end),
+                "context": _action_context(code, best),
                 "warnings": sorted(set(sum((x.get("warnings", []) for x in rs), []))),
                 "requires_human_confirmation": True,
             }
@@ -153,8 +234,10 @@ def generate_city_action_plan(
             "candidate_segments": len({r[1]["road_segment_id"] for r in candidates}),
             "groups_created": len(groups),
             "actions_returned": len(actions),
+            "citywide_warnings": len(citywide_warnings),
         },
         "actions": actions,
+        "citywide_warnings": citywide_warnings,
     }
 
 

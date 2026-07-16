@@ -7,7 +7,7 @@ from typing import Any
 from .exceptions import InvalidHorizonError, ModelNotFoundError, RegistryNotFoundError
 
 ROOT = Path(__file__).resolve().parents[1]
-REGISTRY_PATH = ROOT / "models" / "final" / "model_registry.json"
+REGISTRY_PATH = ROOT / "models" / "legacy_registry" / "model_registry.json"
 
 
 class ModelRegistry:

@@ -40,6 +40,20 @@ def rebuild_unified(runner: Callable = subprocess.run) -> int:
     return runner(command, cwd=ROOT, text=True, capture_output=True).returncode
 
 
+def rebuild_segment_features(
+    prediction_datetime: str, runner: Callable = subprocess.run
+) -> int:
+    """Project freshly collected event/repair records onto road segments first."""
+
+    command = [
+        sys.executable,
+        str(ROOT / "scripts" / "build_future_segment_features_24h.py"),
+        "--prediction-datetime",
+        prediction_datetime,
+    ]
+    return runner(command, cwd=ROOT, text=True, capture_output=True).returncode
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--providers", default=",".join(KNOWN_PROVIDERS))
@@ -81,7 +95,8 @@ def main() -> int:
         provider: collect_provider(provider, args.prediction_datetime)
         for provider in names
     }
-    unified = rebuild_unified()
+    segment_features = rebuild_segment_features(args.prediction_datetime)
+    unified = rebuild_unified() if segment_features == 0 else 1
     print(
         json.dumps(
             {
@@ -90,11 +105,12 @@ def main() -> int:
                     key: "ok" if value == 0 else "degraded"
                     for key, value in outcomes.items()
                 },
+                "segment_features": "ok" if segment_features == 0 else "degraded",
                 "unified": "ok" if unified == 0 else "degraded",
             }
         )
     )
-    return 0
+    return 0 if segment_features == 0 and unified == 0 else 1
 
 
 if __name__ == "__main__":

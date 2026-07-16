@@ -77,7 +77,7 @@ def validate_weather_snapshot(context: pd.DataFrame | None) -> dict[str, object]
 
 
 def _weights() -> tuple[float, float]:
-    config_path = ROOT / "models" / "stage19i_simple" / "weighted_ensemble_config.json"
+    config_path = ROOT / "models" / "final" / "ensemble_config.json"
     config = json.loads(config_path.read_text(encoding="utf-8"))
     weights = config["weights"]
     catboost_weight = float(weights["score_catboost_stage19h"])
@@ -236,13 +236,13 @@ def build_dynamic_risk(
         )
 
     catboost = CatBoostClassifier()
-    catboost.load_model(ROOT / "models" / "stage19h" / "catboost_candidate.cbm")
+    catboost.load_model(ROOT / "models" / "final" / "stage19i_catboost.cbm")
     cat_scores = catboost.predict_proba(cat_features)[:, 1]
     preprocessor = joblib.load(
-        ROOT / "models" / "stage19h" / "train_only_preprocessor_v2.joblib"
+        ROOT / "models" / "final" / "stage19i_preprocessor.joblib"
     )
     hgb = joblib.load(
-        ROOT / "models" / "stage19h" / "hist_gradient_boosting_candidate.joblib"
+        ROOT / "models" / "final" / "stage19i_hist_gradient_boosting.joblib"
     )
     hgb_scores = hgb.predict_proba(preprocessor.transform(features))[:, 1]
     cat_weight, hgb_weight = _weights()
@@ -510,6 +510,16 @@ def _future_context(
         ("traffic_severity_score", "traffic_congestion_score"),
         ("repair_active", "repair_active_next_24h"),
         ("event_major", "event_major_next_24h"),
+        ("repair_source_id", "repair_source_id"),
+        ("repair_title", "repair_title"),
+        ("repair_road_name", "repair_road_name"),
+        ("repair_start", "repair_start"),
+        ("repair_end", "repair_end"),
+        ("event_source_id", "event_source_id"),
+        ("event_name", "event_name"),
+        ("event_venue", "event_venue"),
+        ("event_start", "event_start"),
+        ("event_end", "event_end"),
     ):
         values = (
             result["road_segment_id"].map(source[source_name])

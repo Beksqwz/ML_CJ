@@ -64,8 +64,22 @@ def _rows(count: int) -> pd.DataFrame:
                 "weather_context_available": True,
                 "weather_severity_score": 0.7,
                 "weather_provider": "openweather",
+                "future_context_flags": '["severe_weather"]',
+                "future_context_warnings": "[]",
+                "future_context_confidence": "available",
+                "provider_degraded": False,
                 "weather_worst_period_start": "2026-07-15T12:00:00+05:00",
                 "weather_worst_period_end": "2026-07-15T15:00:00+05:00",
+                "event_source_id": "event-1",
+                "event_name": "Concert",
+                "event_venue": "Arena",
+                "event_start": "2026-07-15T19:00:00+05:00",
+                "event_end": "2026-07-15T22:00:00+05:00",
+                "repair_source_id": "repair-1",
+                "repair_title": "Lane closure",
+                "repair_road_name": "Main street",
+                "repair_start": "2026-07-15T08:00:00+05:00",
+                "repair_end": "2026-07-15T17:00:00+05:00",
                 "explanation": {
                     "explanation_status": "available",
                     "method": "shap",
@@ -75,6 +89,11 @@ def _rows(count: int) -> pd.DataFrame:
                     "top_positive_factors": [
                         {
                             "feature": "road_length",
+                            "display_name": {
+                                "ru": "Длина участка",
+                                "kz": "Учаске ұзындығы",
+                                "en": "Segment length",
+                            },
                             "feature_value": 100,
                             "shap_value": 0.3,
                         },
@@ -360,7 +379,7 @@ class PredictSyncResponseTests(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 200)
         payload = response.json()
-        self.assertEqual(payload["contractVersion"], "1")
+        self.assertEqual(payload["contractVersion"], "2")
         self.assertEqual(payload["modelHorizon"], "24h")
         self.assertEqual(payload["predictionsCount"], 3)
         self.assertEqual(payload["predictionsReturned"], 2)
@@ -374,6 +393,15 @@ class PredictSyncResponseTests(unittest.TestCase):
         self.assertIsNone(row["confidence"])
         self.assertIsNone(row["uncertainty"])
         self.assertEqual(row["top_positive_factors"][0]["value"], 100)
+        self.assertEqual(
+            row["top_positive_factors"][0]["display_name"]["ru"], "Длина участка"
+        )
+        self.assertEqual(row["future_context"]["signals"][0]["code"], "SEVERE_WEATHER")
+        self.assertEqual(row["future_context"]["providers"]["events"]["venue"], "Arena")
+        self.assertEqual(
+            row["future_context"]["providers"]["repairs"]["title"],
+            "Lane closure",
+        )
         self.assertNotIn("dynamic_score", row)
         self.assertNotIn("risk_probability", row)
 

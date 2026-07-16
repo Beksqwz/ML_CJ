@@ -94,8 +94,8 @@ class LiveHardeningTests(unittest.TestCase):
 
     def test_only_stage19i_24h_artifacts_are_referenced(self):
         source = (ROOT / "ml_service" / "hybrid_risk.py").read_text(encoding="utf-8")
-        self.assertIn("catboost_candidate.cbm", source)
-        self.assertIn("hist_gradient_boosting_candidate.joblib", source)
+        self.assertIn("stage19i_catboost.cbm", source)
+        self.assertIn("stage19i_hist_gradient_boosting.joblib", source)
         self.assertNotIn("catboost_1h", source)
 
     def test_weather_override_is_limited_to_existing_contract(self):
@@ -202,12 +202,12 @@ class LiveHardeningTests(unittest.TestCase):
 
     def test_artifact_hashes_are_frozen(self):
         expected = {
-            "catboost_candidate.cbm": "5b574c92959bf8e17388c0046f46e3ef402f16030bea77fbd3ea945e2efb27fb",
-            "hist_gradient_boosting_candidate.joblib": "409b41c62ba68b976f26f711b174f7903ef124331cde27be2c12819dd13554c9",
+            "stage19i_catboost.cbm": "5b574c92959bf8e17388c0046f46e3ef402f16030bea77fbd3ea945e2efb27fb",
+            "stage19i_hist_gradient_boosting.joblib": "409b41c62ba68b976f26f711b174f7903ef124331cde27be2c12819dd13554c9",
         }
         for name, digest in expected.items():
             self.assertEqual(
-                sha256((ROOT / "models/stage19h" / name).read_bytes()).hexdigest(),
+                sha256((ROOT / "models/final" / name).read_bytes()).hexdigest(),
                 digest,
             )
 
@@ -290,10 +290,14 @@ class LiveHardeningTests(unittest.TestCase):
             patch("sys.argv", ["refresh", "--dry-run"]),
             patch("sys.stdout", output),
             patch.object(refresh, "collect_provider") as collect,
+            patch.object(refresh, "rebuild_segment_features") as segment_features,
             patch.object(refresh, "rebuild_unified") as rebuild,
         ):
             self.assertEqual(refresh.main(), 0)
-        self.assertEqual((collect.call_count, rebuild.call_count), (0, 0))
+        self.assertEqual(
+            (collect.call_count, segment_features.call_count, rebuild.call_count),
+            (0, 0, 0),
+        )
         self.assertEqual(json.loads(output.getvalue())["network_calls"], 0)
 
     def test_scheduler_dry_run_invokes_zero_collectors_and_writes(self):
