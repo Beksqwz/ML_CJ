@@ -13,7 +13,7 @@ import uuid
 _stdlib_json_dumps = json.dumps
 
 def _nan_safe_dumps(obj, **kw):
-    kw.setdefault("default", str)
+    kw["default"] = str
     return _stdlib_json_dumps(obj, **kw)
 
 json.dumps = _nan_safe_dumps
