@@ -108,13 +108,20 @@ def _set_response_size(payload: dict[str, object]) -> int:
     return size
 
 
+def _safe_num(value: object) -> object:
+    """Replace NaN / ±Inf with None so downstream JSON encoders never reject the payload."""
+    if isinstance(value, float) and (math.isnan(value) or math.isinf(value)):
+        return None
+    return value
+
+
 def _public_context(row: dict[str, object]) -> dict[str, object]:
     """Construct the compact, safe operational context from a persisted row."""
 
     return {
         "weather": {
             "available": row.get("weather_context_available"),
-            "severity_score": row.get("weather_severity_score"),
+            "severity_score": _safe_num(row.get("weather_severity_score")),
             "provider": row.get("weather_provider", "openweather"),
             "snapshotVersion": row.get("weather_snapshot_version"),
             "validFrom": row.get("weather_valid_from"),
@@ -126,7 +133,7 @@ def _public_context(row: dict[str, object]) -> dict[str, object]:
         },
         "traffic": {
             "available": row.get("traffic_context_available"),
-            "severity_score": row.get("traffic_severity_score"),
+            "severity_score": _safe_num(row.get("traffic_severity_score")),
             "validFrom": row.get("traffic_valid_from"),
             "validUntil": row.get("traffic_valid_until"),
         },
@@ -334,22 +341,15 @@ _BACKEND_RISK_LEVELS = {
 def _backend_factor(value: object) -> dict[str, object]:
     """Convert the persisted SHAP factor to the backend explanation contract."""
 
-    import math
-
-    def _safe(v: object) -> object:
-        if isinstance(v, float) and (math.isnan(v) or math.isinf(v)):
-            return None
-        return v
-
     factor = value if isinstance(value, dict) else {}
     result: dict[str, object] = {
         "feature": str(factor.get("feature") or ""),
-        "shap_value": _safe(factor.get("shap_value")),
+        "shap_value": _safe_num(factor.get("shap_value")),
     }
     if isinstance(factor.get("display_name"), dict):
         result["display_name"] = factor["display_name"]
     if "feature_value" in factor:
-        result["value"] = _safe(factor["feature_value"])
+        result["value"] = _safe_num(factor["feature_value"])
     if "text" in factor and factor["text"] is not None:
         result["text"] = factor["text"]
     return result
