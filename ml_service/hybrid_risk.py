@@ -59,13 +59,36 @@ def validate_weather_snapshot(context: pd.DataFrame | None) -> dict[str, object]
         }
     row = context.iloc[0]
     version = row.get("weather_snapshot_version")
+    for idx in range(len(context)):
+        if version and not pd.isna(version):
+            break
+        version = context.iloc[idx].get("weather_snapshot_version")
+    if not version or pd.isna(version):
+        for idx in range(len(context)):
+            snap = context.iloc[idx].get("weather_snapshot")
+            if isinstance(snap, str):
+                try:
+                    version = json.loads(snap).get("snapshot_version")
+                    if version:
+                        break
+                except (json.JSONDecodeError, AttributeError):
+                    pass
+    if not version or pd.isna(version):
+        source_digest = (
+            context.attrs.get("weather_snapshot_version")
+            if hasattr(context, "attrs")
+            else None
+        )
+        return {
+            "consistent": False,
+            "issue": "WEATHER_SNAPSHOT_LEGACY_SCHEMA",
+            "version": source_digest,
+        }
     required = (
         "weather_forecast_start",
         "weather_forecast_end",
     )
-    if not version or any(
-        name not in context or pd.isna(row.get(name)) for name in required
-    ):
+    if any(name not in context or pd.isna(row.get(name)) for name in required):
         return {
             "consistent": False,
             "issue": "WEATHER_SNAPSHOT_MISMATCH",
