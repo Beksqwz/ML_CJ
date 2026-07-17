@@ -424,7 +424,9 @@ def _future_context(
     if prediction_datetime is not None and "prediction_datetime" in source:
         requested_hour = _local_model_hour(prediction_datetime)
         context_hours = source["prediction_datetime"].map(_local_model_hour)
-        source = source.loc[context_hours.eq(requested_hour)].copy()
+        hourly = source.loc[context_hours.eq(requested_hour)]
+        if not hourly.empty:
+            source = hourly.copy()
     if source.duplicated("road_segment_id").any():
         raise ValueError("stage20a_future_context_duplicate_segment")
     source = source.set_index("road_segment_id")
