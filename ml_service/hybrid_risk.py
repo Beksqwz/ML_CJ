@@ -51,39 +51,13 @@ class WeatherSnapshotMismatchError(ValueError):
 
 
 def validate_weather_snapshot(context: pd.DataFrame | None) -> dict[str, object]:
-    if context is None or context.empty or "weather_snapshot_version" not in context:
+    if context is None or context.empty:
         return {
             "consistent": False,
             "issue": "WEATHER_SNAPSHOT_LEGACY_SCHEMA",
             "version": None,
         }
     row = context.iloc[0]
-    version = row.get("weather_snapshot_version")
-    for idx in range(len(context)):
-        if version and not pd.isna(version):
-            break
-        version = context.iloc[idx].get("weather_snapshot_version")
-    if not version or pd.isna(version):
-        for idx in range(len(context)):
-            snap = context.iloc[idx].get("weather_snapshot")
-            if isinstance(snap, str):
-                try:
-                    version = json.loads(snap).get("snapshot_version")
-                    if version:
-                        break
-                except (json.JSONDecodeError, AttributeError):
-                    pass
-    if not version or pd.isna(version):
-        source_digest = (
-            context.attrs.get("weather_snapshot_version")
-            if hasattr(context, "attrs")
-            else None
-        )
-        return {
-            "consistent": False,
-            "issue": "WEATHER_SNAPSHOT_LEGACY_SCHEMA",
-            "version": source_digest,
-        }
     required = (
         "weather_forecast_start",
         "weather_forecast_end",
@@ -92,8 +66,9 @@ def validate_weather_snapshot(context: pd.DataFrame | None) -> dict[str, object]
         return {
             "consistent": False,
             "issue": "WEATHER_SNAPSHOT_MISMATCH",
-            "version": version,
+            "version": None,
         }
+    version = row.get("weather_snapshot_version")
     return {"consistent": True, "issue": None, "version": version}
 
 
