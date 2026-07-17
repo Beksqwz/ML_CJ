@@ -84,7 +84,6 @@ def _response_size_bytes(payload: dict[str, object]) -> int:
         json.dumps(
             payload,
             ensure_ascii=False,
-            allow_nan=False,
             separators=(",", ":"),
             default=str,
         ).encode("utf-8")
