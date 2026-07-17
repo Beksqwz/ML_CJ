@@ -60,8 +60,6 @@ def validate_weather_snapshot(context: pd.DataFrame | None) -> dict[str, object]
     row = context.iloc[0]
     version = row.get("weather_snapshot_version")
     required = (
-        "weather_origin_source_before",
-        "weather_origin_source_after",
         "weather_forecast_start",
         "weather_forecast_end",
     )
