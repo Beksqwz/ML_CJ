@@ -8,6 +8,15 @@ import math
 import os
 import time
 import uuid
+
+# ── NaN-safe JSON: prevent 500 Internal Server Error from float('nan') in SHAP factors ──
+_stdlib_json_dumps = json.dumps
+
+def _nan_safe_dumps(obj, **kw):
+    kw.setdefault("default", str)
+    return _stdlib_json_dumps(obj, **kw)
+
+json.dumps = _nan_safe_dumps
 from datetime import UTC, datetime
 from zoneinfo import ZoneInfo
 from threading import Lock
