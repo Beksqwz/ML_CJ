@@ -59,8 +59,8 @@ def validate_weather_snapshot(context: pd.DataFrame | None) -> dict[str, object]
         }
     row = context.iloc[0]
     required = (
-        "weather_forecast_start",
-        "weather_forecast_end",
+        "forecast_window_start",
+        "forecast_window_end",
     )
     if any(name not in context or pd.isna(row.get(name)) for name in required):
         return {

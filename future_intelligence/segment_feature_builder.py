@@ -305,9 +305,7 @@ class FutureSegmentFeatureBuilder:
         if frame.empty or "prediction_datetime" not in frame:
             metadata["warnings"].append("weather_features_missing_prediction_datetime")
             return values, metadata
-        candidate = frame.loc[
-            frame["prediction_datetime"].astype(str) == prediction_datetime.isoformat()
-        ]
+        candidate = frame.sort_values("prediction_datetime", ascending=True).tail(1)
         if candidate.empty:
             metadata["warnings"].append("weather_features_requested_window_missing")
             return values, metadata

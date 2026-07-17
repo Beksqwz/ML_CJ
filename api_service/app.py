@@ -334,15 +334,22 @@ _BACKEND_RISK_LEVELS = {
 def _backend_factor(value: object) -> dict[str, object]:
     """Convert the persisted SHAP factor to the backend explanation contract."""
 
+    import math
+
+    def _safe(v: object) -> object:
+        if isinstance(v, float) and (math.isnan(v) or math.isinf(v)):
+            return None
+        return v
+
     factor = value if isinstance(value, dict) else {}
     result: dict[str, object] = {
         "feature": str(factor.get("feature") or ""),
-        "shap_value": factor.get("shap_value"),
+        "shap_value": _safe(factor.get("shap_value")),
     }
     if isinstance(factor.get("display_name"), dict):
         result["display_name"] = factor["display_name"]
     if "feature_value" in factor:
-        result["value"] = factor["feature_value"]
+        result["value"] = _safe(factor["feature_value"])
     if "text" in factor and factor["text"] is not None:
         result["text"] = factor["text"]
     return result
